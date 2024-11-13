@@ -5,6 +5,7 @@ import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.util.Date;
+import java.util.UUID;
 
 @Entity
 @Table(name = "booking")
@@ -15,23 +16,23 @@ import java.util.Date;
 public class Booking {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "booking_id", updatable = false)
-    private Long bookingId;
+    private UUID bookingId;
 
-    @Column(name = "userid")
-    private Long userId;
+    @Column(name = "userid", updatable = false)
+    private String userId;
 
-    @Column(name = "hotel_id")
+    @Column(name = "hotel_id", updatable = false)
     private Long hotelId;
 
-    @Column(name = "roonm_id")
+    @Column(name = "roonm_id", updatable = false)
     private Long roonmId;
 
-    @Column(name = "start_date")
+    @Column(name = "start_date", updatable = false)
     private String startDate;
 
-    @Column(name = "end_date")
+    @Column(name = "end_date", updatable = false)
     private String endDate;
 
     @Column(name = "booking_guest")
@@ -43,8 +44,11 @@ public class Booking {
     @Column(name = "pay_chk")
     private String payChk;
 
-    @Column(name = "total_price")
+    @Column(name = "total_price", updatable = false)
     private int totalPrice;
+
+    @Column(name = "total_date", updatable = false)
+    private int totalDate;
 
     @Column(name = "guest_name")
     private String guestName;
@@ -53,10 +57,10 @@ public class Booking {
     private String guestPhone;
 
     @Builder
-    public Booking (Long userId, Long hotelId, Long roonmId,
+    public Booking (String userId, Long hotelId, Long roonmId,
                     String startDate, String endDate,
                     int bookingGuest, int bookingPet,
-                    String payChk, int totalPrice,
+                    String payChk, int totalPrice, int totalDate,
                     String guestName, String guestPhone) {
         this.userId = userId;
         this.hotelId = hotelId;
@@ -67,6 +71,14 @@ public class Booking {
         this.bookingPet = bookingPet;
         this.payChk = payChk;
         this.totalPrice = totalPrice;
+        this.totalDate = totalDate;
+        this.guestName = guestName;
+        this.guestPhone = guestPhone;
+    }
+
+    public void update(int bookingGuest, int bookingPet, String guestName, String guestPhone) {
+        this.bookingGuest = bookingGuest;
+        this.bookingPet = bookingPet;
         this.guestName = guestName;
         this.guestPhone = guestPhone;
     }

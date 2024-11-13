@@ -36,7 +36,7 @@ public class Hotel {
     private String hotelInfo;
 
     @Column(name = "userid")
-    private Long userId;
+    private String userId;
 
     @Builder
     public Hotel(String hotelName, String hotelType, String hotelAdd1, String hotelAdd2, String hotelPhone, String hotelInfo) {

@@ -7,6 +7,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Entity
 @Table(name = "review")
@@ -36,15 +37,15 @@ public class Review {
     private LocalDateTime updateAt;
 
     @Column(name = "booking_id")
-    private Long bookingId;
+    private UUID bookingId;
 
     @Column(name = "userid")
-    private Long userId;
+    private String userId;
 
     @Builder
     public Review(Integer reviewRate, String reviewContent,
                   LocalDateTime createAt, LocalDateTime updateAt,
-                  Long bookingId, Long userId) {
+                  UUID bookingId, String userId) {
         this.reviewRate = reviewRate;
         this.reviewContent = reviewContent;
         this.createAt = createAt;

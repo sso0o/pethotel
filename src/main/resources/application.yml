@@ -1,0 +1,23 @@
+server:
+  port: 8081
+
+spring:
+  http:
+    encoding:
+      charset: UTF-8
+      enabled: true
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/pethotel?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    username: root
+    password: ssoyeon1@3
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+      format_sql: true
+    open-in-view: false
+
+
+  thymeleaf:
+    cache: false

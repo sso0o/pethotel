@@ -13,19 +13,18 @@ import java.time.LocalDateTime;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EntityListeners(AuditingEntityListener.class)
 @Getter
-@Setter
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "userid", updatable = false, nullable = false)
-    private Long userId;
+    @Column(name = "id", updatable = false)
+    private Long id;
+
+    @Column(name = "userid", updatable = false, nullable = false, unique = true)
+    private String userid;
 
     @Column(name = "user_name")
     private String username;
-
-    @Column(name = "login_id", nullable = false, unique = true)
-    private String login_id;
 
     @Column(name = "password")
     private String password;
@@ -42,7 +41,6 @@ public class User {
     @Column(name = "user_status")
     private String userstatus;
 
-
     @CreationTimestamp
     @Column(name = "create_date", updatable = false)
     private LocalDateTime createAt;
@@ -54,9 +52,8 @@ public class User {
 
 
     @Builder
-    public User(String username, String login_id, String password, String userrole, String userphone, String nickname, String userstatus) {
+    public User(String username, String password, String userrole, String userphone, String nickname, String userstatus) {
         this.username = username;
-        this.login_id = login_id;
         this.password = password;
         this.userrole = userrole;
         this.userphone = userphone;
@@ -71,6 +68,5 @@ public class User {
         this.nickname = nickname;
         this.userstatus = userstatus;
     }
-
 
 }
