@@ -63,19 +63,23 @@
                 <p class="mt-2 mb-5">서비스를 사용하려면 로그인을 해주세요!</p>
 
                 <div class = "mb-2">
-                    <form action="/login" method="POST">
+                    <form th:action="@{/login}" method="POST">
                         <input type="hidden" th:name="${_csrf?.parameterName}" th:value="${_csrf?.token}" />
                         <div class="mb-3">
                             <label class="form-label">Userid</label>
-                            <input type="text" class="form-control" name="userid">
+                            <input type="text" class="form-control" name="username" id="username">
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Password</label>
-                            <input type="password" class="form-control" name="password">
+                            <input type="password" class="form-control" name="password" id="password">
                         </div>
+                        <!-- 로그인 실패 메시지 -->
+                        <div class="mb-3" th:if="${param.error}" style="color: red;">
+                            <p th:text="${error}"></p>
+                        </div>
+
                         <button type="submit" class="btn btn-primary tm-btn text-uppercase" style="border-radius: 0.25rem;">Submit</button>
                     </form>
-
                     <button type="button" class="btn btn-secondary tm-btn mt-3" onclick="location.href='/signup'">회원가입</button>
                 </div>
             </div>
@@ -95,7 +99,6 @@
 
 <script>
 $(function(){
-
 
 
 });

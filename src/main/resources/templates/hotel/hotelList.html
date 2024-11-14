@@ -3,7 +3,7 @@
         lang="ko"
         dir="ltr"
         xmlns:th="http://www.thymeleaf.org"
-        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 >
 <head>
   <title>Pet Hotel</title>
@@ -28,11 +28,15 @@
   <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
   <![endif]-->
 
+  <style>
+
+  </style>
 </head>
 
 <body>
-<div class="tm-main-content" id="top">
+<div class="tm-main-content" style="min-height: 100vh; position: relative;">
   <div class="tm-top-bar-bg"></div>
+  <!-- navbar 시작 -->
   <div class="tm-top-bar" id="tm-top-bar">
     <div class="container">
       <div class="row">
@@ -48,143 +52,71 @@
           <!-- 토글 버튼 (모바일용) -->
           <div id="mainNav" class="collapse navbar-collapse justify-content-end tm-bg-white">
             <ul class="navbar-nav ml-auto" >
-              <li class="nav-item">
-                <a class="nav-link active" href="/">Home </a>
-              </li>
-              <li class="nav-item">
+              <li sec:authorize="!hasAuthority('MANAGER')" class="nav-item">
                 <a class="nav-link" href="/hotel">Hotel </a>
               </li>
-              <li class="nav-item">
+              <li sec:authorize="!hasAuthority('MANAGER')" class="nav-item">
                 <a class="nav-link" href="/">Top Destinations</a>
               </li>
-              <li class="nav-item">
-                <a class="nav-link" href="/">Recommended Places</a>
-              </li>
-              <!-- 로그인 안되어있을때  -->
-              <li th:if="${session.username == null}" class="nav-item">
+              <!-- 로그인하지 않은 사용자가 볼 수 있는 링크 -->
+              <li sec:authorize="isAnonymous()" class="nav-item">
                 <a class="nav-link" href="/login">Login</a>
               </li>
-              <li th:if="${session.username == null}" class="nav-item">
-                <a class="nav-link" href="/signup">Sign up</a>
+              <li sec:authorize="isAnonymous()" class="nav-item">
+                <a class="nav-link" href="/signup">Sign Up</a>
               </li>
-              <!-- 로그인 안되어있을때  -->
-              <!-- 로그인 되어있을때  -->
-              <li th:if="${session.username != null}" class="nav-item">
+              <!-- 회원만 볼 수 있는 링크 -->
+              <li sec:authorize="hasAuthority('USER')" class="nav-item">
                 <a class="nav-link" href="/mybooking">My Booking</a>
               </li>
-              <li th:if="${session.username != null}" class="nav-item">
+              <!-- 매니저만 볼 수 있는 링크 -->
+              <li sec:authorize="hasAuthority('MANAGER')" class="nav-item">
+                <a class="nav-link" href="/manager/hotel">My hotel</a>
+              </li>
+              <li sec:authorize="hasAnyAuthority('USER', 'MANAGER')" class="nav-item">
                 <a class="nav-link" href="/mypage">My Page</a>
               </li>
-              <!-- 로그인 되어있을때  -->
+              <!-- 관리자만 볼 수 있는 링크 -->
+              <li sec:authorize="hasAuthority('ADMIN')" class="nav-item">
+                <a class="nav-link" href="/admin">Admin Page</a>
+              </li>
+              <!-- 로그인 한 사용자만 볼 수 있는 링크 -->
+              <li sec:authorize="isAuthenticated()" class="nav-item">
+                <a class="nav-link" href="/loguot">Logout</a>
+              </li>
             </ul>
           </div>
         </nav>
       </div> <!-- row -->
     </div> <!-- container -->
   </div> <!-- .tm-top-bar -->
+  <!-- navbar 종료 -->
 
-  <div class="tm-page-wrap mx-auto">
-    <section class="tm-banner">
-      <div class="tm-container-outer tm-banner-bg">
-        <div class="container">
 
-          <div class="row tm-banner-row tm-banner-row-header">
-            <div class="col-xs-12">
-              <div class="tm-banner-header">
-                <h1 class="text-uppercase tm-banner-title">Let's begin</h1>
-                <img src="img/dots-3.png" alt="Dots">
-                <p class="tm-banner-subtitle">We assist you to choose the best.</p>
-                <a href="javascript:void(0)" class="tm-down-arrow-link"><i class="fa fa-2x fa-angle-down tm-down-arrow"></i></a>
-              </div>
-            </div>  <!-- col-xs-12 -->
-          </div> <!-- row -->
-          <div class="row tm-banner-row" id="tm-section-search">
+  <div class="tm-page-wrap mx-auto justify-content-center">
 
-            <form action="index.html" method="get" class="tm-search-form tm-section-pad-2">
-              <div class="form-row tm-search-form-row">
-                <div class="form-group tm-form-group tm-form-group-pad tm-form-group-1">
-                  <label for="inputCity">Choose Your Destination</label>
-                  <input name="destination" type="text" class="form-control" id="inputCity" placeholder="Type your destination...">
-                </div>
-                <div class="form-group tm-form-group tm-form-group-1">
-                  <div class="form-group tm-form-group tm-form-group-pad tm-form-group-2">
-                    <label for="inputRoom">How many rooms?</label>
-                    <select name="room" class="form-control tm-select" id="inputRoom">
-                      <option value="1" selected>1 Room</option>
-                      <option value="2">2 Rooms</option>
-                      <option value="3">3 Rooms</option>
-                      <option value="4">4 Rooms</option>
-                      <option value="5">5 Rooms</option>
-                      <option value="6">6 Rooms</option>
-                      <option value="7">7 Rooms</option>
-                      <option value="8">8 Rooms</option>
-                      <option value="9">9 Rooms</option>
-                      <option value="10">10 Rooms</option>
-                    </select>
-                  </div>
-                  <div class="form-group tm-form-group tm-form-group-pad tm-form-group-3">
-                    <label for="guest">Guest</label>
-                    <select name="guest" class="form-control tm-select" id="guest">
-                      <option value="1" selected>1</option>
-                      <option value="2">2</option>
-                      <option value="3">3</option>
-                      <option value="4">4</option>
-                      <option value="5">5</option>
-                      <option value="6">6</option>
-                      <option value="7">7</option>
-                      <option value="8">8</option>
-                      <option value="9">9</option>
-                      <option value="10">10</option>
-                    </select>
-                  </div>
-                  <div class="form-group tm-form-group tm-form-group-pad tm-form-group-3">
-
-                    <label for="pet">Pet</label>
-                    <select name="pet" class="form-control tm-select" id="pet">
-                      <option value="0" selected>0</option>
-                      <option value="1">1</option>
-                      <option value="2">2</option>
-                      <option value="3">3</option>
-                      <option value="4">4</option>
-                      <option value="5">5</option>
-                      <option value="6">6</option>
-                      <option value="7">7</option>
-                      <option value="8">8</option>
-                      <option value="9">9</option>
-                    </select>
-                  </div>
-                </div>
-              </div> <!-- form-row -->
-              <div class="form-row tm-search-form-row">
-
-                <div class="form-group tm-form-group tm-form-group-pad tm-form-group-3">
-                  <label for="checkin">Check In Date</label>
-                  <input name="checkin" type="text" class="form-control" id="checkin" placeholder="Check In">
-                </div>
-                <div class="form-group tm-form-group tm-form-group-pad tm-form-group-3">
-                  <label for="checkout">Check Out Date</label>
-                  <input name="checkout" type="text" class="form-control" id="checkout" placeholder="Check Out">
-                </div>
-                <div class="form-group tm-form-group tm-form-group-pad tm-form-group-1">
-                  <label for="btnSubmit">&nbsp;</label>
-                  <button type="submit" class="btn btn-primary tm-btn tm-btn-search text-uppercase" id="btnSubmit">호텔 검색</button>
-                </div>
-              </div>
-            </form>
-
-          </div> <!-- row -->
-          <div class="tm-banner-overlay"></div>
-        </div>  <!-- .container -->
-      </div>     <!-- .tm-container-outer -->
-    </section>
-
+    <p th:text="${#authentication.name}"></p>
+    <p>===============</p>
+    <p th:text="${#authentication.authorities}"></p>
+    <p>===============</p>
+    <p th:text="${#authentication.authenticated}"></p>
+    <p>===============</p>
+    <div sec:authorize="isAuthenticated()"></div>
+    <p>===============</p>
+    <div sec:authorize="hasRole('ADMIN')"></div>
+    <p>===============</p>
+    <div sec:authorize="hasRole('MANAGER')"></div>
 
     <footer class="tm-container-outer">
       <p class="mb-0">Copyright © <span class="tm-current-year">2018</span> Your Company
 
         . Designed by <a rel="nofollow" href="http://www.google.com/+templatemo" target="_parent">Template Mo</a></p>
     </footer>
+
   </div>
+
+
+
 </div><!-- .main-content -->
 
 
@@ -199,25 +131,8 @@
 
 
 <script>
-
-
-
   $(function(){
 
-    // Date Picker in Search form
-    var pickerCheckIn = datepicker('#checkin');
-    var pickerCheckOut = datepicker('#checkout');
-
-    // Update nav links on scroll
-    // $('#tm-top-bar').singlePageNav({
-    //     currentClass:'active',
-    //     offset: 60
-    // });
-
-    // Close navbar after clicked
-    $('.nav-link').click(function(){
-      $('#mainNav').removeClass('show');
-    });
 
 
   });
@@ -226,3 +141,4 @@
 
 </body>
 </html>
+

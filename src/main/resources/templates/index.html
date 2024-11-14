@@ -3,7 +3,7 @@
         lang="ko"
         dir="ltr"
         xmlns:th="http://www.thymeleaf.org"
-        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 >
 <head>
     <title>Pet Hotel</title>
@@ -31,8 +31,9 @@
 </head>
 
 <body>
-<div class="tm-main-content" id="top">
+<div class="tm-main-content" >
     <div class="tm-top-bar-bg"></div>
+    <!-- navbar 시작 -->
     <div class="tm-top-bar" id="tm-top-bar">
         <div class="container">
             <div class="row">
@@ -48,42 +49,50 @@
                     <!-- 토글 버튼 (모바일용) -->
                     <div id="mainNav" class="collapse navbar-collapse justify-content-end tm-bg-white">
                         <ul class="navbar-nav ml-auto" >
-                            <li class="nav-item">
-                                <a class="nav-link active" href="/">Home </a>
-                            </li>
-                            <li class="nav-item">
+                            <li sec:authorize="!hasAuthority('MANAGER')" class="nav-item">
                                 <a class="nav-link" href="/hotel">Hotel </a>
                             </li>
-                            <li class="nav-item">
+                            <li sec:authorize="!hasAuthority('MANAGER')" class="nav-item">
                                 <a class="nav-link" href="/">Top Destinations</a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/">Recommended Places</a>
-                            </li>
-                            <!-- 로그인 안되어있을때  -->
-                            <li th:if="${session.username == null}" class="nav-item">
+                            <!-- 로그인하지 않은 사용자가 볼 수 있는 링크 -->
+                            <li sec:authorize="isAnonymous()" class="nav-item">
                                 <a class="nav-link" href="/login">Login</a>
                             </li>
-                            <li th:if="${session.username == null}" class="nav-item">
-                                <a class="nav-link" href="/signup">Sign up</a>
+                            <li sec:authorize="isAnonymous()" class="nav-item">
+                                <a class="nav-link" href="/signup">Sign Up</a>
                             </li>
-                            <!-- 로그인 안되어있을때  -->
-                            <!-- 로그인 되어있을때  -->
-                            <li th:if="${session.username != null}" class="nav-item">
+                            <!-- 회원만 볼 수 있는 링크 -->
+                            <li sec:authorize="hasAuthority('USER')" class="nav-item">
                                 <a class="nav-link" href="/mybooking">My Booking</a>
                             </li>
-                            <li th:if="${session.username != null}" class="nav-item">
+                            <!-- 매니저만 볼 수 있는 링크 -->
+                            <li sec:authorize="hasAuthority('MANAGER')" class="nav-item">
+                                <a class="nav-link" href="/manager/hotel">My hotel</a>
+                            </li>
+                            <li sec:authorize="hasAnyAuthority('USER', 'MANAGER')" class="nav-item">
                                 <a class="nav-link" href="/mypage">My Page</a>
                             </li>
-                            <!-- 로그인 되어있을때  -->
+                            <!-- 관리자만 볼 수 있는 링크 -->
+                            <li sec:authorize="hasAuthority('ADMIN')" class="nav-item">
+                                <a class="nav-link" href="/admin">Admin Page</a>
+                            </li>
+                            <!-- 로그인 한 사용자만 볼 수 있는 링크 -->
+                            <li sec:authorize="isAuthenticated()" class="nav-item">
+                                <a class="nav-link" href="/loguot">Logout</a>
+                            </li>
                         </ul>
                     </div>
                 </nav>
             </div> <!-- row -->
         </div> <!-- container -->
     </div> <!-- .tm-top-bar -->
+    <!-- navbar 종료 -->
 
-    <div class="tm-page-wrap mx-auto">
+
+    <div class="tm-page-wrap mx-auto justify-content-center">
+
+        <!-- 배너 시작 -->
         <section class="tm-banner">
             <div class="tm-container-outer tm-banner-bg">
                 <div class="container">
@@ -177,6 +186,7 @@
                 </div>  <!-- .container -->
             </div>     <!-- .tm-container-outer -->
         </section>
+        <!-- 배너 종료 -->
 
         <!-- 지역별 탭 시작 -->
         <div class="tm-container-outer" id="tm-section-3">

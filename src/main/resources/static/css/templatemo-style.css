@@ -8,7 +8,14 @@ Highlight color (pink)		: #c66995
 --------------------------------------
 
 */
+
+html {
+    height: 100%;
+}
+
+
 body {
+    height: 100%;
 	font-family: 'Open Sans', Helvetica, Arial, sans-serif;
 	font-size: 13px;
 	font-weight: 300;
@@ -24,10 +31,17 @@ a:focus {
 
 p:last-child { margin-bottom: 0; }
 
+.tm-main-content {
+    min-height: 100vh;
+    position: relative;
+}
+
 .tm-page-wrap { 
     max-width: 1400px;
     box-shadow: 0 0 3px rgba(0, 0, 0, 0.15);
     background: white;
+    min-height: 100vh;
+    padding-bottom: 80px;
 }
 
 .tm-container-outer {
@@ -436,11 +450,14 @@ label { font-weight: 700; }
 .tm-d-table { display: table; }
 
 footer {
-    background: #69c6ba;
+    background: rgba(105, 198, 186, 0.75);
     padding-top: 40px;
     padding-bottom: 40px;
     text-align: center;    
     font-size: 0.8rem;
+    width: 100%;
+    bottom: 0px;
+    position: absolute;
 }
 
 footer a { color: #fff; }
