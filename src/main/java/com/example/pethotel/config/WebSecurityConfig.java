@@ -29,7 +29,8 @@ public class WebSecurityConfig  {
                 .requestMatchers("/static/**",
                         "/css/**", "/js/**",
                         "/img/**", "/scss/**",
-                        "/font-awesome-4.7.0/**", "/slick/**");
+                        "/font-awesome-4.7.0/**", "/slick/**",
+                        "/tem2/**");
     }
 
     @Bean
