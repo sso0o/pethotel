@@ -12,4 +12,9 @@ public class AdminViewController {
     public String admin() {
         return "admin/main";
     }
+
+    @GetMapping("/admin/commoncode")
+    public String commoncode() {
+        return "admin/commoncode";
+    }
 }
