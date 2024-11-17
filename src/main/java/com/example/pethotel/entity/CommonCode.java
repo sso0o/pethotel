@@ -49,13 +49,13 @@ public class CommonCode {
         this.remark = remark;
 
         String trimmedCodeDetail = (codeDetail == null) ? "" : codeDetail.trim();
-        this.codeDetail = codeHead.trim()+trimmedCodeDetail;
+        this.code = codeHead.trim()+trimmedCodeDetail;
     }
 
     @PrePersist
     public void makeCd() {
         String trimmedCodeDetail = (codeDetail == null) ? "" : codeDetail.trim();
-        this.codeDetail = codeHead.trim()+trimmedCodeDetail;
+        this.code = codeHead.trim()+trimmedCodeDetail;
     }
 
     public void update(String codeName, int codeSeq, String remark, String codeUse) {

@@ -16,6 +16,8 @@
 
   <title>ADMIN</title>
 
+  <script src="/admin/commoncode.js"></script>
+
   <!-- Bootstrap  CSS -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"  integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
   <!-- jQuery UI CSS -->
@@ -31,7 +33,12 @@
   <link href="/tem2/css/sb-admin-2.min.css" rel="stylesheet">
 
   <!-- Custom styles for this page -->
-  <link href="/tem2/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.css" />
+  <link rel="stylesheet" href="https://cdn.datatables.net/select/2.1.0/css/select.dataTables.css" />
+
+
+
+
 
 </head>
 
@@ -142,109 +149,70 @@
       <!-- Begin Page Content -->
       <div class="container-fluid">
         <!-- DataTales Example -->
-        <div class="card shadow mb-4">
-          <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary">공통코드</h6>
-          </div>
-          <div class="card-body">
-            <div class="table-responsive">
-              <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                <thead>
-                <tr>
-                  <th>Name</th>
-                  <th>Position</th>
-                  <th>Office</th>
-                  <th>Age</th>
-                  <th>Start date</th>
-                  <th>Salary</th>
-                </tr>
-                </thead>
-                <tfoot>
-                <tr>
-                  <th>Name</th>
-                  <th>Position</th>
-                  <th>Office</th>
-                  <th>Age</th>
-                  <th>Start date</th>
-                  <th>Salary</th>
-                </tr>
-                </tfoot>
-                <tbody>
-                <tr>
-                  <td>Tiger Nixon</td>
-                  <td>System Architect</td>
-                  <td>Edinburgh</td>
-                  <td>61</td>
-                  <td>2011/04/25</td>
-                  <td>$320,800</td>
-                </tr>
-                <tr>
-                  <td>Garrett Winters</td>
-                  <td>Accountant</td>
-                  <td>Tokyo</td>
-                  <td>63</td>
-                  <td>2011/07/25</td>
-                  <td>$170,750</td>
-                </tr>
-                <tr>
-                  <td>Ashton Cox</td>
-                  <td>Junior Technical Author</td>
-                  <td>San Francisco</td>
-                  <td>66</td>
-                  <td>2009/01/12</td>
-                  <td>$86,000</td>
-                </tr>
-                <tr>
-                  <td>Cedric Kelly</td>
-                  <td>Senior Javascript Developer</td>
-                  <td>Edinburgh</td>
-                  <td>22</td>
-                  <td>2012/03/29</td>
-                  <td>$433,060</td>
-                </tr>
-                <tr>
-                  <td>Airi Satou</td>
-                  <td>Accountant</td>
-                  <td>Tokyo</td>
-                  <td>33</td>
-                  <td>2008/11/28</td>
-                  <td>$162,700</td>
-                </tr>
-                <tr>
-                  <td>Brielle Williamson</td>
-                  <td>Integration Specialist</td>
-                  <td>New York</td>
-                  <td>61</td>
-                  <td>2012/12/02</td>
-                  <td>$372,000</td>
-                </tr>
-                <tr>
-                  <td>Herrod Chandler</td>
-                  <td>Sales Assistant</td>
-                  <td>San Francisco</td>
-                  <td>59</td>
-                  <td>2012/08/06</td>
-                  <td>$137,500</td>
-                </tr>
-                <tr>
-                  <td>Rhona Davidson</td>
-                  <td>Integration Specialist</td>
-                  <td>Tokyo</td>
-                  <td>55</td>
-                  <td>2010/10/14</td>
-                  <td>$327,900</td>
-                </tr>
-                <tr>
-                  <td>Colleen Hurst</td>
-                  <td>Javascript Developer</td>
-                  <td>San Francisco</td>
-                  <td>39</td>
-                  <td>2009/09/15</td>
-                  <td>$205,500</td>
-                </tr>
-                </tbody>
-              </table>
+        <div class="row">
+          <div class="col-5">
+            <div class="card shadow mb-4">
+              <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">공통코드</h6>
+              </div>
+              <div class="card-body">
+                <button type="button" class="btn btn-primary" onclick="addHeadModal('')">add</button>
+                <div class="table-responsive">
+                  <table class="table table-bordered table-hover" id="tabHead" width="100%" cellspacing="0">
+                    <thead>
+                    <tr>
+                      <th>코드 헤더</th>
+                      <th>설명</th>
+                    </tr>
+                    </thead>
+                    <tfoot>
+                    <tr>
+                      <th>Name</th>
+                      <th>Position</th>
+                    </tr>
+                    </tfoot>
+                    <tbody>
+                    <tr th:each="h : ${codeHeads}">
+                      <td th:text="${h.codeHead}"></td>
+                      <td th:text="${h.codeName}"></td>
+                    </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
             </div>
+          </div>
+          <div class="col-7">
+            <div class="card shadow mb-4">
+              <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">공통코드</h6>
+              </div>
+              <div class="card-body">
+                <button class="btn btn-primary" onclick="addDetailModal('')">add</button>
+                <div class="table-responsive">
+                  <table class="table table-bordered table-hover" id="tabDetail" width="100%" cellspacing="0">
+                    <thead>
+                    <tr>
+                      <th>코드 디테일</th>
+                      <th>코드 이름</th>
+                      <th>전체코드</th>
+                    </tr>
+                    </thead>
+                    <tfoot>
+                    <tr>
+                      <th>Name</th>
+                      <th>Position</th>
+                      <th>Position</th>
+                    </tr>
+                    </tfoot>
+                    <tbody>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
           </div>
         </div>
 
@@ -294,6 +262,115 @@
   </div>
 </div>
 
+<!-- Modal_Head -->
+<div class="modal fade" id="headModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalCenterTitle">공통코드 추가</h5>
+        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <form id="headForm">
+            <input type="hidden" id="codeId" name="codeId">
+            <label class="form-label" for="codeHead"></label>
+            <div class="input-group input-group-merge">
+              <span id="codeHead2" class="input-group-text">코드 헤더</span>
+              <input type="text"
+                     class="form-control"
+                     placeholder=" 코드"
+                     id="codeHead"
+                     name="codeHead" />
+            </div>
+            <label class="form-label" for="codeName"></label>
+            <div class="input-group input-group-merge">
+              <span id="codeName2" class="input-group-text">코드 설명</span>
+              <input type="text"
+                     class="form-control"
+                     placeholder=" 코드 설명"
+                     id="codeName"
+                     name="codeName" />
+            </div>
+            <div class="mt-3" id="errorDiv" style="text-align: center; color: red; display: none;">
+              <p id="errorMsg"></p>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" id="saveBtn" onclick="saveHead('post')">Save</button>
+        <button type="button" class="btn btn-primary" id="modifyBtn" >Modify</button>
+        <button type="button" class="btn btn-danger" id="deleteBtn" >Delete</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!--/ Modal_Head -->
+
+<!-- Modal_Head -->
+<div class="modal fade" id="detailModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalDetailTitle">공통코드 추가</h5>
+        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <form id="detailForm">
+            <label class="form-label" for="codeHeadVal"></label>
+            <div class="input-group input-group-merge">
+              <span id="codeHeadVal2" class="input-group-text">코드 헤더</span>
+              <input type="text"
+                     class="form-control"
+                     id="codeHeadVal"
+                     name="codeHeadVal" />
+            </div>
+            <input type="hidden" id="headVal" name="headVal">
+            <label class="form-label" for="codeHead"></label>
+            <div class="input-group input-group-merge">
+              <span id="codeDetail2" class="input-group-text">코드 디테일</span>
+              <input type="text"
+                     class="form-control"
+                     placeholder=" 코드"
+                     id="codeDetail"
+                     name="codeDetail" />
+            </div>
+            <label class="form-label" for="codeDetailName"></label>
+            <div class="input-group input-group-merge">
+              <span id="codeDetailName2" class="input-group-text">코드 설명</span>
+              <input type="text"
+                     class="form-control"
+                     placeholder=" 코드 설명"
+                     id="codeDetailName"
+                     name="codeDetailName" />
+            </div>
+            <div class="mt-3" id="errorDiv2" style="text-align: center; color: red; display: none;">
+              <p id="errorMsg2"></p>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" id="saveBtn2" onclick="saveDetail('post')">Save</button>
+        <button type="button" class="btn btn-primary" id="modifyBtn2" >Modify</button>
+        <button type="button" class="btn btn-danger" id="deleteBtn2" >Delete</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!--/ Modal_Head -->
+
+
+
+
 <!-- Bootstrap core JavaScript-->
 <script src="/tem2/vendor/jquery/jquery.min.js"></script>
 <script src="/tem2/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -309,10 +386,49 @@
 <script src="/tem2/vendor/datatables/dataTables.bootstrap4.min.js"></script>
 
 <!-- Page level custom scripts -->
-<script src="/tem2/js/demo/datatables-demo.js"></script>
+<script src="https://cdn.datatables.net/2.1.8/js/dataTables.js"></script>
+<script src="https://cdn.datatables.net/select/2.1.0/js/dataTables.select.js"></script>
+<script src="https://cdn.datatables.net/select/2.1.0/js/select.dataTables.js"></script>
+
 
 <script>
   $(function(){
+
+    let tabHead = $('#tabHead').DataTable({
+      lengthMenu: [10,20,30],
+      paging: false,
+      scrollCollapse: true,
+      scrollY: '50vh',
+      select: {
+        style : 'single'
+      },
+      // ajax: {
+      //   url: "/admin/codeHead",
+      //   type: "GET",
+      //   dataType: "json",
+      //   contentType: "application/json",
+      //   data: function (result) {
+      //     return JSON.stringify(result);
+      //   }
+      // },
+      columns: [
+        {data: "codeHead"},
+        {data: "codeName"}
+      ]
+    })
+    $('#tabDetail').DataTable({
+      lengthMenu: [10,20,30],
+      paging: false,
+      scrollCollapse: true,
+      scrollY: '50vh'
+    })
+
+    // 코드 헤더 테이블에서 행 클릭시 디테일 모달의 헤더값에 데이터 넣기
+    $('#tabHead tbody').on('click','tr', function (){
+      let checkedVal = $('#tabHead').DataTable().row(this).data();
+      $('#codeHeadVal').val(checkedVal.codeHead);
+    })
+
 
   });
 
