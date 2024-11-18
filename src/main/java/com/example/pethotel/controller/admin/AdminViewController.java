@@ -20,8 +20,23 @@ public class AdminViewController {
         return "admin/main";
     }
 
-    @GetMapping("/admin/commoncode")
+    @GetMapping("/admin/commoncodePage")
     public String commoncode() {
         return "admin/commoncode";
+    }
+
+    @GetMapping("/admin/managerPage")
+    public String manager() {
+        return "admin/manager";
+    }
+
+    @GetMapping("/admin/customerPage")
+    public String customer() {
+        return "admin/customer";
+    }
+
+    @GetMapping("/manager/hotelpage")
+    public String hotelPage() {
+        return "manager/main";
     }
 }

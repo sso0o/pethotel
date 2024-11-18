@@ -1,4 +1,4 @@
-package com.example.pethotel.repository.admin;
+package com.example.pethotel.repository;
 
 import com.example.pethotel.entity.CommonCode;
 import org.springframework.data.jpa.repository.JpaRepository;

@@ -3,7 +3,7 @@ package com.example.pethotel.service.admin;
 import com.example.pethotel.dto.admin.AddCodeRequest;
 import com.example.pethotel.dto.admin.UpdateCodeRequest;
 import com.example.pethotel.entity.CommonCode;
-import com.example.pethotel.repository.admin.CommonCodeRepository;
+import com.example.pethotel.repository.CommonCodeRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

@@ -68,7 +68,7 @@
                             </li>
                             <!-- 매니저만 볼 수 있는 링크 -->
                             <li sec:authorize="hasAuthority('MANAGER')" class="nav-item">
-                                <a class="nav-link" href="/manager/hotel">My hotel</a>
+                                <a class="nav-link" href="/manager/hotelpage">My hotel</a>
                             </li>
                             <li sec:authorize="hasAnyAuthority('USER', 'MANAGER')" class="nav-item">
                                 <a class="nav-link" href="/mypage">My Page</a>
