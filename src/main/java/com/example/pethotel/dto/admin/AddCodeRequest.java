@@ -13,6 +13,7 @@ public class AddCodeRequest {
     private String codeHead;
     private String codeDetail;
     private String codeName;
+    private String codeUse;
 
 
     public CommonCode toEntity() {
@@ -20,6 +21,7 @@ public class AddCodeRequest {
                 .codeHead(codeHead)
                 .codeDetail(codeDetail)
                 .codeName(codeName)
+                .codeUse(codeUse)
                 .build();
     }
 

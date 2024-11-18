@@ -39,7 +39,6 @@
 
 
 
-
 </head>
 
 <body id="page-top">
@@ -153,10 +152,10 @@
           <div class="col-5">
             <div class="card shadow mb-4">
               <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">공통코드</h6>
+                <h6 class="m-0 font-weight-bold text-primary">공통코드 헤더</h6>
               </div>
               <div class="card-body">
-                <button type="button" class="btn btn-primary" onclick="addHeadModal('')">add</button>
+                <button type="button" class="btn btn-primary" onclick="addHeadModal('add')">add</button>
                 <div class="table-responsive">
                   <table class="table table-bordered table-hover" id="tabHead" width="100%" cellspacing="0">
                     <thead>
@@ -166,16 +165,8 @@
                     </tr>
                     </thead>
                     <tfoot>
-                    <tr>
-                      <th>Name</th>
-                      <th>Position</th>
-                    </tr>
                     </tfoot>
                     <tbody>
-                    <tr th:each="h : ${codeHeads}">
-                      <td th:text="${h.codeHead}"></td>
-                      <td th:text="${h.codeName}"></td>
-                    </tr>
                     </tbody>
                   </table>
                 </div>
@@ -185,10 +176,10 @@
           <div class="col-7">
             <div class="card shadow mb-4">
               <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">공통코드</h6>
+                <h6 class="m-0 font-weight-bold text-primary">공통코드 디테일</h6>
               </div>
               <div class="card-body">
-                <button class="btn btn-primary" onclick="addDetailModal('')">add</button>
+                <button type="button" class="btn btn-primary" onclick="addDetailModal('add')">add</button>
                 <div class="table-responsive">
                   <table class="table table-bordered table-hover" id="tabDetail" width="100%" cellspacing="0">
                     <thead>
@@ -198,13 +189,6 @@
                       <th>전체코드</th>
                     </tr>
                     </thead>
-                    <tfoot>
-                    <tr>
-                      <th>Name</th>
-                      <th>Position</th>
-                      <th>Position</th>
-                    </tr>
-                    </tfoot>
                     <tbody>
                     </tbody>
                   </table>
@@ -302,8 +286,8 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-primary" id="saveBtn" onclick="saveHead('post')">Save</button>
-        <button type="button" class="btn btn-primary" id="modifyBtn" >Modify</button>
-        <button type="button" class="btn btn-danger" id="deleteBtn" >Delete</button>
+        <button type="button" class="btn btn-primary" id="modifyBtn" onclick="saveHead('put')">Modify</button>
+        <button type="button" class="btn btn-danger" id="deleteBtn" onclick="saveHead('del')">Delete</button>
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
       </div>
     </div>
@@ -311,7 +295,7 @@
 </div>
 <!--/ Modal_Head -->
 
-<!-- Modal_Head -->
+<!-- Modal_Detail -->
 <div class="modal fade" id="detailModal" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
@@ -324,6 +308,7 @@
       <div class="modal-body">
         <div class="row">
           <form id="detailForm">
+            <input type="hidden" id="codeId2" name="codeId2">
             <label class="form-label" for="codeHeadVal"></label>
             <div class="input-group input-group-merge">
               <span id="codeHeadVal2" class="input-group-text">코드 헤더</span>
@@ -332,8 +317,7 @@
                      id="codeHeadVal"
                      name="codeHeadVal" />
             </div>
-            <input type="hidden" id="headVal" name="headVal">
-            <label class="form-label" for="codeHead"></label>
+            <label class="form-label" for="codeDetail"></label>
             <div class="input-group input-group-merge">
               <span id="codeDetail2" class="input-group-text">코드 디테일</span>
               <input type="text"
@@ -359,14 +343,14 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-primary" id="saveBtn2" onclick="saveDetail('post')">Save</button>
-        <button type="button" class="btn btn-primary" id="modifyBtn2" >Modify</button>
-        <button type="button" class="btn btn-danger" id="deleteBtn2" >Delete</button>
+        <button type="button" class="btn btn-primary" id="modifyBtn2" onclick="saveDetail('put')" >Modify</button>
+        <button type="button" class="btn btn-danger" id="deleteBtn2" onclick="saveDetail('del')">Delete</button>
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
       </div>
     </div>
   </div>
 </div>
-<!--/ Modal_Head -->
+<!--/ Modal_Detail -->
 
 
 
@@ -402,31 +386,54 @@
       select: {
         style : 'single'
       },
-      // ajax: {
-      //   url: "/admin/codeHead",
-      //   type: "GET",
-      //   dataType: "json",
-      //   contentType: "application/json",
-      //   data: function (result) {
-      //     return JSON.stringify(result);
-      //   }
-      // },
+      ajax:{
+        url:'/admin/codeHead',
+        type:'get',
+        dataSrc:'codeHeads'
+      },
       columns: [
         {data: "codeHead"},
         {data: "codeName"}
       ]
     })
-    $('#tabDetail').DataTable({
+
+    let tabDetail = $('#tabDetail').DataTable({
       lengthMenu: [10,20,30],
       paging: false,
       scrollCollapse: true,
-      scrollY: '50vh'
+      scrollY: '50vh',
+      columns: [
+        {data: "codeDetail"},
+        {data: "codeName"},
+        {data: "code"}
+      ]
     })
 
-    // 코드 헤더 테이블에서 행 클릭시 디테일 모달의 헤더값에 데이터 넣기
+    // 코드 헤더 테이블에서 행 클릭시 디테일 모달의 헤더값에 데이터 넣기 + 코드 디테일 로드
     $('#tabHead tbody').on('click','tr', function (){
       let checkedVal = $('#tabHead').DataTable().row(this).data();
       $('#codeHeadVal').val(checkedVal.codeHead);
+
+      // 코드 디테일 로드
+      $.ajax({
+        url:'/admin/codeHead/'+checkedVal.codeHead,
+        type: 'get',
+        success:function (data){
+          tabDetail.clear().rows.add(data).draw();
+        }
+      })
+    })
+
+    // 더블 클릭시 수정 모달 오픈
+    $('#tabHead tbody').on('dblclick','tr', function (){
+      let checkedVal = $('#tabHead').DataTable().row(this).data();
+      addHeadModal(checkedVal.id)
+    })
+
+    // 더블 클릭시 수정 모달 오픈
+    $('#tabDetail tbody').on('dblclick','tr', function (){
+      let checkedVal = $('#tabDetail').DataTable().row(this).data();
+      addDetailModal(checkedVal.id)
     })
 
 

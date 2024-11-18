@@ -20,7 +20,7 @@ public class CommonCode {
     @Column(name = "code_head", updatable = false)
     private String codeHead;
 
-    @Column(name = "code_detail", updatable = false)
+    @Column(name = "code_detail")
     private String codeDetail;
 
     @Column(name = "code_name")
@@ -43,9 +43,8 @@ public class CommonCode {
         this.codeHead = codeHead;
         this.codeDetail = codeDetail;
         this.codeName = codeName;
-        this.codeUse = codeUse;
+        this.codeUse = (codeUse != null) ? codeUse : "Y";
         this.codeSeq = codeSeq;
-        this.code = code;
         this.remark = remark;
 
         String trimmedCodeDetail = (codeDetail == null) ? "" : codeDetail.trim();
@@ -58,11 +57,17 @@ public class CommonCode {
         this.code = codeHead.trim()+trimmedCodeDetail;
     }
 
-    public void update(String codeName, int codeSeq, String remark, String codeUse) {
+    public void updateHead(String codeName, String codeUse) {
         this.codeName = codeName;
-        this.codeSeq = codeSeq;
-        this.remark = remark;
         this.codeUse = codeUse;
 
     }
+
+    public void updateDetail(String codeHead, String codeDetail, String codeName, String codeUse) {
+        this.codeDetail = codeDetail;
+        this.codeName = codeName;
+        this.codeUse = codeUse;
+        this.code = codeHead.trim()+codeDetail.trim();
+    }
+
 }

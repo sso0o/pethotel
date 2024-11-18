@@ -21,10 +21,7 @@ public class AdminViewController {
     }
 
     @GetMapping("/admin/commoncode")
-    public String commoncode(Model model) {
-        List<CommonCode> codeHeads = commonCodeService.findAll().stream()
-                .toList();
-        model.addAttribute("codeHeads", codeHeads);
+    public String commoncode() {
         return "admin/commoncode";
     }
 }
