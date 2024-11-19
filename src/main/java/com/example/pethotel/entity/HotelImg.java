@@ -17,16 +17,16 @@ public class HotelImg {
     @Column(name = "himg_id", updatable = false)
     private Long himgId;
 
-    @Column(name = "hotel_id")
-    private Long hotelId;
+    @ManyToOne
+    @JoinColumn(name = "hotel_id")
+    private Hotel hotel;
 
     @Column(name = "himg_file")
     private String himgFile;
 
     @Builder
-    public HotelImg(Long himgId, Long hotelId, String himgFile) {
-        this.himgId = himgId;
-        this.hotelId = hotelId;
+    public HotelImg(Hotel hotel, String himgFile) {
+        this.hotel = hotel;
         this.himgFile = himgFile;
     }
 }

@@ -1,13 +1,9 @@
 package com.example.pethotel.controller.admin;
 
-import com.example.pethotel.entity.CommonCode;
 import com.example.pethotel.service.admin.CommonCodeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-
-import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -35,8 +31,13 @@ public class AdminViewController {
         return "admin/customer";
     }
 
-    @GetMapping("/manager/hotelpage")
+    @GetMapping("/manager/hotelmainPage")
+    public String hotelMainPage() {
+        return "manager/myHotelMain";
+    }
+
+    @GetMapping("/manager/myhotelPage")
     public String hotelPage() {
-        return "manager/main";
+        return "manager/myHotel";
     }
 }

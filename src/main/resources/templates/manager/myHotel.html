@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<!DOCTYPE html>
+<html
+        lang="ko"
+        dir="ltr"
+        xmlns:th="http://www.thymeleaf.org"
+        xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+>
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>MANAGER</title>
+
+    <script src="/manager/myHotel.js"></script>
+
+    <!-- Bootstrap  CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"  integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <!-- jQuery UI CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" integrity="sha512-aOG0c6nPNzGk+5zjwyJaoRUgCdOrfSDhmMID2u4+OIslr0GjpLKo7Xm0Ao3xmpM4T8AmIouRkqwj1nrdVsLKEQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!-- Custom fonts for this template-->
+    <link href="/tem2/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link
+            href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+            rel="stylesheet">
+
+    <!-- Custom styles for this template-->
+    <link href="/tem2/css/sb-admin-2.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this page -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/select/2.1.0/css/select.dataTables.css" />
+
+
+
+
+</head>
+
+<body id="page-top">
+
+<!-- Page Wrapper -->
+<div id="wrapper">
+
+    <!-- Sidebar -->
+    <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+
+        <!-- Sidebar - Brand -->
+        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/">
+            <div class="sidebar-brand-icon rotate-n-15">
+                <i class="fas fa-paw"></i>
+            </div>
+            <div class="sidebar-brand-text mx-3">Pet Hotel </div>
+        </a>
+
+        <!-- Divider -->
+        <hr class="sidebar-divider my-0">
+
+        <!-- Nav Item - Dashboard -->
+        <li class="nav-item">
+            <a class="nav-link" href="/manager/hotelmainPage">
+                <i class="fas fa-fw fa-tachometer-alt"></i>
+                <span>Dashboard</span></a>
+        </li>
+
+        <!-- Divider -->
+        <hr class="sidebar-divider">
+
+        <!-- Nav Item - Tables -->
+        <li class="nav-item active">
+            <a class="nav-link" href="/manager/myhotelPage">
+                <i class="fas fa-fw fa-home"></i>
+                <span>My Hotel</span></a>
+        </li>
+
+        <hr class="sidebar-divider d-none d-md-block">
+
+        <!-- Sidebar Toggler (Sidebar) -->
+        <div class="text-center d-none d-md-inline">
+            <button class="rounded-circle border-0" id="sidebarToggle"></button>
+        </div>
+
+    </ul>
+    <!-- End of Sidebar -->
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+        <!-- Main Content -->
+        <div id="content">
+
+            <!-- Topbar -->
+            <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+
+                <!-- Sidebar Toggle (Topbar) -->
+                <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                    <i class="fa fa-bars"></i>
+                </button>
+                <!-- Topbar Navbar -->
+                <ul class="navbar-nav ml-auto">
+                    <!-- Nav Item - User Information -->
+                    <li class="nav-item dropdown no-arrow">
+                        <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="mr-2 d-none d-lg-inline text-gray-600 small" th:text="${#authentication.name}"></span>
+                            <img class="img-profile rounded-circle"
+                                 src="/tem2/img/undraw_profile.svg">
+                        </a>
+                        <!-- Dropdown - User Information -->
+                        <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                             aria-labelledby="userDropdown">
+                            <a class="dropdown-item" href="#">
+                                <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                                Profile
+                            </a>
+                            <a class="dropdown-item" href="#">
+                                <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
+                                Settings
+                            </a>
+                            <a class="dropdown-item" href="#">
+                                <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
+                                Activity Log
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                                <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                Logout
+                            </a>
+                        </div>
+                    </li>
+
+                </ul>
+
+            </nav>
+            <!-- End of Topbar -->
+
+            <!-- Begin Page Content -->
+            <div class="container-fluid">
+                <!-- DataTales Example -->
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card shadow mb-4">
+                            <div class="card-header py-3">
+                                <h6 class="m-0 font-weight-bold text-primary">내 호텔 관리</h6>
+                            </div>
+                            <div class="card-body">
+                                <button type="button" class="btn btn-primary" onclick="addHotelModal('add')">add</button>
+                                <div class="table-responsive">
+                                    <table class="table table-bordered table-hover" id="tabMyHotel" width="100%" cellspacing="0">
+                                        <thead>
+                                        <tr>
+                                            <th>호텔</th>
+                                            <th>타입</th>
+                                            <th>전화번호</th>
+                                            <th>설명</th>
+                                            <th>주소</th>
+                                        </tr>
+                                        </thead>
+                                        <tfoot>
+                                        </tfoot>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <!-- /.container-fluid -->
+</div>
+<!-- End of Main Content -->
+
+<!-- Footer -->
+<footer class="sticky-footer bg-white">
+    <div class="container my-auto">
+        <div class="copyright text-center my-auto">
+            <span>Copyright &copy; Your Website 2021</span>
+        </div>
+    </div>
+</footer>
+<!-- End of Footer -->
+
+</div>
+<!-- End of Content Wrapper -->
+
+</div>
+<!-- End of Page Wrapper -->
+
+<!-- Scroll to Top Button-->
+<a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+</a>
+
+<!-- Logout Modal-->
+<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                <a class="btn btn-primary" href="/loguot">Logout</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal_Hotel -->
+<div class="modal fade" id="hotelModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalCenterTitle">호텔 추가</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <input type="hidden" id="userId" name="userId" th:value="${#authentication.principal.id}" />
+                    <form id="hotelForm">
+                        <input type="hidden" id="hotelId" name="hotelId">
+                        <label class="form-label" for="hotelName"></label>
+                        <div class="input-group input-group-merge">
+                            <span id="hotelName2" class="input-group-text" style="width: 25%">호텔 이름</span>
+                            <input type="text"
+                                   class="form-control"
+                                   placeholder=" 이름"
+                                   id="hotelName"
+                                   name="hotelName" />
+                        </div>
+                        <label class="form-label" for="hotelType"></label>
+                        <div class="input-group input-group-merge">
+                            <span id="hotelType2" class="input-group-text" style="width: 25%">타입</span>
+                            <input type="text"
+                                   class="form-control"
+                                   placeholder=" 타입"
+                                   id="hotelType"
+                                   name="hotelType" />
+                        </div>
+                        <label class="form-label" for="postcode"></label>
+                        <div class="input-group input-group-merge">
+                            <span id="postcode2" class="input-group-text" style="width: 25%">우편번호</span>
+                            <input type="text"
+                                   class="form-control"
+                                   placeholder=" 우편번호"
+                                   id="postcode"
+                                   name="postcode" />
+                            <button type="button"
+                                    class="btn btn-outline-secondary"
+                                    onclick="sample6_execDaumPostcode()">우편번호 찾기</button>
+                        </div>
+                        <label class="form-label" for="address"></label>
+                        <div class="input-group input-group-merge">
+                            <span id="address2" class="input-group-text" style="width: 25%">주소</span>
+                            <input type="text"
+                                   class="form-control"
+                                   placeholder=" 주소"
+                                   id="address"
+                                   name="address" />
+                        </div>
+                        <label class="form-label" for="detailAddress"></label>
+                        <div class="input-group input-group-merge">
+                            <span id="detailAddress2" class="input-group-text" style="width: 25%">상세주소</span>
+                            <input type="text"
+                                   class="form-control"
+                                   placeholder=" 상세주소"
+                                   id="detailAddress"
+                                   name="detailAddress" />
+                        </div>
+                        <label class="form-label" for="extraAddress"></label>
+                        <div class="input-group input-group-merge">
+                            <span id="extraAddress2" class="input-group-text" style="width: 25%">참고항목</span>
+                            <input type="text"
+                                   class="form-control"
+                                   placeholder=" 참고항목"
+                                   id="extraAddress"
+                                   name="extraAddress" />
+                        </div>
+                        <label class="form-label" for="hotelPhone"></label>
+                        <div class="input-group input-group-merge">
+                            <span id="hotelPhone2" class="input-group-text" style="width: 25%">전화번호</span>
+                            <input type="text"
+                                   class="form-control"
+                                   placeholder=" 전화번호"
+                                   id="hotelPhone"
+                                   name="hotelPhone" />
+                        </div>
+                        <label class="form-label" for="hotelPhoto"></label>
+                        <div class="input-group input-group-merge">
+                            <span id="hotelPhoto2" class="input-group-text" style="width: 25%">호텔 사진</span>
+                            <input type="file"
+                                   class="form-control"
+                                   id="hotelPhoto" name="hotelPhoto" multiple />
+                        </div>
+                        <label class="form-label" for="hotelInfo"></label>
+                        <div class="input-group input-group-merge">
+                            <span id="hotelInfo2" class="input-group-text" style="width: 25%">호텔설명</span>
+                            <textarea type="text"
+                                   class="form-control"
+                                   placeholder=" 호텔설명"
+                                   id="hotelInfo" name="hotelInfo" ></textarea>
+                        </div>
+
+
+                        <div class="mt-3" id="errorDiv" style="text-align: center; color: red; display: none;">
+                            <p id="errorMsg"></p>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="saveBtn" onclick="saveHotel('post')">Save</button>
+                <button type="button" class="btn btn-primary" id="modifyBtn" onclick="saveHotel('put')">Modify</button>
+                <button type="button" class="btn btn-danger" id="deleteBtn" onclick="saveHotel('del')">Delete</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--/ Modal_Hotel -->
+
+
+
+
+
+<!-- Bootstrap core JavaScript-->
+<script src="/tem2/vendor/jquery/jquery.min.js"></script>
+<script src="/tem2/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+<!-- Core plugin JavaScript-->
+<script src="/tem2/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+<!-- Custom scripts for all pages-->
+<script src="/tem2/js/sb-admin-2.min.js"></script>
+
+<!-- Page level plugins -->
+<script src="/tem2/vendor/datatables/jquery.dataTables.min.js"></script>
+<script src="/tem2/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
+<!-- Page level custom scripts -->
+<script src="https://cdn.datatables.net/2.1.8/js/dataTables.js"></script>
+<script src="https://cdn.datatables.net/select/2.1.0/js/dataTables.select.js"></script>
+<script src="https://cdn.datatables.net/select/2.1.0/js/select.dataTables.js"></script>
+
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+
+
+
+<script>
+    function sample6_execDaumPostcode() {
+        new daum.Postcode({
+            oncomplete: function(data) {
+                // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+
+                // 각 주소의 노출 규칙에 따라 주소를 조합한다.
+                // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+                var addr = ''; // 주소 변수
+                var extraAddr = ''; // 참고항목 변수
+
+                //사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
+                if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
+                    addr = data.roadAddress;
+                } else { // 사용자가 지번 주소를 선택했을 경우(J)
+                    addr = data.jibunAddress;
+                }
+
+                // 사용자가 선택한 주소가 도로명 타입일때 참고항목을 조합한다.
+                if(data.userSelectedType === 'R'){
+                    // 법정동명이 있을 경우 추가한다. (법정리는 제외)
+                    // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
+                    if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
+                        extraAddr += data.bname;
+                    }
+                    // 건물명이 있고, 공동주택일 경우 추가한다.
+                    if(data.buildingName !== '' && data.apartment === 'Y'){
+                        extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+                    }
+                    // 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
+                    if(extraAddr !== ''){
+                        extraAddr = ' (' + extraAddr + ')';
+                    }
+                    // 조합된 참고항목을 해당 필드에 넣는다.
+                    document.getElementById("extraAddress").value = extraAddr;
+
+                } else {
+                    document.getElementById("extraAddress").value = '';
+                }
+
+                // 우편번호와 주소 정보를 해당 필드에 넣는다.
+                document.getElementById('postcode').value = data.zonecode;
+                document.getElementById("address").value = addr;
+                // 커서를 상세주소 필드로 이동한다.
+                document.getElementById("detailAddress").focus();
+            }
+        }).open();
+    }
+
+    $(function(){
+        const userId = $('#userId').val();
+
+        let tabMyHotel = $('#tabMyHotel').DataTable({
+            lengthMenu: [10,20,30],
+            paging: false,
+            scrollCollapse: true,
+            scrollY: '50vh',
+            select: {
+                style : 'single'
+            },
+            ajax:{
+                url:'/manager/myhotel/'+BigInt(userId),
+                type:'get',
+                dataSrc:'hotels'
+            },
+            columns: [
+                {data: "hotelName"},
+                {data: "hotelType"},
+                {data: "hotelPhone"},
+                {data: "hotelInfo"},
+                {data: "address"},
+            ],
+            columnDefs: [
+                { targets: 0, width: '15%',},
+                { targets: 1, width: '15%',},
+                { targets: 2, width: '15%',},
+                { targets: 3, width: '30%',},
+                { targets: 4, width: '25%',}
+            ]
+        })
+
+    });
+
+</script>
+
+
+</body>
+</html>
