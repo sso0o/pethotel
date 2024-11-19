@@ -46,7 +46,7 @@ public class Hotel {
     @Column(name = "userid")
     private Long userId;
 
-    @OneToMany(mappedBy = "hotel", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "hotel", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private List<HotelImg> photos;
 
     @Builder

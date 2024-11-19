@@ -3,6 +3,7 @@ package com.example.pethotel.controller.admin;
 import com.example.pethotel.dto.AddHotelImgRequest;
 import com.example.pethotel.dto.AddHotelRequest;
 import com.example.pethotel.entity.Hotel;
+import com.example.pethotel.entity.HotelImg;
 import com.example.pethotel.entity.Room;
 import com.example.pethotel.entity.User;
 import com.example.pethotel.service.HotelImgService;
@@ -22,6 +23,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -51,15 +53,15 @@ public class ManagerApiController {
         return ResponseEntity.ok().body(resultMap);
     }
 
-    // 매니저 별 호텔 목록 조회
-    @GetMapping("/admin/hotel/{userid}")
-    public ResponseEntity hotelListByManager(@PathVariable Long userid) {
-        HashMap<Object, Object> resultMap = new HashMap<>();
-        List<Hotel> hotels = hotelService.findAllByUserId(userid);
-        resultMap.put("hotels", hotels);
-        return ResponseEntity.ok().body(resultMap);
-
-    }
+//    // 매니저 별 호텔 목록 조회
+//    @GetMapping("/admin/hotel/{userid}")
+//    public ResponseEntity hotelListByManager(@PathVariable Long userid) {
+//        HashMap<Object, Object> resultMap = new HashMap<>();
+//        List<Hotel> hotels = hotelService.findAllByUserId(userid);
+//        resultMap.put("hotels", hotels);
+//        return ResponseEntity.ok().body(resultMap);
+//
+//    }
 
     // 호텔아이디 별 호텔 목록 조회
     @GetMapping("/admin/room/{hotelid}")
@@ -114,7 +116,7 @@ public class ManagerApiController {
 
                     // 파일정보 이미지테이블에 저장
                     AddHotelImgRequest imgr = new AddHotelImgRequest(saveHotel, fileName);
-                    hotelImgService.save(imgr);
+                    HotelImg hotelImg = hotelImgService.save(imgr);
 
                 }
             }
