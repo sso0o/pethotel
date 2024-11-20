@@ -20,7 +20,7 @@ public class AddHotelRequest {
     private String hotelPhone;
     private String hotelInfo;
     private Long userId;
-    private MultipartFile[] images;
+
 
     public Hotel toEntity() {
         return Hotel.builder()

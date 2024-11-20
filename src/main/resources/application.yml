@@ -26,3 +26,6 @@ spring:
     upload-dir: ./uploads
   thymeleaf:
     cache: false
+  jackson:
+    stream:
+      max-nesting-depth: 2000

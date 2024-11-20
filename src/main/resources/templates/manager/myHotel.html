@@ -232,7 +232,7 @@
             <div class="modal-body">
                 <div class="row">
                     <input type="hidden" id="userId" name="userId" th:value="${#authentication.principal.id}" />
-                    <form id="hotelForm">
+                    <form id="hotelForm" enctype="multipart/form-data">
                         <input type="hidden" id="hotelId" name="hotelId">
                         <label class="form-label" for="hotelName"></label>
                         <div class="input-group input-group-merge">
@@ -246,11 +246,9 @@
                         <label class="form-label" for="hotelType"></label>
                         <div class="input-group input-group-merge">
                             <span id="hotelType2" class="input-group-text" style="width: 25%">타입</span>
-                            <input type="text"
-                                   class="form-control"
-                                   placeholder=" 타입"
-                                   id="hotelType"
-                                   name="hotelType" />
+                            <select class="form-select" id="hotelType" name="hotelType">
+                                <option th:each="htp : ${HTP}" th:value="${htp.code}" th:text="${htp.codeName}"></option>
+                            </select>
                         </div>
                         <label class="form-label" for="postcode"></label>
                         <div class="input-group input-group-merge">
@@ -300,12 +298,12 @@
                                    id="hotelPhone"
                                    name="hotelPhone" />
                         </div>
-                        <label class="form-label" for="hotelPhoto"></label>
+                        <label class="form-label" for="hotelPhotos"></label>
                         <div class="input-group input-group-merge">
                             <span id="hotelPhoto2" class="input-group-text" style="width: 25%">호텔 사진</span>
                             <input type="file"
                                    class="form-control"
-                                   id="hotelPhoto" name="hotelPhoto" multiple />
+                                   id="hotelPhotos" name="hotelPhotos" multiple />
                         </div>
                         <label class="form-label" for="hotelInfo"></label>
                         <div class="input-group input-group-merge">
@@ -414,9 +412,8 @@
         const userId = $('#userId').val();
 
         let tabMyHotel = $('#tabMyHotel').DataTable({
-            lengthMenu: [10,20,30],
             paging: false,
-            scrollCollapse: true,
+            scrollCollapse: false,
             scrollY: '50vh',
             select: {
                 style : 'single'

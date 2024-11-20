@@ -1,5 +1,6 @@
 package com.example.pethotel.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -19,6 +20,7 @@ public class HotelImg {
 
     @ManyToOne
     @JoinColumn(name = "hotel_id")
+    @JsonBackReference // 직렬화 제외
     private Hotel hotel;
 
     @Column(name = "himg_file")

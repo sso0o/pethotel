@@ -53,25 +53,29 @@ function saveHotel(type){
 
     }
 
-    data = JSON.stringify({
-        userId: userId,
-        hotelName: hotelName,
-        hotelType: hotelType,
-        postcode: postcode,
-        address: address,
-        detailAddress: detailAddress,
-        extraAddress: extraAddress,
-        hotelPhone: hotelPhone,
-        hotelInfo: hotelInfo
-    })
+    let formData = new FormData();
+    formData.append('userId', userId);
+    formData.append('hotelName', hotelName);
+    formData.append('hotelType', hotelType);
+    formData.append('postcode', postcode);
+    formData.append('address', address);
+    formData.append('detailAddress', detailAddress);
+    formData.append('extraAddress', extraAddress);
+    formData.append('hotelPhone', hotelPhone);
+    formData.append('hotelInfo', hotelInfo);
 
+    // 파일 데이터를 FormData에 추가 (파일은 #hotelPhoto input을 사용)
+    Array.from($('#hotelPhotos')[0].files).forEach(function(file) {
+        formData.append('hotelPhotos', file);  // hotelPhotos는 서버에서 처리할 파라미터 이름입니다.
+    });
 
     $.ajax({
         url: url,
         type: type,
         async: true,
-        contentType: 'application/json',
-        data: data,
+        data: formData,  // FormData 객체 전송
+        processData: false,  // jQuery가 데이터를 자동으로 변환하지 않도록 설정
+        contentType: false,  // jQuery가 contentType을 자동으로 설정하도록 함
         success: function (result){
             $('#errorDiv').hide();  // 오류 메시지를 표시하는 div를 보이게
             $('#errorMsg').text('');  // 오류 메시지 텍스트를 p 태그에 삽입

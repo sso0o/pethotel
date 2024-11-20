@@ -17,9 +17,10 @@ public interface CommonCodeRepository extends JpaRepository<CommonCode, Long> {
     List<CommonCode> findAll();
     List<CommonCode> findByCodeDetailAndCodeUseLike(String codeDetail, String codeUse);
 
-    // 코드 디테일 조회
+    // 코드 디테일 조회 + 셀릭트 박스
     List<CommonCode> findByCodeHeadAndCodeDetailNotAndCodeUseLike(String codeHead, String codeDetail, String codeUse);
 
     // id값으로 코드 조회
     Optional<CommonCode> findById(Long codeId);
+
 }

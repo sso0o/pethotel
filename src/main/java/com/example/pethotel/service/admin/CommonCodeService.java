@@ -55,7 +55,7 @@ public class CommonCodeService {
         return commonCodeRepository.findByCodeDetailAndCodeUseLike(codeDetail, codeUse);
     }
 
-    // 코드 디테일 조회
+    // 코드 디테일 조회 + 셀렉트 박스
     public List<CommonCode> findByCodeHeadAndCodeDetailNotAndCodeUseLike(String codeHead, String codeDetail, String codeUse) {
         return commonCodeRepository.findByCodeHeadAndCodeDetailNotAndCodeUseLike(codeHead, codeDetail, codeUse);
     }
@@ -64,4 +64,7 @@ public class CommonCodeService {
     public Optional<CommonCode> findById(Long codeId) {
         return commonCodeRepository.findById(codeId);
     }
+
+    // 셀렉트박스용
+
 }

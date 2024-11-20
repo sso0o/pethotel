@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -23,7 +24,6 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -89,35 +89,40 @@ public class ManagerApiController {
     //=============================================================================================
 
     // 매니저가 호텔 저장
-//    @PostMapping("/manager/myhotel")
-//    public ResponseEntity saveHotel(@RequestBody AddHotelRequest req) {
-//        HashMap<Object, Object> resultMap = new HashMap<>();
-//
-//        Hotel saveHotel = hotelService.save(req);
-//        resultMap.put("msg", "요청 성공");
-//        resultMap.put("hotel", saveHotel);
-//
-//        return ResponseEntity.ok().body(resultMap);
-//    }
     @PostMapping("/manager/myhotel")
-    public ResponseEntity saveHotel(@RequestBody AddHotelRequest req)  throws IOException {
+    public ResponseEntity saveHotel(
+            @RequestParam("userId") Long userId,
+            @RequestParam("hotelName") String hotelName,
+            @RequestParam("hotelType") String hotelType,
+            @RequestParam("postcode") String postcode,
+            @RequestParam("address") String address,
+            @RequestParam("detailAddress") String detailAddress,
+            @RequestParam("extraAddress") String extraAddress,
+            @RequestParam("hotelPhone") String hotelPhone,
+            @RequestParam("hotelInfo") String hotelInfo,
+            @RequestParam("hotelPhotos") MultipartFile[] hotelPhotos)  throws IOException {
         HashMap<Object, Object> resultMap = new HashMap<>();
 
         // 1. 호텔 저장
+        AddHotelRequest req = new AddHotelRequest(hotelName, hotelType, postcode, address, detailAddress, extraAddress, hotelPhone, hotelInfo, userId);
         Hotel saveHotel = hotelService.save(req);
 
+        // 디렉터리 확인 후 없으면 생성
+        File dir = new File(uploadDir);
+        if (!dir.exists()) {
+            dir.mkdirs();  // 디렉터리 생성
+        }
+
         // 2. 파일 처리
-        if(req.getImages() != null){
-            for(MultipartFile file : req.getImages()){
+        if(hotelPhotos != null){
+            for(MultipartFile file : hotelPhotos){
                 if (!file.isEmpty()) {
                     String fileName = file.getOriginalFilename();
                     Path path = Paths.get(uploadDir ,fileName);
                     Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
-
                     // 파일정보 이미지테이블에 저장
                     AddHotelImgRequest imgr = new AddHotelImgRequest(saveHotel, fileName);
                     HotelImg hotelImg = hotelImgService.save(imgr);
-
                 }
             }
         }
