@@ -1,8 +1,11 @@
 package com.example.pethotel.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import java.util.List;
 
 @Entity
 @Table(name = "room")
@@ -17,8 +20,10 @@ public class Room {
     @Column(name = "room_id")
     private Long roomId;
 
-    @Column(name = "hotel_id")
-    private Long hotelId;
+    @ManyToOne
+    @JoinColumn(name = "hotel_id")
+    @JsonBackReference // 직렬화 제외
+    private Hotel hotel;
 
     @Column(name = "room_name")
     private String roomName;
@@ -44,11 +49,13 @@ public class Room {
     @Column(name = "check_out")
     private String checkOut;
 
+    @OneToMany(mappedBy = "room", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    private List<RoomImg> roomPhotos;
+
     @Builder
     public Room (Long hotelId, String roomName, String roomType,
                  int roomPrice, int limitGuest, int limitPet,
                  String roomInfo, String checkIn, String checkOut) {
-        this.hotelId = hotelId;
         this.roomName = roomName;
         this.roomType = roomType;
         this.roomPrice = roomPrice;

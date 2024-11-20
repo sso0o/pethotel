@@ -69,12 +69,20 @@
 
         <!-- Divider -->
         <hr class="sidebar-divider">
-
-        <!-- Nav Item - Tables -->
+        <!-- Nav Item - Pages Collapse Menu -->
         <li class="nav-item active">
-            <a class="nav-link" href="/manager/myhotelPage">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#hotelCollapse"
+               aria-expanded="true" aria-controls="hotelCollapse">
                 <i class="fas fa-fw fa-home"></i>
-                <span>My Hotel</span></a>
+                <span>My Hotel</span>
+            </a>
+            <div id="hotelCollapse" class="collapse show" aria-labelledby="hotelCollapse" data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <a class="collapse-item active" href="/manager/myhotelPage">호텔 관리</a>
+                    <a class="collapse-item" href="/manager/myhotelroom/0">객실 관리</a>
+                    <a class="collapse-item" href="/manager/myhotelroom">객실 관리</a>
+                </div>
+            </div>
         </li>
 
         <hr class="sidebar-divider d-none d-md-block">
@@ -92,10 +100,8 @@
 
         <!-- Main Content -->
         <div id="content">
-
             <!-- Topbar -->
             <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
-
                 <!-- Sidebar Toggle (Topbar) -->
                 <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
                     <i class="fa fa-bars"></i>
@@ -134,7 +140,6 @@
                     </li>
 
                 </ul>
-
             </nav>
             <!-- End of Topbar -->
 
@@ -166,6 +171,17 @@
                                         </tbody>
                                     </table>
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card shadow mb-4">
+                            <div class="card-header py-3">
+                                <h6 class="m-0 font-weight-bold text-primary">호텔 시설 관리</h6>
+                            </div>
+                            <div class="card-body">
                             </div>
                         </div>
                     </div>
@@ -419,7 +435,7 @@
                 style : 'single'
             },
             ajax:{
-                url:'/manager/myhotel/'+BigInt(userId),
+                url:'/manager/myhotels/'+BigInt(userId),
                 type:'get',
                 dataSrc:'hotels'
             },
@@ -437,6 +453,12 @@
                 { targets: 3, width: '30%',},
                 { targets: 4, width: '25%',}
             ]
+        })
+
+        // 더블 클릭시 수정 모달 오픈
+        $('#tabMyHotel tbody').on('dblclick','tr', function (){
+            let checkedVal = $('#tabMyHotel').DataTable().row(this).data();
+            window.location.href = '/manager/myhotelroom/'+BigInt(checkedVal.hotelId);
         })
 
     });

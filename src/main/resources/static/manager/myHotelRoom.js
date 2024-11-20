@@ -1,10 +1,7 @@
-
-// 호텔 등록 및 수정 모달 오픈
-function addHotelModal(codeId){
-
-    if(codeId === "add") {
+function addRoomModal(hotelId){
+    if(hotelId === "add") {
         // 처음 초기화
-        document.getElementById('hotelForm').reset();
+        document.getElementById('roomForm').reset();
         // 추가모드
         $("#saveBtn").show();
         $("#modifyBtn").hide();
@@ -25,48 +22,45 @@ function addHotelModal(codeId){
         //     }
         // })
     }
-    let myModal = new bootstrap.Modal(document.getElementById('hotelModal'));
+    let myModal = new bootstrap.Modal(document.getElementById('roomModal'));
     myModal.show();
 }
 
-function saveHotel(type){
 
+function saveRoom(type){
     let url;
-    let data;
-    let userId = $('#userId').val();
-    let hotelId = $('#hotelId').val();
-    let hotelName = $('#hotelName').val();
-    let hotelType = $('#hotelType').val();
-    let postcode = $('#postcode').val();
-    let address = $('#address').val();
-    let detailAddress = $('#detailAddress').val();
-    let extraAddress = $('#extraAddress').val();
-    let hotelPhone = $('#hotelPhone').val();
-    let hotelInfo = $('#hotelInfo').val();
 
-
-    if (type === 'post'){
-        url = "/manager/myhotel"
-    } else if (type === "put"){
-
-    } else if (type === "del"){
-
+    if(type === "post"){
+        url = "/manager/myroom";
+    }else if (type === "put"){
+        url = "";
     }
 
+    let hotelId = $('#hotelId').val();
+    let roomName = $('#roomName').val();
+    let roomType = $('#roomType').val();
+    let roomPrice = $('#roomPrice').val();
+    let limitGuest = $('#limitGuest').val();
+    let limitPet = $('#limitPet').val();
+    let checkIn = $('#checkIn').val();
+    let checkOut = $('#checkOut').val();
+    let roomInfo = $('#roomInfo').val();
+
+
     let formData = new FormData();
-    formData.append('userId', userId);
-    formData.append('hotelName', hotelName);
-    formData.append('hotelType', hotelType);
-    formData.append('postcode', postcode);
-    formData.append('address', address);
-    formData.append('detailAddress', detailAddress);
-    formData.append('extraAddress', extraAddress);
-    formData.append('hotelPhone', hotelPhone);
-    formData.append('hotelInfo', hotelInfo);
+    formData.append('hotelId', hotelId);
+    formData.append('roomName', roomName);
+    formData.append('roomType', roomType);
+    formData.append('roomPrice', roomPrice);
+    formData.append('limitGuest', limitGuest);
+    formData.append('limitPet', limitPet);
+    formData.append('checkIn', checkIn);
+    formData.append('checkOut', checkOut);
+    formData.append('roomInfo', roomInfo);
 
     // 파일 데이터를 FormData에 추가 (파일은 #hotelPhoto input을 사용)
-    Array.from($('#hotelPhotos')[0].files).forEach(function(file) {
-        formData.append('hotelPhotos', file);  // hotelPhotos는 서버에서 처리할 파라미터 이름입니다.
+    Array.from($('#roomPhotos')[0].files).forEach(function(file) {
+        formData.append('roomPhotos', file);  // hotelPhotos는 서버에서 처리할 파라미터 이름입니다.
     });
 
     $.ajax({
