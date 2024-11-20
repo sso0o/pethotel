@@ -1,5 +1,6 @@
 package com.example.pethotel.dto;
 
+import com.example.pethotel.entity.Hotel;
 import com.example.pethotel.entity.Room;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -18,7 +19,7 @@ public class AddRoomRequest {
     private String checkIn;
     private String checkOut;
     private String roomInfo;
-    private Long hotelId;
+    private Hotel hotel;
 
     public Room toEntity() {
         return Room.builder()
@@ -30,7 +31,7 @@ public class AddRoomRequest {
                 .checkIn(checkIn)
                 .checkOut(checkOut)
                 .roomInfo(roomInfo)
-                .hotelId(hotelId)
+                .hotel(hotel)
                 .build();
     }
 

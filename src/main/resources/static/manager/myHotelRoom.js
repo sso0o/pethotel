@@ -74,7 +74,7 @@ function saveRoom(type){
             $('#errorDiv').hide();  // 오류 메시지를 표시하는 div를 보이게
             $('#errorMsg').text('');  // 오류 메시지 텍스트를 p 태그에 삽입
             alert(result.msg)
-            location.reload();
+            location.href ='/manager/myhotelroom/'+hotelId;
         },
         error: function (request, status, error){
             let result = jQuery.parseJSON(request.responseText)

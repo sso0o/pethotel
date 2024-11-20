@@ -16,16 +16,19 @@ public class HotelFacilities {
     @Column(name = "hf_id", updatable = false)
     private Long hfId;
 
-    @Column(name = "code")
-    private String code;
-
     @Column(name = "hotel_id")
     private Long hotelId;
 
+    @Column(name = "code")
+    private String code;
+
+    @Column(name = "content")
+    private String content;
+
     @Builder
-    public HotelFacilities(Long hfId, Long hotelId, String code) {
-        this.hfId = hfId;
+    public HotelFacilities(Long hotelId, String code, String content) {
         this.hotelId = hotelId;
         this.code = code;
+        this.content = content;
     }
 }

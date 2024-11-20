@@ -16,16 +16,21 @@ public class RoomFeatures {
     @Column(name = "rf_id", updatable = false)
     private Long rfId;
 
-    @Column(name = "code")
-    private String code;
-
     @Column(name = "room_id")
     private Long roomId;
 
+    @Column(name = "code")
+    private String code;
+
+    @Column(name = "content")
+    private String content;
+
+
+
     @Builder
-    public RoomFeatures(Long rfId, Long roomId, String code) {
-        this.rfId = rfId;
+    public RoomFeatures(Long roomId, String code, String content) {
         this.roomId = roomId;
         this.code = code;
+        this.content = content;
     }
 }

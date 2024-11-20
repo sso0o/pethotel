@@ -25,4 +25,8 @@ public class HotelService {
     public List<Hotel> findAllByUserId(Long userId) {
         return hotelRepository.findAllByUserId(userId);
     }
+
+    public Hotel findById(Long id) {
+        return hotelRepository.findById(id).orElse(null);
+    }
 }

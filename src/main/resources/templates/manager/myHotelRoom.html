@@ -80,7 +80,7 @@
       <div id="hotelCollapse" class="collapse show" aria-labelledby="hotelCollapse" data-parent="#accordionSidebar">
         <div class="bg-white py-2 collapse-inner rounded">
           <a class="collapse-item" href="/manager/myhotelPage">호텔 관리</a>
-          <a class="collapse-item active" href="/manager/myhotelroom">객실 관리</a>
+          <a class="collapse-item active" href="/manager/myhotelroom/0">객실 관리</a>
           <a class="collapse-item" href="/manager/myhotelroom">객실 관리</a>
         </div>
       </div>
@@ -147,7 +147,7 @@
 
       <!-- Begin Page Content -->
       <div class="container-fluid">
-        <input type="hidden" id="" name="userId" th:value="${#authentication.principal.id}" />
+        <input type="hidden" id="userId" name="userId" th:value="${#authentication.principal.id}" />
         <input type="hidden" id="hotelId" name="hotelId" />
         <!-- DataTales Example -->
         <div class="row">
@@ -319,16 +319,16 @@
             <label class="form-label" for="checkIn"></label>
             <div class="input-group input-group-merge">
               <span id="checkIn2" class="input-group-text" style="width: 25%">체크인</span>
-              <input type="text"
+              <input type="time"
                      class="form-control"
-                     placeholder=" 참고항목"
+                     placeholder=" 체크인"
                      id="checkIn"
                      name="checkIn" />
             </div>
             <label class="form-label" for="checkOut"></label>
             <div class="input-group input-group-merge">
               <span id="checkOut2" class="input-group-text" style="width: 25%">체크아웃</span>
-              <input type="text"
+              <input type="time"
                      class="form-control"
                      placeholder=" 체크아웃"
                      id="checkOut"
@@ -398,23 +398,25 @@
     let currentUrl = window.location.href;
     let hotelIdFromUrl = currentUrl.split('/').pop();  // URL의 마지막 부분 ("/" 이후 값) 추출
 
+    let selectMyHotles = $('#myHotles');
+
     $.ajax({
-      url: '/manager/myhotels/'+userId,
+      url: '/manager/myhotels/'+BigInt(userId),
       type: 'get',
       success: function (data){
-        let select = $('#myHotles');
-        select.empty();
+
+        selectMyHotles.empty();
 
         $.each(data.hotels, function (i, hotel){
           let option = $('<option></option>')
                   .val(hotel.hotelId)  // 호텔의 id를 value로 설정
                   .text(hotel.hotelName);  // 호텔의 이름을 텍스트로 설정
-          select.append(option);  // select에 option 추가
+          selectMyHotles.append(option);  // select에 option 추가
         });
 
         // URL에서 가져온 호텔 ID가 목록에 있다면, 그 호텔을 자동으로 선택
         if (hotelIdFromUrl) {
-          select.val(hotelIdFromUrl);  // 호텔 ID로 옵션을 선택
+          selectMyHotles.val(hotelIdFromUrl);  // 호텔 ID로 옵션을 선택
           $('#hotelId').val(hotelIdFromUrl)
         }
 
@@ -448,17 +450,21 @@
         {data: "checkOut"},
         {data: "roomInfo"},
       ],
-      // columnDefs: [
-      //   { targets: 0, width: '15%',},
-      //   { targets: 1, width: '15%',},
-      //   { targets: 2, width: '15%',},
-      //   { targets: 3, width: '30%',},
-      //   { targets: 4, width: '25%',},
-      //   { targets: 5, width: '25%',},
-      //   { targets: 6, width: '25%',},
-      //   { targets: 7, width: '25%',},
-      //   { targets: 8, width: '25%',}
-      // ]
+    })
+
+    selectMyHotles.on("change", function (){
+      $('#hotelId').val(this.value);
+      $.ajax({
+        url:'/manager/myrooms/'+this.value,
+        type: 'get',
+        success:function (data){
+          tabMyRoom.clear().rows.add(data.rooms).draw();
+        }
+      })
+    })
+
+    $('#tabMyRoom tbody').on('dblclick','tr', function (){
+      let checkedVal = $('#tabMyRoom').DataTable().row(this).data();
     })
 
 

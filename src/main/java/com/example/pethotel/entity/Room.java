@@ -53,9 +53,10 @@ public class Room {
     private List<RoomImg> roomPhotos;
 
     @Builder
-    public Room (Long hotelId, String roomName, String roomType,
+    public Room (Hotel hotel, String roomName, String roomType,
                  int roomPrice, int limitGuest, int limitPet,
                  String roomInfo, String checkIn, String checkOut) {
+        this.hotel = hotel;
         this.roomName = roomName;
         this.roomType = roomType;
         this.roomPrice = roomPrice;

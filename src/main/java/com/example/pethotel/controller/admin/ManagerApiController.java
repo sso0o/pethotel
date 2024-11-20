@@ -145,8 +145,9 @@ public class ManagerApiController {
                                    @RequestParam("roomPhotos") MultipartFile[] roomPhotos) throws IOException {
         HashMap<Object, Object> resultMap = new HashMap<>();
 
+        Hotel hotel = hotelService.findById(hotelId);
         // 1. 객실 저장
-        AddRoomRequest req = new AddRoomRequest(roomName, roomType, roomPrice, limitGuest, limitPet, checkIn, checkOut, roomInfo, hotelId);
+        AddRoomRequest req = new AddRoomRequest(roomName, roomType, roomPrice, limitGuest, limitPet, checkIn, checkOut, roomInfo, hotel);
         Room saveRoom = roomService.save(req);
 
         // 파일 처리
