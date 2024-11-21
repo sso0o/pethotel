@@ -189,7 +189,17 @@
           </div>
         </div>
         <div class="row">
-          <div class="col-6">
+          <div class="col-4">
+            <div class="card shadow mb-4">
+              <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">객실 사진</h6>
+              </div>
+              <div class="card-body">
+
+              </div>
+            </div>
+          </div>
+          <div class="col-4">
             <div class="card shadow mb-4">
               <div class="card-header py-3">
                 <h6 class="m-0 font-weight-bold text-primary">객실 컨디션</h6>
@@ -199,7 +209,7 @@
               </div>
             </div>
           </div>
-          <div class="col-6">
+          <div class="col-4">
             <div class="card shadow mb-4">
               <div class="card-header py-3">
                 <h6 class="m-0 font-weight-bold text-primary">객실 제공서비스</h6>
@@ -271,7 +281,7 @@
       </div>
       <div class="modal-body">
         <div class="row">
-          <form id="roomForm" enctype="multipart/form-data">
+          <form id="roomForm">
             <input type="hidden" id="roomId" name="roomId">
             <label class="form-label" for="roomName"></label>
             <div class="input-group input-group-merge">
@@ -333,13 +343,6 @@
                      placeholder=" 체크아웃"
                      id="checkOut"
                      name="checkOut" />
-            </div>
-            <label class="form-label" for="roomPhotos"></label>
-            <div class="input-group input-group-merge">
-              <span id="roomPhotos2" class="input-group-text" style="width: 25%">객실사진</span>
-              <input type="file"
-                     class="form-control"
-                     id="roomPhotos" name="roomPhotos" multiple />
             </div>
             <label class="form-label" for="roomInfo"></label>
             <div class="input-group input-group-merge">

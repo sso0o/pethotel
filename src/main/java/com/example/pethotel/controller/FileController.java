@@ -1,6 +1,5 @@
 package com.example.pethotel.controller;
 
-import lombok.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;

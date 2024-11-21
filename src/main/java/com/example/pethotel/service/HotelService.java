@@ -5,6 +5,7 @@ import com.example.pethotel.dto.UpdateHotelRequest;
 import com.example.pethotel.entity.Hotel;
 import com.example.pethotel.repository.HotelImgRepository;
 import com.example.pethotel.repository.HotelRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +24,7 @@ public class HotelService {
     }
 
     // 호텔 수정 요청
+    @Transactional
     public Hotel update(Long hotelId, UpdateHotelRequest req) {
         Hotel hotel = hotelRepository.findById(hotelId)
                 .orElseThrow(() ->  new IllegalArgumentException("not found : "+hotelId));

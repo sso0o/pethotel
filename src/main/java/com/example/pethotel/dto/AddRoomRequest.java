@@ -5,6 +5,7 @@ import com.example.pethotel.entity.Room;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -14,19 +15,19 @@ public class AddRoomRequest {
     private String roomName;
     private String roomType;
     private int roomPrice;
-    private int limitGuset;
+    private int limitGuest;
     private int limitPet;
     private String checkIn;
     private String checkOut;
     private String roomInfo;
-    private Hotel hotel;
+    private Long hotelId;
 
-    public Room toEntity() {
+    public Room toEntity(Hotel hotel) {
         return Room.builder()
                 .roomName(roomName)
                 .roomType(roomType)
                 .roomPrice(roomPrice)
-                .limitGuest(limitGuset)
+                .limitGuest(limitGuest)
                 .limitPet(limitPet)
                 .checkIn(checkIn)
                 .checkOut(checkOut)
@@ -34,7 +35,4 @@ public class AddRoomRequest {
                 .hotel(hotel)
                 .build();
     }
-
-
-
 }

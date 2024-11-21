@@ -207,6 +207,7 @@
                             </div>
                             <div class="card-body">
                             </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -271,7 +272,7 @@
             <div class="modal-body">
                 <div class="row">
                     <input type="hidden" id="userId" name="userId" th:value="${#authentication.principal.id}" />
-                    <form id="hotelForm" enctype="multipart/form-data">
+                    <form id="hotelForm" >
                         <input type="hidden" id="hotelId" name="hotelId">
                         <label class="form-label" for="hotelName"></label>
                         <div class="input-group input-group-merge">
@@ -345,16 +346,6 @@
                                       placeholder=" 호텔설명"
                                       id="hotelInfo" name="hotelInfo" ></textarea>
                         </div>
-                        <label class="form-label" for="hotelPhotos"></label>
-                        <div class="input-group input-group-merge">
-                            <span id="hotelPhoto2" class="input-group-text" style="width: 25%">호텔 사진</span>
-                            <input type="file"
-                                   class="form-control"
-                                   id="hotelPhotos" name="hotelPhotos" multiple />
-                        </div>
-                        <div class="mt-3 preview_img" id="preview_img" placeholder="사진을 첨부해주세요" ></div>
-
-
 
                         <div class="mt-3" id="errorDiv" style="text-align: center; color: red; display: none;">
                             <p id="errorMsg"></p>
