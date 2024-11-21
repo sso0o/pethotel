@@ -16,5 +16,4 @@ public class UpdateHotelRequest {
     private String extraAddress;
     private String hotelPhone;
     private String hotelInfo;
-    private Long userId;
 }

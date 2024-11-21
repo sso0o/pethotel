@@ -23,11 +23,10 @@ public class FileService {
     private String uploadDir;
 
     // 파일 저장 로직
-    public List<String> saveFiles(MultipartFile[] files) throws IOException {
+    public List<String> saveFiles(String uploadUrl, MultipartFile[] files) throws IOException {
         List<String> fileNames = new ArrayList<>();
 
-        // 디렉터리 확인 후 없으면 생성
-        File dir = new File(uploadDir);
+        File dir = new File(uploadUrl);
         if (!dir.exists()) {
             dir.mkdirs();  // 디렉터리 생성
         }
@@ -51,7 +50,7 @@ public class FileService {
 
                     // 파일 이름 중복 처리
                     String uniqueFileName = System.currentTimeMillis() + "_" + fileName;
-                    Path path = Paths.get(uploadDir, uniqueFileName);
+                    Path path = Paths.get(uploadUrl, uniqueFileName);
                     Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
                     fileNames.add(uniqueFileName);
                 }

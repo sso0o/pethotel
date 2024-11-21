@@ -1,8 +1,8 @@
 
 // 호텔 등록 및 수정 모달 오픈
-function addHotelModal(codeId){
+function addHotelModal(hotelId){
 
-    if(codeId === "add") {
+    if(hotelId === "add") {
         // 처음 초기화
         document.getElementById('hotelForm').reset();
         // 추가모드
@@ -15,15 +15,35 @@ function addHotelModal(codeId){
         $("#modifyBtn").show();
         $("#deleteBtn").show();
 
-        // $.ajax({
-        //     url:'/admin/code/'+BigInt(codeId),
-        //     type:'get',
-        //     success: function (data){
-        //         $('#codeId').val(data.id);
-        //         $('#codeHead').val(data.codeHead);
-        //         $('#codeName').val(data.codeName);
-        //     }
-        // })
+        $.ajax({
+            url:'/manager/myhotel/'+BigInt(hotelId),
+            type:'get',
+            success: function (data){
+
+                $('#hotelId').val(data.hotel.hotelId);
+                $('#hotelName').val(data.hotel.hotelName);
+                $('#hotelType').val(data.hotel.hotelType);
+                $('#postcode').val(data.hotel.postcode);
+                $('#address').val(data.hotel.address);
+                $('#detailAddress').val(data.hotel.detailAddress);
+                $('#extraAddress').val(data.hotel.extraAddress);
+                $('#hotelPhone').val(data.hotel.hotelPhone);
+                $('#hotelInfo').val(data.hotel.hotelInfo);
+
+                // 기존 이미지 미리보기 처리
+                if (data.hotel.hotelPhotos && data.hotel.hotelPhotos.length > 0) {
+                    $('#preview_img').empty(); // 기존 미리보기 이미지 초기화
+                    data.hotel.hotelPhotos.forEach(function(photo) {
+                        let img = $('<img />', { src: photo.himgUrl, style: 'width:100%; height:100%;' });
+                        $('#preview_img').append(makeDelDiv(img, photo, []));
+                    });
+                }
+
+                $('#errorDiv').hide();
+                $('#errorMsg').text('');
+
+            },
+        })
     }
     let myModal = new bootstrap.Modal(document.getElementById('hotelModal'));
     myModal.show();
@@ -48,7 +68,7 @@ function saveHotel(type){
     if (type === 'post'){
         url = "/manager/myhotel"
     } else if (type === "put"){
-
+        url = "/manager/myhotel/"+BigInt(hotelId);
     } else if (type === "del"){
 
     }
@@ -77,15 +97,16 @@ function saveHotel(type){
         processData: false,  // jQuery가 데이터를 자동으로 변환하지 않도록 설정
         contentType: false,  // jQuery가 contentType을 자동으로 설정하도록 함
         success: function (result){
-            $('#errorDiv').hide();  // 오류 메시지를 표시하는 div를 보이게
-            $('#errorMsg').text('');  // 오류 메시지 텍스트를 p 태그에 삽입
+            $('#errorDiv').hide();
+            $('#errorMsg').text('');
             alert(result.msg)
             location.reload();
         },
         error: function (request, status, error){
             let result = jQuery.parseJSON(request.responseText)
             $('#errorDiv').show();  // 오류 메시지를 표시하는 div를 보이게
-            $('#errorMsg').text(result.msg);  // 오류 메시지에 삽입
+            $('#errorMsg').text('');
+            $('#errorMsg').text(result.error);  // 오류 메시지에 삽입
         }
     })
 }

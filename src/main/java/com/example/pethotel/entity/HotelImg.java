@@ -26,9 +26,15 @@ public class HotelImg {
     @Column(name = "himg_file")
     private String himgFile;
 
+    @Column(name = "himg_url")
+    private String himgUrl;
+
+
+
     @Builder
-    public HotelImg(Hotel hotel, String himgFile) {
+    public HotelImg(Hotel hotel, String himgFile, String himgUrl) {
         this.hotel = hotel;
         this.himgFile = himgFile;
+        this.himgUrl = himgUrl;
     }
 }

@@ -13,11 +13,13 @@ public class AddHotelImgRequest {
 
     private Hotel hotel;
     private String himgFile;
+    private String himgUrl;
 
     public HotelImg toEntity() {
         return HotelImg.builder()
                 .hotel(hotel)
                 .himgFile(himgFile)
+                .himgUrl(himgUrl)
                 .build();
     }
 }

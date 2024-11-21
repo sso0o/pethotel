@@ -17,6 +17,7 @@
     <title>MANAGER</title>
 
     <script src="/manager/myHotel.js"></script>
+    <script src="/common/common.js"></script>
 
     <!-- Bootstrap  CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"  integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
@@ -35,6 +36,19 @@
     <!-- Custom styles for this page -->
     <link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.css" />
     <link rel="stylesheet" href="https://cdn.datatables.net/select/2.1.0/css/select.dataTables.css" />
+
+    <style>
+        .preview_img{
+            min-height: 50px;
+            border: 1px solid #999999;
+            padding: 5px;
+            border-radius: .35rem;
+        }
+        .preview_img:empty:before{
+            content: attr(placeholder);
+            color: #6e707e;
+        }
+    </style>
 
 
 
@@ -163,6 +177,7 @@
                                             <th>전화번호</th>
                                             <th>설명</th>
                                             <th>주소</th>
+                                            <th>수정</th>
                                         </tr>
                                         </thead>
                                         <tfoot>
@@ -176,7 +191,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-12">
+                    <div class="col-6">
                         <div class="card shadow mb-4">
                             <div class="card-header py-3">
                                 <h6 class="m-0 font-weight-bold text-primary">호텔 시설 관리</h6>
@@ -184,6 +199,14 @@
                             <div class="card-body">
                             </div>
                         </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="card shadow mb-4">
+                            <div class="card-header py-3">
+                                <h6 class="m-0 font-weight-bold text-primary">호텔 사진 관리</h6>
+                            </div>
+                            <div class="card-body">
+                            </div>
                     </div>
                 </div>
             </div>
@@ -257,13 +280,13 @@
                                    class="form-control"
                                    placeholder=" 이름"
                                    id="hotelName"
-                                   name="hotelName" />
+                                   name="hotelName" required />
                         </div>
                         <label class="form-label" for="hotelType"></label>
                         <div class="input-group input-group-merge">
                             <span id="hotelType2" class="input-group-text" style="width: 25%">타입</span>
                             <select class="form-select" id="hotelType" name="hotelType">
-                                <option th:each="htp : ${HTP}" th:value="${htp.code}" th:text="${htp.codeName}"></option>
+                                <option th:each="htp : ${HTP}" th:value="${htp.codeName}" th:text="${htp.codeName}"></option>
                             </select>
                         </div>
                         <label class="form-label" for="postcode"></label>
@@ -273,7 +296,7 @@
                                    class="form-control"
                                    placeholder=" 우편번호"
                                    id="postcode"
-                                   name="postcode" />
+                                   name="postcode" required />
                             <button type="button"
                                     class="btn btn-outline-secondary"
                                     onclick="sample6_execDaumPostcode()">우편번호 찾기</button>
@@ -285,7 +308,7 @@
                                    class="form-control"
                                    placeholder=" 주소"
                                    id="address"
-                                   name="address" />
+                                   name="address" required />
                         </div>
                         <label class="form-label" for="detailAddress"></label>
                         <div class="input-group input-group-merge">
@@ -314,6 +337,14 @@
                                    id="hotelPhone"
                                    name="hotelPhone" />
                         </div>
+                        <label class="form-label" for="hotelInfo"></label>
+                        <div class="input-group input-group-merge">
+                            <span id="hotelInfo2" class="input-group-text" style="width: 25%">호텔설명</span>
+                            <textarea type="text"
+                                      class="form-control"
+                                      placeholder=" 호텔설명"
+                                      id="hotelInfo" name="hotelInfo" ></textarea>
+                        </div>
                         <label class="form-label" for="hotelPhotos"></label>
                         <div class="input-group input-group-merge">
                             <span id="hotelPhoto2" class="input-group-text" style="width: 25%">호텔 사진</span>
@@ -321,14 +352,8 @@
                                    class="form-control"
                                    id="hotelPhotos" name="hotelPhotos" multiple />
                         </div>
-                        <label class="form-label" for="hotelInfo"></label>
-                        <div class="input-group input-group-merge">
-                            <span id="hotelInfo2" class="input-group-text" style="width: 25%">호텔설명</span>
-                            <textarea type="text"
-                                   class="form-control"
-                                   placeholder=" 호텔설명"
-                                   id="hotelInfo" name="hotelInfo" ></textarea>
-                        </div>
+                        <div class="mt-3 preview_img" id="preview_img" placeholder="사진을 첨부해주세요" ></div>
+
 
 
                         <div class="mt-3" id="errorDiv" style="text-align: center; color: red; display: none;">
@@ -371,6 +396,7 @@
 <script src="https://cdn.datatables.net/select/2.1.0/js/dataTables.select.js"></script>
 <script src="https://cdn.datatables.net/select/2.1.0/js/select.dataTables.js"></script>
 
+<!-- 카카오 주소 api -->
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 
 
@@ -445,13 +471,17 @@
                 {data: "hotelPhone"},
                 {data: "hotelInfo"},
                 {data: "address"},
+                {render: function (data, type, row){
+                    return '<button type="button" class="btn btn-outline-secondary" onclick="addHotelModal('+row.hotelId+')"><i class="fas fa-pen"></i></button>'
+                    }}
             ],
             columnDefs: [
                 { targets: 0, width: '15%',},
-                { targets: 1, width: '15%',},
+                { targets: 1, width: '10%',},
                 { targets: 2, width: '15%',},
                 { targets: 3, width: '30%',},
-                { targets: 4, width: '25%',}
+                { targets: 4, width: '25%',},
+                { targets: 5, width: '5%',}
             ]
         })
 
@@ -460,6 +490,20 @@
             let checkedVal = $('#tabMyHotel').DataTable().row(this).data();
             window.location.href = '/manager/myhotelroom/'+BigInt(checkedVal.hotelId);
         })
+
+        // 이미지 선택 시 미리보기 처리
+        $('#hotelPhotos').change(function(e) {
+            $('#preview_img').empty(); // 기존 미리보기 이미지 삭제
+
+            let files = e.target.files; // 선택된 파일들
+            let sel_files = [];
+
+            var fileArr = Array.from(files); // 선택된 파일들을 배열로 변환
+
+            fileArr.forEach(function(file) {
+                imageLoader(file, sel_files);
+            });
+        });
 
     });
 

@@ -1,9 +1,6 @@
 package com.example.pethotel.controller.admin;
 
-import com.example.pethotel.dto.AddHotelImgRequest;
-import com.example.pethotel.dto.AddHotelRequest;
-import com.example.pethotel.dto.AddRoomImgRequest;
-import com.example.pethotel.dto.AddRoomRequest;
+import com.example.pethotel.dto.*;
 import com.example.pethotel.entity.Hotel;
 import com.example.pethotel.entity.HotelImg;
 import com.example.pethotel.entity.Room;
@@ -91,6 +88,15 @@ public class ManagerApiController {
         return ResponseEntity.ok().body(resultMap);
     }
 
+    // 호텔 아이디로 호텔 조회
+    @GetMapping("/manager/myhotel/{hotelId}")
+    public ResponseEntity getMyHotel(@PathVariable Long hotelId) {
+        HashMap<Object, Object> resultMap = new HashMap<>();
+        Hotel hotel = hotelService.findById(hotelId);
+        resultMap.put("hotel", hotel);
+        return ResponseEntity.ok().body(resultMap);
+    }
+
 
 
     //=============================================================================================
@@ -109,21 +115,27 @@ public class ManagerApiController {
             @RequestParam("extraAddress") String extraAddress,
             @RequestParam("hotelPhone") String hotelPhone,
             @RequestParam("hotelInfo") String hotelInfo,
-            @RequestParam("hotelPhotos") MultipartFile[] hotelPhotos)  throws IOException {
+            @RequestParam(value = "hotelPhotos", required = false) MultipartFile[] hotelPhotos)  throws IOException {
         HashMap<Object, Object> resultMap = new HashMap<>();
+
+        // 데이터 확인
 
         // 1. 호텔 저장
         AddHotelRequest req = new AddHotelRequest(hotelName, hotelType, postcode, address, detailAddress, extraAddress, hotelPhone, hotelInfo, userId);
         Hotel saveHotel = hotelService.save(req);
 
-        // 파일 처리
-        List<String> fileNames = fileService.saveFiles(hotelPhotos);
+        // 파일이 존재하면 처리
+        if (hotelPhotos != null && hotelPhotos.length > 0) {
+            String uploadUrl = "./uploads/hotel";
 
-        // 2. 파일정보 저장
-        for (String fileName : fileNames) {
-            AddHotelImgRequest imgr = new AddHotelImgRequest(saveHotel, fileName);
-            HotelImg hotelImg = hotelImgService.save(imgr);
+            List<String> fileNames = fileService.saveFiles(uploadUrl,hotelPhotos);
+
+            for (String fileName : fileNames) {
+                AddHotelImgRequest imgr = new AddHotelImgRequest(saveHotel, fileName, uploadUrl+"/"+fileName);
+                HotelImg hotelImg = hotelImgService.save(imgr);
+            }
         }
+
         resultMap.put("msg", "요청 성공");
         resultMap.put("hotel", saveHotel);
 
@@ -142,21 +154,26 @@ public class ManagerApiController {
                                    @RequestParam("checkIn") String checkIn,
                                    @RequestParam("checkOut") String checkOut,
                                    @RequestParam("roomInfo") String roomInfo,
-                                   @RequestParam("roomPhotos") MultipartFile[] roomPhotos) throws IOException {
+                                   @RequestParam(value = "roomPhotos", required = false) MultipartFile[] roomPhotos) throws IOException {
         HashMap<Object, Object> resultMap = new HashMap<>();
+
+
 
         Hotel hotel = hotelService.findById(hotelId);
         // 1. 객실 저장
         AddRoomRequest req = new AddRoomRequest(roomName, roomType, roomPrice, limitGuest, limitPet, checkIn, checkOut, roomInfo, hotel);
         Room saveRoom = roomService.save(req);
 
-        // 파일 처리
-        List<String> fileNames = fileService.saveFiles(roomPhotos);
 
-        // 2. 파일정보 저장
-        for (String fileName : fileNames) {
-            AddRoomImgRequest imgr = new AddRoomImgRequest(saveRoom, fileName); // Save for room
-            roomImgService.save(imgr);
+        // 파일이 존재하면 처리
+        if (roomPhotos != null && roomPhotos.length > 0) {
+            String uploadUrl = "./uploads/room";
+            List<String> fileNames = fileService.saveFiles(uploadUrl, roomPhotos);
+
+            for (String fileName : fileNames) {
+                AddRoomImgRequest imgr = new AddRoomImgRequest(saveRoom, fileName); // Save for room
+                roomImgService.save(imgr);
+            }
         }
 
         resultMap.put("msg", "요청 성공");
@@ -170,4 +187,38 @@ public class ManagerApiController {
     //=============================================================================================
     //================================              put               =============================
     //=============================================================================================
+
+    @PutMapping("/manager/myhotel/{hotelId}")
+    public ResponseEntity updateHotel(@PathVariable Long hotelId,
+                                      @RequestParam("hotelName") String hotelName,
+                                      @RequestParam("hotelType") String hotelType,
+                                      @RequestParam("postcode") String postcode,
+                                      @RequestParam("address") String address,
+                                      @RequestParam("detailAddress") String detailAddress,
+                                      @RequestParam("extraAddress") String extraAddress,
+                                      @RequestParam("hotelPhone") String hotelPhone,
+                                      @RequestParam("hotelInfo") String hotelInfo,
+                                      @RequestParam(value = "hotelPhotos", required = false) MultipartFile[] hotelPhotos)  throws IOException {
+        HashMap<Object, Object> resultMap = new HashMap<>();
+        UpdateHotelRequest req = new UpdateHotelRequest(hotelName, hotelType, postcode, address, detailAddress, extraAddress, hotelPhone, hotelInfo);
+        Hotel updateHotel = hotelService.update(hotelId, req);
+
+        String uploadUrl = "./uploads/hotel";
+
+        // 파일이 존재하면 처리
+        if (hotelPhotos != null && hotelPhotos.length > 0) {
+            List<String> fileNames = fileService.saveFiles(uploadUrl,hotelPhotos);
+
+            for (String fileName : fileNames) {
+                AddHotelImgRequest imgr = new AddHotelImgRequest(updateHotel, fileName, uploadUrl+"/"+fileName);
+                HotelImg hotelImg = hotelImgService.save(imgr);
+            }
+        }
+
+        resultMap.put("msg", "요청 성공");
+        resultMap.put("hotel", updateHotel);
+
+        return ResponseEntity.ok().body(resultMap);
+
+    }
 }
