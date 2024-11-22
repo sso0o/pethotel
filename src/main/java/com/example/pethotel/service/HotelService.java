@@ -41,6 +41,7 @@ public class HotelService {
     }
 
     public Hotel findById(Long id) {
-        return hotelRepository.findById(id).orElse(null);
+        String msg = "호텔을 찾을수 없습니다.";
+        return hotelRepository.findById(id).orElseThrow(() ->  new IllegalArgumentException(msg));
     }
 }

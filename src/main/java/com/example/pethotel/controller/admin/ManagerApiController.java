@@ -9,6 +9,7 @@ import com.example.pethotel.exception.InvalidlValueException;
 import com.example.pethotel.service.*;
 import com.example.pethotel.service.admin.ManagerService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -140,6 +141,33 @@ public class ManagerApiController {
         resultMap.put("room", saveRoom);
 
        return ResponseEntity.ok().body(resultMap);
+
+    }
+
+    // 매니저가 호텔 사진 저장
+    @PostMapping("/manager/myhotelImg/{hotelId}")
+    public ResponseEntity saveHotelImg(@PathVariable Long hotelId,
+                                       @RequestParam(value = "hotelPhotos") MultipartFile[] hotelPhotos)  throws IOException {
+        HashMap<Object, Object> resultMap = new HashMap<>();
+
+        Hotel hotel = hotelService.findById(hotelId);
+
+        System.out.println(hotelPhotos.length);
+
+        // 파일이 존재하면 처리
+        if (hotelPhotos != null && hotelPhotos.length > 0) {
+            String uploadUrl = "./uploads/hotel";
+
+            List<String> fileNames = fileService.saveFiles(uploadUrl,hotelPhotos);
+
+            for (String fileName : fileNames) {
+                AddHotelImgRequest imgr = new AddHotelImgRequest(hotel, fileName, uploadUrl+"/"+fileName);
+                HotelImg hotelImg = hotelImgService.save(imgr);
+            }
+        }
+
+        resultMap.put("msg", "요청 성공");
+        return ResponseEntity.ok().body(resultMap);
 
     }
 

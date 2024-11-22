@@ -92,3 +92,9 @@ function saveHotel(type){
         }
     })
 }
+
+
+// 이미지 테이블에 이미지 렌더링
+function imgRender(imgUrl){
+    return '<img src="' + imgUrl + '" alt="Hotel Image" style="max-width: 100px; max-height: 100px;">';
+}
