@@ -150,9 +150,9 @@
         <input type="hidden" id="userId" name="userId" th:value="${#authentication.principal.id}" />
         <input type="hidden" id="hotelId" name="hotelId" />
         <!-- DataTales Example -->
-        <div class="row">
-          <div class="col-12">
-            <div class="card shadow mb-4">
+        <div class="row" style="height: 50vh;">
+          <div class="col-12" style="height: 100%;">
+            <div class="card shadow mb-4" style="height: 100%;">
               <div class="card-header py-3">
                 <h6 class="m-0 font-weight-bold text-primary">객실 관리</h6>
               </div>
@@ -164,7 +164,7 @@
                   <button type="button" class="btn btn-primary ml-3" onclick="addRoomModal('add')">add</button>
                 </div>
 
-                <div class="table-responsive">
+                <div class="table-responsive" style="height: 90%">
                   <table class="table table-bordered table-hover" id="tabMyRoom" width="100%" cellspacing="0">
                     <thead>
                     <tr>
@@ -188,19 +188,9 @@
             </div>
           </div>
         </div>
-        <div class="row">
-          <div class="col-4">
-            <div class="card shadow mb-4">
-              <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">객실 사진</h6>
-              </div>
-              <div class="card-body">
-
-              </div>
-            </div>
-          </div>
-          <div class="col-4">
-            <div class="card shadow mb-4">
+        <div class="row" style="height: 50vh;">
+          <div class="col-4" style="height: 100%;">
+            <div class="card shadow mb-4" style="height: 100%;">
               <div class="card-header py-3">
                 <h6 class="m-0 font-weight-bold text-primary">객실 컨디션</h6>
               </div>
@@ -209,8 +199,8 @@
               </div>
             </div>
           </div>
-          <div class="col-4">
-            <div class="card shadow mb-4">
+          <div class="col-4" style="height: 100%;">
+            <div class="card shadow mb-4" style="height: 100%;">
               <div class="card-header py-3">
                 <h6 class="m-0 font-weight-bold text-primary">객실 제공서비스</h6>
               </div>
@@ -219,10 +209,38 @@
               </div>
             </div>
           </div>
+          <div class="col-4" style="height: 100%;">
+            <div class="card shadow mb-4" style="height: 100%;">
+              <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">객실 사진</h6>
+              </div>
+              <div class="card-body">
+                <form id="roomImgForm" enctype="multipart/form-data" class="mb-3" >
+                  <label class="form-label"  for="roomPhotos"></label>
+                  <div style="display: flex;">
+                    <input type="file" class="form-control" id="roomPhotos" name="roomPhotos" style="width: 90%;" multiple >
+                    <button type="submit" class="btn btn-primary ms-2 w-auto" style="width: 10%;">add</button>
+                  </div>
+                </form>
+                <div class="table-responsive" style="height: 90%;">
+                  <table class="table table-bordered table-hover" id="tabRoomImg" width="100%" cellspacing="0">
+                    <thead>
+                    <tr>
+                      <th>사진 리스트</th>
+                    </tr>
+                    </thead>
+                    <tfoot>
+                    </tfoot>
+                    <tbody>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-
   </div>
   <!-- /.container-fluid -->
 </div>
@@ -468,6 +486,71 @@
 
     $('#tabMyRoom tbody').on('dblclick','tr', function (){
       let checkedVal = $('#tabMyRoom').DataTable().row(this).data();
+    })
+
+    // 클릭시 객실 이미지 렌더링
+    $('#tabMyRoom tbody').on('click','tr', function (){
+      let checkedVal = $('#tabMyRoom').DataTable().row(this).data();
+      let preroomId = $('#roomId').val();
+
+      if (preroomId == checkedVal.roomId) { // 같은거 클릭시 선택 해제
+        tabRoomImg.clear().draw();
+        $('#roomId').val('');
+      } else {
+        // 이미지 로드
+        $.ajax({
+          url:'/manager/myroom/'+checkedVal.roomId,
+          type: 'get',
+          success:function (data){
+            tabRoomImg.clear().rows.add(data.room.roomPhotos).draw();
+          }
+        })
+        $('#roomId').val(checkedVal.roomId);
+      }
+
+    })
+
+    let tabRoomImg = $('#tabRoomImg').DataTable({
+      paging: false,
+      scrollCollapse: false,
+      searching: false,
+      select: {
+        style : 'single'
+      },
+      columns: [
+        {render: function (data, type, row){
+            return imgRender(row)
+          }}
+      ],
+    });
+
+    $('#roomImgForm').on('submit', function (e){
+      e.preventDefault();
+
+      let roomId = $('#roomId').val();
+      let formData = new FormData();
+      // 파일 데이터를 FormData에 추가 (파일은 #hotelPhoto input을 사용)
+      Array.from($('#roomPhotos')[0].files).forEach(function(file) {
+        formData.append('roomPhotos', file);  // hotelPhotos는 서버에서 처리할 파라미터 이름입니다.
+      });
+
+      $.ajax({
+        url: '/manager/myroomImg/'+BigInt(roomId),
+        type: 'post',
+        async: true,
+        data: formData,  // FormData 객체 전송
+        processData: false,  // jQuery가 데이터를 자동으로 변환하지 않도록 설정
+        contentType: false,  // jQuery가 contentType을 자동으로 설정하도록 함
+        success: function(result) {
+          alert(result.msg);
+          imgReLoad();
+        },
+        error: function (request, status, error){
+          let result = jQuery.parseJSON(request.responseText);
+          alert(result.msg);  // 오류 메시지에 삽입
+        }
+
+      })
     })
 
 

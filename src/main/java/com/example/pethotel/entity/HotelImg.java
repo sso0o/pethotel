@@ -37,4 +37,5 @@ public class HotelImg {
         this.himgFile = himgFile;
         this.himgUrl = himgUrl;
     }
+
 }

@@ -13,11 +13,13 @@ public class AddRoomImgRequest {
 
     private Room room;
     private String rimgFile;
+    private String rimgUrl;
 
     public RoomImg toEntity() {
         return RoomImg.builder()
                 .room(room)
                 .rimgFile(rimgFile)
+                .rimgUrl(rimgUrl)
                 .build();
     }
 }

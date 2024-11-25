@@ -42,4 +42,9 @@ public class RoomService {
     public List<Room> findAllByHotelId(Long hotelId) {
         return roomRepository.findAllByHotelId(hotelId);
     }
+
+    public Room findById(Long roomId) {
+        return roomRepository.findById(roomId)
+                .orElseThrow(() ->  new IllegalArgumentException("객실을 찾을수 없습니다."));
+    }
 }

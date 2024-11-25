@@ -19,7 +19,6 @@ public class RoomImg {
     @Column(name = "rimg_id", updatable = false)
     private Long rimgId;
 
-
     @ManyToOne
     @JoinColumn(name = "room_id")
     @JsonBackReference // 직렬화 제외
@@ -28,10 +27,14 @@ public class RoomImg {
     @Column(name = "rimg_file")
     private String rimgFile;
 
+    @Column(name = "rimg_url")
+    private String rimgUrl;
+
     @Builder
-    public RoomImg(Room room, String rimgFile) {
+    public RoomImg(Room room, String rimgFile,  String rimgUrl) {
         this.room = room;
         this.rimgFile = rimgFile;
+        this.rimgUrl = rimgUrl;
     }
 
 

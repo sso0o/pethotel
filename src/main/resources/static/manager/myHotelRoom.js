@@ -73,3 +73,55 @@ function saveRoom(type){
         }
     })
 }
+
+
+// 이미지 테이블에 이미지 렌더링
+function imgRender(data){
+    let imgData = `
+        <div style="display: flex; align-items: end">
+            <img src="${data.rimgUrl}" alt="Room Image" style="max-width: 100px; max-height: 100px;">
+            <button type="button" class="btn btn-danger" style="height: fit-content;" onclick="delRoomImg('${data.rimgId}')">
+                <i class="fas fa-trash"></i>
+            </button>
+        </div>
+    `;
+
+    return imgData;
+}
+
+// 객실 이미지 삭제 요청
+function delRoomImg(rimgId){
+    // 서버에서 파일 삭제 요청 (예: 서버 API로 삭제)
+    if (confirm("정말 이 사진을 삭제?")){
+        $.ajax({
+            url: '/manager/myroomImg',  // 파일을 삭제할 서버 API 엔드포인트
+            type: 'DELETE',  // DELETE 요청
+            data: JSON.stringify({ rimgId: String(rimgId) }), // 본문에 이미지 URL 포함
+            contentType: 'application/json', // JSON 형식으로 보내기
+            success: function(result) {
+                alert(result.msg);
+                imgReLoad();
+
+            },
+            error: function (request, status, error){
+                let result = jQuery.parseJSON(request.responseText)
+                alert(result.msg);
+            }
+        });
+    }
+
+}
+
+function imgReLoad(){
+    let roomId = $('#roomId').val();
+    // 이미지 로드
+    $.ajax({
+        url:'/manager/myroom/'+roomId,
+        type: 'get',
+        success:function (data){
+            $('#tabRoomImg').DataTable().clear().rows.add(data.room.roomPhotos).draw();
+            $('#roomPhotos').val(''); // 파일 input 초기화
+        }
+    })
+
+}

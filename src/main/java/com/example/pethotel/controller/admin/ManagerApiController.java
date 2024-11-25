@@ -1,15 +1,11 @@
 package com.example.pethotel.controller.admin;
 
 import com.example.pethotel.dto.*;
-import com.example.pethotel.entity.Hotel;
-import com.example.pethotel.entity.HotelImg;
-import com.example.pethotel.entity.Room;
-import com.example.pethotel.entity.User;
+import com.example.pethotel.entity.*;
 import com.example.pethotel.exception.InvalidlValueException;
 import com.example.pethotel.service.*;
 import com.example.pethotel.service.admin.ManagerService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -17,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -58,7 +55,7 @@ public class ManagerApiController {
 //
 //    }
 
-    // 호텔아이디 별 호텔 목록 조회
+    // 호텔아이디 별 객실 목록 조회
     @GetMapping("/admin/room/{hotelid}")
     public ResponseEntity roomListByHotel(@PathVariable Long hotelid) {
         HashMap<Object, Object> resultMap = new HashMap<>();
@@ -92,6 +89,15 @@ public class ManagerApiController {
         HashMap<Object, Object> resultMap = new HashMap<>();
         Hotel hotel = hotelService.findById(hotelId);
         resultMap.put("hotel", hotel);
+        return ResponseEntity.ok().body(resultMap);
+    }
+
+    // 객실 아이디로 객실 조회
+    @GetMapping("/manager/myroom/{roomId}")
+    public ResponseEntity getMyRoom(@PathVariable Long roomId) {
+        HashMap<Object, Object> resultMap = new HashMap<>();
+        Room room = roomService.findById(roomId);
+        resultMap.put("room", room);
         return ResponseEntity.ok().body(resultMap);
     }
 
@@ -152,8 +158,6 @@ public class ManagerApiController {
 
         Hotel hotel = hotelService.findById(hotelId);
 
-        System.out.println(hotelPhotos.length);
-
         // 파일이 존재하면 처리
         if (hotelPhotos != null && hotelPhotos.length > 0) {
             String uploadUrl = "./uploads/hotel";
@@ -169,6 +173,25 @@ public class ManagerApiController {
         resultMap.put("msg", "요청 성공");
         return ResponseEntity.ok().body(resultMap);
 
+    }
+
+    // 매니저가 객실 사진 저장
+    @PostMapping("/manager/myroomImg/{roomId}")
+    public ResponseEntity saveRoomImg(@PathVariable Long roomId,
+                                      @RequestParam(value = "roomPhotos") MultipartFile[] roomPhotos)  throws IOException {
+        HashMap<Object, Object> resultMap = new HashMap<>();
+
+        Room room = roomService.findById(roomId);
+        if (roomPhotos != null && roomPhotos.length > 0) {
+            String uploadUrl = "./uploads/room";
+            List<String> fileNames = fileService.saveFiles(uploadUrl,roomPhotos);
+            for (String fileName : fileNames) {
+                AddRoomImgRequest imgr = new AddRoomImgRequest(room, fileName, uploadUrl+"/"+fileName);
+                RoomImg roomImg = roomImgService.save(imgr);
+            }
+        }
+        resultMap.put("msg", "요청 성공");
+        return ResponseEntity.ok().body(resultMap);
     }
 
 
@@ -218,7 +241,38 @@ public class ManagerApiController {
         return ResponseEntity.ok().body(resultMap);
     }
 
+
+    //=============================================================================================
+    //================================              put               =============================
+    //=============================================================================================
+
+    // 매니저가 호텔 사진 삭제
+    @DeleteMapping("/manager/myhotelImg")
+    public ResponseEntity delmyHotelImg(@RequestBody Map<String, String> params) {
+        HashMap<Object, Object> resultMap = new HashMap<>();
+
+        String imgid = params.get("himgId");
+        Long himgId = Long.parseLong(imgid);
+        hotelImgService.delete(himgId);
+
+        resultMap.put("msg", "요청 성공");
+        return ResponseEntity.ok().body(resultMap);
+    }
+
+    // 매니저가 객실 사진 삭제
+    @DeleteMapping("/manager/myroomImg")
+    public ResponseEntity delmyRoomImg(@RequestBody Map<String, String> params) {
+        HashMap<Object, Object> resultMap = new HashMap<>();
+
+        String imgid = params.get("rimgId");
+        Long rimgId = Long.parseLong(imgid);
+        roomImgService.delete(rimgId);
+
+        resultMap.put("msg", "요청 성공");
+        return ResponseEntity.ok().body(resultMap);
+    }
 }
+
 
 //    // 매니저가 호텔 저장
 //    @PostMapping("/manager/myhotel")

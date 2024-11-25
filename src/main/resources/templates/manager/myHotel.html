@@ -206,13 +206,13 @@
                                 <h6 class="m-0 font-weight-bold text-primary">호텔 사진 관리</h6>
                             </div>
                             <div class="card-body">
-                                    <form id="hotelImgForm" enctype="multipart/form-data" class="mb-3" >
-                                        <label class="form-label"  for="hotelPhotos"></label>
-                                        <div style="display: flex;">
-                                            <input type="file" class="form-control" id="hotelPhotos" name="hotelPhotos" style="width: 90%;" multiple >
-                                            <button type="submit" class="btn btn-primary ms-2 w-auto" style="width: 10%;">add</button>
-                                        </div>
-                                    </form>
+                                <form id="hotelImgForm" enctype="multipart/form-data" class="mb-3" >
+                                    <label class="form-label"  for="hotelPhotos"></label>
+                                    <div style="display: flex;">
+                                        <input type="file" class="form-control" id="hotelPhotos" name="hotelPhotos" style="width: 90%;" multiple >
+                                        <button type="submit" class="btn btn-primary ms-2 w-auto" style="width: 10%;">add</button>
+                                    </div>
+                                </form>
                                 <div class="table-responsive" >
                                     <table class="table table-bordered table-hover" id="tabHotelImg" width="100%" cellspacing="0">
                                         <thead>
@@ -505,7 +505,14 @@
                 tabHotelImg.clear().draw();
                 $('#hotelId').val('');
             } else {
-                tabHotelImg.clear().rows.add(checkedVal.hotelPhotos).draw();
+                // 이미지 로드
+                $.ajax({
+                    url:'/manager/myhotel/'+checkedVal.hotelId,
+                    type: 'get',
+                    success:function (data){
+                        tabHotelImg.clear().rows.add(data.hotel.hotelPhotos).draw();
+                    }
+                })
                 $('#hotelId').val(checkedVal.hotelId);
             }
 
@@ -515,12 +522,13 @@
         let tabHotelImg = $('#tabHotelImg').DataTable({
             paging: false,
             scrollCollapse: false,
+            searching: false,
             select: {
                 style : 'single'
             },
             columns: [
                 {render: function (data, type, row){
-                        return imgRender(row.himgUrl)
+                        return imgRender(row)
                     }}
             ],
         });
