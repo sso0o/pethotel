@@ -41,16 +41,18 @@
   <div class="tm-top-bar" id="tm-top-bar">
     <div class="container">
       <div class="row">
-        <nav class="navbar navbar-expand-lg narbar-light">
+        <nav class="navbar navbar-expand-lg navbar-light">
           <a class="navbar-brand mr-auto" href="/">
             <img src="img/logo.png" alt="Site logo">
             Pet Hotel
           </a>
+
           <!-- 토글 버튼 (모바일용) -->
           <button type="button" id="nav-toggle" class="navbar-toggler collapsed" data-toggle="collapse" data-target="#mainNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
-          <!-- 토글 버튼 (모바일용) -->
+          <!-- 토글 버튼 (모바일용) 종료-->
+
           <div id="mainNav" class="collapse navbar-collapse justify-content-end tm-bg-white">
             <ul class="navbar-nav ml-auto" >
               <li sec:authorize="!hasAuthority('MANAGER')" class="nav-item">
@@ -86,6 +88,15 @@
           </div>
         </nav>
       </div> <!-- row -->
+      <div class="row">
+        <nav class="navbar navbar-expand-lg navbar-dark">
+          <a class="navbar-brand mr-auto" href="/">
+            <img src="img/logo.png" alt="Site logo">
+            Pet Hotel
+          </a>
+
+        </nav>
+      </div>
     </div> <!-- container -->
   </div> <!-- .tm-top-bar -->
   <!-- navbar 종료 -->
@@ -165,336 +176,19 @@
       </div>  <!-- .container -->
     </div>     <!-- .tm-container-outer -->
 
-    <!-- 지역별 탭 시작 -->
-    <div class="tm-container-outer" id="tm-section-3">
-      <!-- 탭 타이틀 시작 -->
-      <ul class="nav nav-pills tm-tabs-links">
-        <li class="tm-tab-link-li">
-          <a href="#1a" data-toggle="tab" class="tm-tab-link active">서울</a>
-        </li>
-        <li class="tm-tab-link-li">
-          <a href="#2a" data-toggle="tab" class="tm-tab-link">부산</a>
-        </li>
-        <li class="tm-tab-link-li">
-          <a href="#3a" data-toggle="tab" class="tm-tab-link">제주</a>
-        </li>
-        <li class="tm-tab-link-li">
-          <a href="#4a" data-toggle="tab" class="tm-tab-link">경기</a>
-        </li>
-        <li class="tm-tab-link-li">
-          <a href="#5a" data-toggle="tab" class="tm-tab-link">인천</a>
-        </li>
-        <li class="tm-tab-link-li">
-          <a href="#1a" data-toggle="tab" class="tm-tab-link">강원</a>
-        </li>
-        <li class="tm-tab-link-li">
-          <a href="#2a" data-toggle="tab" class="tm-tab-link">경상</a>
-        </li>
-        <li class="tm-tab-link-li">
-          <a href="#3a" data-toggle="tab" class="tm-tab-link">전라</a>
-        </li>
-        <li class="tm-tab-link-li">
-          <a href="#4a" data-toggle="tab" class="tm-tab-link">충청</a>
-        </li>
-      </ul>
-      <!-- 탭 타이틀 종료 -->
-      <!-- 탭 컨텐트 시작 -->
-      <div class="tab-content clearfix">
-        <!-- Tab 1 -->
-        <div class="tab-pane fade show active" id="1a">
-          <div class="tm-recommended-place-wrap">
-            <div class="tm-recommended-place">
-              <img src="img/tm-img-06.jpg" alt="Image" class="img-fluid tm-recommended-img">
-              <div class="tm-recommended-description-box">
-                <h3 class="tm-recommended-title">North Garden Resort</h3>
-                <p class="tm-text-highlight">One North</p>
-                <p class="tm-text-gray">Sed egestas, odio nec bibendum mattis, quam odio hendrerit risus, eu varius eros lacus sit amet lectus. Donec blandit luctus dictum...</p>
-              </div>
-              <a href="#" class="tm-recommended-price-box">
-                <p class="tm-recommended-price">$110</p>
-                <p class="tm-recommended-price-link">Continue Reading</p>
-              </a>
-            </div>
+    <div class="tm-container-outer">
+      <div class="container">
+        <div class="row justify-content-center" >
 
-            <div class="tm-recommended-place">
-              <img src="img/tm-img-07.jpg" alt="Image" class="img-fluid tm-recommended-img">
-              <div class="tm-recommended-description-box">
-                <h3 class="tm-recommended-title">Felis nec dignissim</h3>
-                <p class="tm-text-highlight">Two North</p>
-                <p class="tm-text-gray">Sed egestas, odio nec bibendum mattis, quam odio hendrerit risus, eu varius eros lacus sit amet lectus. Donec blandit luctus dictum...</p>
-              </div>
-              <div id="preload-hover-img"></div>
-              <a href="#" class="tm-recommended-price-box">
-                <p class="tm-recommended-price">$120</p>
-                <p class="tm-recommended-price-link">Continue Reading</p>
-              </a>
-            </div>
-
-            <div class="tm-recommended-place">
-              <img src="img/tm-img-05.jpg" alt="Image" class="img-fluid tm-recommended-img">
-              <div class="tm-recommended-description-box">
-                <h3 class="tm-recommended-title">Sed fermentum justo</h3>
-                <p class="tm-text-highlight">Three North</p>
-                <p class="tm-text-gray">Sed egestas, odio nec bibendum mattis, quam odio hendrerit risus, eu varius eros lacus sit amet lectus. Donec blandit luctus dictum...</p>
-              </div>
-              <a href="#" class="tm-recommended-price-box">
-                <p class="tm-recommended-price">$130</p>
-                <p class="tm-recommended-price-link">Continue Reading</p>
-              </a>
-            </div>
-
-            <div class="tm-recommended-place">
-              <img src="img/tm-img-04.jpg" alt="Image" class="img-fluid tm-recommended-img">
-              <div class="tm-recommended-description-box">
-                <h3 class="tm-recommended-title">Maecenas ultricies neque</h3>
-                <p class="tm-text-highlight">Four North</p>
-                <p class="tm-text-gray">Sed egestas, odio nec bibendum mattis, quam odio hendrerit risus, eu varius eros lacus sit amet lectus. Donec blandit luctus dictum...</p>
-              </div>
-              <a href="#" class="tm-recommended-price-box">
-                <p class="tm-recommended-price">$140</p>
-                <p class="tm-recommended-price-link">Continue Reading</p>
-              </a>
-            </div>
-          </div>
-        </div> <!-- tab-pane -->
-        <!-- Tab 2 -->
-        <div class="tab-pane fade" id="2a">
-
-          <div class="tm-recommended-place-wrap">
-            <div class="tm-recommended-place">
-              <img src="img/tm-img-05.jpg" alt="Image" class="img-fluid tm-recommended-img">
-              <div class="tm-recommended-description-box">
-                <h3 class="tm-recommended-title">South Resort Hotel</h3>
-                <p class="tm-text-highlight">South One</p>
-                <p class="tm-text-gray">Sed egestas, odio nec bibendum mattis, quam odio hendrerit risus, eu varius eros lacus sit amet lectus. Donec blandit luctus dictum...</p>
-              </div>
-              <a href="#" class="tm-recommended-price-box">
-                <p class="tm-recommended-price">$220</p>
-                <p class="tm-recommended-price-link">Continue Reading</p>
-              </a>
-            </div>
-
-            <div class="tm-recommended-place">
-              <img src="img/tm-img-04.jpg" alt="Image" class="img-fluid tm-recommended-img">
-              <div class="tm-recommended-description-box">
-                <h3 class="tm-recommended-title">Aenean ac ante nec diam</h3>
-                <p class="tm-text-highlight">South Second</p>
-                <p class="tm-text-gray">Sed egestas, odio nec bibendum mattis, quam odio hendrerit risus, eu varius eros lacus sit amet lectus. Donec blandit luctus dictum...</p>
-              </div>
-              <a href="#" class="tm-recommended-price-box">
-                <p class="tm-recommended-price">$230</p>
-                <p class="tm-recommended-price-link">Continue Reading</p>
-              </a>
-            </div>
-
-            <div class="tm-recommended-place">
-              <img src="img/tm-img-07.jpg" alt="Image" class="img-fluid tm-recommended-img">
-              <div class="tm-recommended-description-box">
-                <h3 class="tm-recommended-title">Suspendisse nec dapibus</h3>
-                <p class="tm-text-highlight">South Third</p>
-                <p class="tm-text-gray">Sed egestas, odio nec bibendum mattis, quam odio hendrerit risus, eu varius eros lacus sit amet lectus. Donec blandit luctus dictum...</p>
-              </div>
-              <a href="#" class="tm-recommended-price-box">
-                <p class="tm-recommended-price">$240</p>
-                <p class="tm-recommended-price-link">Continue Reading</p>
-              </a>
-            </div>
-
-            <div class="tm-recommended-place">
-              <img src="img/tm-img-06.jpg" alt="Image" class="img-fluid tm-recommended-img">
-              <div class="tm-recommended-description-box">
-                <h3 class="tm-recommended-title">Aliquam viverra mi at nisl</h3>
-                <p class="tm-text-highlight">South Fourth</p>
-                <p class="tm-text-gray">Sed egestas, odio nec bibendum mattis, quam odio hendrerit risus, eu varius eros lacus sit amet lectus. Donec blandit luctus dictum...</p>
-              </div>
-              <a href="#" class="tm-recommended-price-box">
-                <p class="tm-recommended-price">$250</p>
-                <p class="tm-recommended-price-link">Continue Reading</p>
-              </a>
-            </div>
-          </div>
-
-          <a href="#" class="text-uppercase btn-primary tm-btn mx-auto tm-d-table">Show More Places</a>
-        </div> <!-- tab-pane -->
-        <!-- Tab 3 -->
-        <div class="tab-pane fade" id="3a">
-
-          <div class="tm-recommended-place-wrap">
-            <div class="tm-recommended-place">
-              <img src="img/tm-img-04.jpg" alt="Image" class="img-fluid tm-recommended-img">
-              <div class="tm-recommended-description-box">
-                <h3 class="tm-recommended-title">Europe Hotel</h3>
-                <p class="tm-text-highlight">Venecia, Italy</p>
-                <p class="tm-text-gray">Sed egestas, odio nec bibendum mattis, quam odio hendrerit risus, eu varius eros lacus sit amet lectus. Donec blandit luctus dictum...</p>
-              </div>
-              <a href="#" class="tm-recommended-price-box">
-                <p class="tm-recommended-price">$330</p>
-                <p class="tm-recommended-price-link">Continue Reading</p>
-              </a>
-            </div>
-
-            <div class="tm-recommended-place">
-              <img src="img/tm-img-05.jpg" alt="Image" class="img-fluid tm-recommended-img">
-              <div class="tm-recommended-description-box">
-                <h3 class="tm-recommended-title">In viverra enim turpis</h3>
-                <p class="tm-text-highlight">Paris, France</p>
-                <p class="tm-text-gray">Sed egestas, odio nec bibendum mattis, quam odio hendrerit risus, eu varius eros lacus sit amet lectus. Donec blandit luctus dictum...</p>
-              </div>
-              <a href="#" class="tm-recommended-price-box">
-                <p class="tm-recommended-price">$340</p>
-                <p class="tm-recommended-price-link">Continue Reading</p>
-              </a>
-            </div>
-
-            <div class="tm-recommended-place">
-              <img src="img/tm-img-06.jpg" alt="Image" class="img-fluid tm-recommended-img">
-              <div class="tm-recommended-description-box">
-                <h3 class="tm-recommended-title">Volutpat pellentesque</h3>
-                <p class="tm-text-highlight">Barcelona, Spain</p>
-                <p class="tm-text-gray">Sed egestas, odio nec bibendum mattis, quam odio hendrerit risus, eu varius eros lacus sit amet lectus. Donec blandit luctus dictum...</p>
-              </div>
-              <a href="#" class="tm-recommended-price-box">
-                <p class="tm-recommended-price">$350</p>
-                <p class="tm-recommended-price-link">Continue Reading</p>
-              </a>
-            </div>
-
-            <div class="tm-recommended-place">
-              <img src="img/tm-img-07.jpg" alt="Image" class="img-fluid tm-recommended-img">
-              <div class="tm-recommended-description-box">
-                <h3 class="tm-recommended-title">Grand Resort Pasha</h3>
-                <p class="tm-text-highlight">Istanbul, Turkey</p>
-                <p class="tm-text-gray">Sed egestas, odio nec bibendum mattis, quam odio hendrerit risus, eu varius eros lacus sit amet lectus. Donec blandit luctus dictum...</p>
-              </div>
-              <a href="#" class="tm-recommended-price-box">
-                <p class="tm-recommended-price">$360</p>
-                <p class="tm-recommended-price-link">Continue Reading</p>
-              </a>
-            </div>
-          </div>
-
-          <a href="#" class="text-uppercase btn-primary tm-btn mx-auto tm-d-table">Show More Places</a>
-        </div> <!-- tab-pane -->
-        <!-- Tab 4 -->
-        <div class="tab-pane fade" id="4a">
-          <!-- Current Active Tab WITH "show active" classes in DIV tag -->
-          <div class="tm-recommended-place-wrap">
-            <div class="tm-recommended-place">
-              <img src="img/tm-img-06.jpg" alt="Image" class="img-fluid tm-recommended-img">
-              <div class="tm-recommended-description-box">
-                <h3 class="tm-recommended-title">Asia Resort Hotel</h3>
-                <p class="tm-text-highlight">Singapore</p>
-                <p class="tm-text-gray">Sed egestas, odio nec bibendum mattis, quam odio hendrerit risus, eu varius eros lacus sit amet lectus. Donec blandit luctus dictum...</p>
-              </div>
-              <a href="#" class="tm-recommended-price-box">
-                <p class="tm-recommended-price">$440</p>
-                <p class="tm-recommended-price-link">Continue Reading</p>
-              </a>
-            </div>
-
-            <div class="tm-recommended-place">
-              <img src="img/tm-img-07.jpg" alt="Image" class="img-fluid tm-recommended-img">
-              <div class="tm-recommended-description-box">
-                <h3 class="tm-recommended-title">Nullam eget est a nisl</h3>
-                <p class="tm-text-highlight">Yangon, Myanmar</p>
-                <p class="tm-text-gray">Sed egestas, odio nec bibendum mattis, quam odio hendrerit risus, eu varius eros lacus sit amet lectus. Donec blandit luctus dictum...</p>
-              </div>
-              <a href="#" class="tm-recommended-price-box">
-                <p class="tm-recommended-price">$450</p>
-                <p class="tm-recommended-price-link">Continue Reading</p>
-              </a>
-            </div>
-
-            <div class="tm-recommended-place">
-              <img src="img/tm-img-05.jpg" alt="Image" class="img-fluid tm-recommended-img">
-              <div class="tm-recommended-description-box">
-                <h3 class="tm-recommended-title">Proin interdum ullamcorper</h3>
-                <p class="tm-text-highlight">Bangkok, Thailand</p>
-                <p class="tm-text-gray">Sed egestas, odio nec bibendum mattis, quam odio hendrerit risus, eu varius eros lacus sit amet lectus. Donec blandit luctus dictum...</p>
-              </div>
-              <a href="#" class="tm-recommended-price-box">
-                <p class="tm-recommended-price">$460</p>
-                <p class="tm-recommended-price-link">Continue Reading</p>
-              </a>
-            </div>
-
-            <div class="tm-recommended-place">
-              <img src="img/tm-img-04.jpg" alt="Image" class="img-fluid tm-recommended-img">
-              <div class="tm-recommended-description-box">
-                <h3 class="tm-recommended-title">Lorem ipsum dolor sit</h3>
-                <p class="tm-text-highlight">Vientiane, Laos</p>
-                <p class="tm-text-gray">Sed egestas, odio nec bibendum mattis, quam odio hendrerit risus, eu varius eros lacus sit amet lectus. Donec blandit luctus dictum...</p>
-              </div>
-              <a href="#" class="tm-recommended-price-box">
-                <p class="tm-recommended-price">$470</p>
-                <p class="tm-recommended-price-link">Continue Reading</p>
-              </a>
-            </div>
-          </div>
-
-          <a href="#" class="text-uppercase btn-primary tm-btn mx-auto tm-d-table">Show More Places</a>
-        </div> <!-- tab-pane -->
-        <!-- Tab 5 -->
-        <div class="tab-pane fade" id="5a">
-
-          <div class="tm-recommended-place-wrap">
-            <div class="tm-recommended-place">
-              <img src="img/tm-img-05.jpg" alt="Image" class="img-fluid tm-recommended-img">
-              <div class="tm-recommended-description-box">
-                <h3 class="tm-recommended-title">Africa Resort Hotel</h3>
-                <p class="tm-text-highlight">First City</p>
-                <p class="tm-text-gray">Sed egestas, odio nec bibendum mattis, quam odio hendrerit risus, eu varius eros lacus sit amet lectus. Donec blandit luctus dictum...</p>
-              </div>
-              <a href="#" class="tm-recommended-price-box">
-                <p class="tm-recommended-price">$550</p>
-                <p class="tm-recommended-price-link">Continue Reading</p>
-              </a>
-            </div>
-
-            <div class="tm-recommended-place">
-              <img src="img/tm-img-04.jpg" alt="Image" class="img-fluid tm-recommended-img">
-              <div class="tm-recommended-description-box">
-                <h3 class="tm-recommended-title">Aenean ac magna diam</h3>
-                <p class="tm-text-highlight">Second City</p>
-                <p class="tm-text-gray">Sed egestas, odio nec bibendum mattis, quam odio hendrerit risus, eu varius eros lacus sit amet lectus. Donec blandit luctus dictum...</p>
-              </div>
-              <a href="#" class="tm-recommended-price-box">
-                <p class="tm-recommended-price">$560</p>
-                <p class="tm-recommended-price-link">Continue Reading</p>
-              </a>
-            </div>
-
-            <div class="tm-recommended-place">
-              <img src="img/tm-img-07.jpg" alt="Image" class="img-fluid tm-recommended-img">
-              <div class="tm-recommended-description-box">
-                <h3 class="tm-recommended-title">Beach Barbecue Sunset</h3>
-                <p class="tm-text-highlight">Third City</p>
-                <p class="tm-text-gray">Sed egestas, odio nec bibendum mattis, quam odio hendrerit risus, eu varius eros lacus sit amet lectus. Donec blandit luctus dictum...</p>
-              </div>
-              <a href="#" class="tm-recommended-price-box">
-                <p class="tm-recommended-price">$570</p>
-                <p class="tm-recommended-price-link">Continue Reading</p>
-              </a>
-            </div>
-
-            <div class="tm-recommended-place">
-              <img src="img/tm-img-06.jpg" alt="Image" class="img-fluid tm-recommended-img">
-              <div class="tm-recommended-description-box">
-                <h3 class="tm-recommended-title">Grand Resort Pasha</h3>
-                <p class="tm-text-highlight">Fourth City</p>
-                <p class="tm-text-gray">Sed egestas, odio nec bibendum mattis, quam odio hendrerit risus, eu varius eros lacus sit amet lectus. Donec blandit luctus dictum...</p>
-              </div>
-              <a href="#" class="tm-recommended-price-box">
-                <p class="tm-recommended-price">$580</p>
-                <p class="tm-recommended-price-link">Continue Reading</p>
-              </a>
-            </div>
-          </div>
-          <a href="#" class="text-uppercase btn-primary tm-btn mx-auto tm-d-table">Show More Places</a>
-        </div> <!-- tab-pane -->
-
+        </div>
       </div>
-      <!-- 탭 컨텐트 종료 -->
+    </div>
+
+    <!-- 지역별 탭 시작 -->
+    <div class="tm-container-outer">
+
+
+
     </div>
     <!-- 지역별 탭 종료 -->
 
