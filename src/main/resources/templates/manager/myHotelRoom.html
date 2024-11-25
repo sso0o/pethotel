@@ -425,28 +425,21 @@
       url: '/manager/myhotels/'+BigInt(userId),
       type: 'get',
       success: function (data){
-
         selectMyHotles.empty();
-
         $.each(data.hotels, function (i, hotel){
           let option = $('<option></option>')
                   .val(hotel.hotelId)  // 호텔의 id를 value로 설정
                   .text(hotel.hotelName);  // 호텔의 이름을 텍스트로 설정
           selectMyHotles.append(option);  // select에 option 추가
         });
-
         // URL에서 가져온 호텔 ID가 목록에 있다면, 그 호텔을 자동으로 선택
         if (hotelIdFromUrl) {
           selectMyHotles.val(hotelIdFromUrl);  // 호텔 ID로 옵션을 선택
           $('#hotelId').val(hotelIdFromUrl)
         }
-
-
       },
       error: function (e){
-
       }
-
     })
 
     let tabMyRoom = $('#tabMyRoom').DataTable({

@@ -43,25 +43,5 @@ public class AdminViewController {
         return "admin/customer";
     }
 
-    @GetMapping("/manager/hotelmainPage")
-    public String hotelMainPage() {
-        return "manager/myHotelMain";
-    }
 
-    @GetMapping("/manager/myhotelPage")
-    public String hotelPage(Model model) {
-        List<CommonCode> HTP = commonCodeService.findByCodeHeadAndCodeDetailNotAndCodeUseLike("HTP", "", "Y");
-        model.addAttribute("HTP", HTP);
-        return "manager/myHotel";
-    }
-
-    @GetMapping("/manager/myhotelroom/{hotelId}")
-    public String myHotelRoom(Model model, @PathVariable Long hotelId) {
-        if (hotelId != 0) {
-            List<Room> rooms = roomService.findAllByHotelId(hotelId);
-            model.addAttribute("rooms", rooms);
-        }
-
-        return "manager/myHotelRoom";
-    }
 }

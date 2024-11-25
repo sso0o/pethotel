@@ -43,8 +43,9 @@ public class WebSecurityConfig  {
                 .requestCache(request -> request
                         .requestCache(requestCache))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/login", "/signup", "/", "/hotel").permitAll()
+                        .requestMatchers("/login", "/signup", "/", "/hotel/**", "/main/**").permitAll()
                         .requestMatchers("/admin/**").hasAuthority("ADMIN")
+                        .requestMatchers("/manager/**").hasAnyAuthority("ADMIN", "MANAGER")
                         .anyRequest().authenticated())
                 .formLogin(formLogin -> formLogin
                         .loginPage("/login")

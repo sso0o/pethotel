@@ -1,7 +1,11 @@
-package com.example.pethotel.controller.admin;
+package com.example.pethotel.controller.manager;
+
 
 import com.example.pethotel.dto.*;
-import com.example.pethotel.entity.*;
+import com.example.pethotel.entity.Hotel;
+import com.example.pethotel.entity.HotelImg;
+import com.example.pethotel.entity.Room;
+import com.example.pethotel.entity.RoomImg;
 import com.example.pethotel.exception.InvalidlValueException;
 import com.example.pethotel.service.*;
 import com.example.pethotel.service.admin.ManagerService;
@@ -19,51 +23,18 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class ManagerApiController {
 
-
     private final ManagerService managerService;
     private final HotelService hotelService;
     private final HotelImgService hotelImgService;
     private final RoomService roomService;
     private final RoomImgService roomImgService;
 
-
     private final CommonService commonService;
     private final FileService fileService;
-
 
     //=============================================================================================
     //================================              get               =============================
     //=============================================================================================
-
-    // 매니저 목록 조회
-    @GetMapping("/admin/manager")
-    public ResponseEntity managerList(){
-        HashMap<Object, Object> resultMap = new HashMap<>();
-
-        List<User> managers = managerService.findByUserroleAndUserstatus("MANAGER", "Y");
-        resultMap.put("managers", managers);
-        return ResponseEntity.ok().body(resultMap);
-    }
-
-//    // 매니저 별 호텔 목록 조회
-//    @GetMapping("/admin/hotel/{userid}")
-//    public ResponseEntity hotelListByManager(@PathVariable Long userid) {
-//        HashMap<Object, Object> resultMap = new HashMap<>();
-//        List<Hotel> hotels = hotelService.findAllByUserId(userid);
-//        resultMap.put("hotels", hotels);
-//        return ResponseEntity.ok().body(resultMap);
-//
-//    }
-
-    // 호텔아이디 별 객실 목록 조회
-    @GetMapping("/admin/room/{hotelid}")
-    public ResponseEntity roomListByHotel(@PathVariable Long hotelid) {
-        HashMap<Object, Object> resultMap = new HashMap<>();
-        List<Room> rooms = roomService.findAllByHotelId(hotelid);
-        resultMap.put("rooms", rooms);
-        return ResponseEntity.ok().body(resultMap);
-
-    }
 
     // 매니저 아이디로 호텔 조회
     @GetMapping("/manager/myhotels/{userid}")
@@ -103,11 +74,10 @@ public class ManagerApiController {
 
 
 
+
     //=============================================================================================
     //================================              post              =============================
     //=============================================================================================
-
-
 
     // 매니저가 호텔 저장
     @PostMapping("/manager/myhotel")
@@ -146,7 +116,7 @@ public class ManagerApiController {
         resultMap.put("msg", "요청 성공");
         resultMap.put("room", saveRoom);
 
-       return ResponseEntity.ok().body(resultMap);
+        return ResponseEntity.ok().body(resultMap);
 
     }
 
@@ -193,6 +163,8 @@ public class ManagerApiController {
         resultMap.put("msg", "요청 성공");
         return ResponseEntity.ok().body(resultMap);
     }
+
+
 
 
     //=============================================================================================
@@ -242,8 +214,9 @@ public class ManagerApiController {
     }
 
 
+
     //=============================================================================================
-    //================================              put               =============================
+    //================================              del               =============================
     //=============================================================================================
 
     // 매니저가 호텔 사진 삭제
@@ -271,88 +244,5 @@ public class ManagerApiController {
         resultMap.put("msg", "요청 성공");
         return ResponseEntity.ok().body(resultMap);
     }
+
 }
-
-
-//    // 매니저가 호텔 저장
-//    @PostMapping("/manager/myhotel")
-//    public ResponseEntity saveHotel(
-//            @RequestParam("userId") Long userId,
-//            @RequestParam("hotelName") String hotelName,
-//            @RequestParam("hotelType") String hotelType,
-//            @RequestParam("postcode") String postcode,
-//            @RequestParam("address") String address,
-//            @RequestParam("detailAddress") String detailAddress,
-//            @RequestParam("extraAddress") String extraAddress,
-//            @RequestParam("hotelPhone") String hotelPhone,
-//            @RequestParam("hotelInfo") String hotelInfo,
-//            @RequestParam(value = "hotelPhotos", required = false) MultipartFile[] hotelPhotos)  throws IOException {
-//        HashMap<Object, Object> resultMap = new HashMap<>();
-//
-//        // 데이터 확인
-//
-//        // 1. 호텔 저장
-//        AddHotelRequest req = new AddHotelRequest(hotelName, hotelType, postcode, address, detailAddress, extraAddress, hotelPhone, hotelInfo, userId);
-//        Hotel saveHotel = hotelService.save(req);
-//
-//        // 파일이 존재하면 처리
-//        if (hotelPhotos != null && hotelPhotos.length > 0) {
-//            String uploadUrl = "./uploads/hotel";
-//
-//            List<String> fileNames = fileService.saveFiles(uploadUrl,hotelPhotos);
-//
-//            for (String fileName : fileNames) {
-//                AddHotelImgRequest imgr = new AddHotelImgRequest(saveHotel, fileName, uploadUrl+"/"+fileName);
-//                HotelImg hotelImg = hotelImgService.save(imgr);
-//            }
-//        }
-//
-//        resultMap.put("msg", "요청 성공");
-//        resultMap.put("hotel", saveHotel);
-//
-//        return ResponseEntity.ok().body(resultMap);
-//    }
-
-
-
-
-
-// 매니저가 객실 저장
-
-//    public ResponseEntity saveRoom(@RequestParam("hotelId") Long hotelId,
-//                                   @RequestParam("roomName") String roomName,
-//                                   @RequestParam("roomType") String roomType,
-//                                   @RequestParam("roomPrice") int roomPrice,
-//                                   @RequestParam("limitGuest") int limitGuest,
-//                                   @RequestParam("limitPet") int limitPet,
-//                                   @RequestParam("checkIn") String checkIn,
-//                                   @RequestParam("checkOut") String checkOut,
-//                                   @RequestParam("roomInfo") String roomInfo,
-//                                   @RequestParam(value = "roomPhotos", required = false) MultipartFile[] roomPhotos) throws IOException {
-//        HashMap<Object, Object> resultMap = new HashMap<>();
-//
-//
-//
-//        Hotel hotel = hotelService.findById(hotelId);
-//        // 1. 객실 저장
-//        AddRoomRequest req = new AddRoomRequest(roomName, roomType, roomPrice, limitGuest, limitPet, checkIn, checkOut, roomInfo, hotel);
-//        Room saveRoom = roomService.save(req);
-//
-//
-//        // 파일이 존재하면 처리
-//        if (roomPhotos != null && roomPhotos.length > 0) {
-//            String uploadUrl = "./uploads/room";
-//            List<String> fileNames = fileService.saveFiles(uploadUrl, roomPhotos);
-//
-//            for (String fileName : fileNames) {
-//                AddRoomImgRequest imgr = new AddRoomImgRequest(saveRoom, fileName); // Save for room
-//                roomImgService.save(imgr);
-//            }
-//        }
-//
-//        resultMap.put("msg", "요청 성공");
-//        resultMap.put("room", saveRoom);
-//
-//        return ResponseEntity.ok().body(resultMap);
-//
-//    }

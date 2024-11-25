@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class HotelViewController {
 
     @GetMapping("/hotel")
-    public String showHotel(Model model) {
+    public String showHotelPage(Model model) {
         return "hotel/hotelList";
     }
 }
