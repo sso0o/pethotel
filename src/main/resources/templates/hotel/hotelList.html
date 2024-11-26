@@ -1,9 +1,8 @@
 <!DOCTYPE html>
 <html
-        lang="ko"
-        dir="ltr"
-        xmlns:th="http://www.thymeleaf.org"
-        xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+    lang="ko"
+    dir="ltr"
+    xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 >
 <head>
   <!-- 미디어쿼리 사용시 설정 해줘야함  -->
@@ -11,12 +10,16 @@
 
   <title>Pet Hotel</title>
   <!-- Bootstrap  CSS -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"  integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
   <!-- jQuery UI CSS -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" integrity="sha512-aOG0c6nPNzGk+5zjwyJaoRUgCdOrfSDhmMID2u4+OIslr0GjpLKo7Xm0Ao3xmpM4T8AmIouRkqwj1nrdVsLKEQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css"
+        integrity="sha512-aOG0c6nPNzGk+5zjwyJaoRUgCdOrfSDhmMID2u4+OIslr0GjpLKo7Xm0Ao3xmpM4T8AmIouRkqwj1nrdVsLKEQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"/>
 
   <!-- load stylesheets -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700">  <!-- Google web font "Open Sans" -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700">
+  <!-- Google web font "Open Sans" -->
   <link rel="stylesheet" href="font-awesome-4.7.0/css/font-awesome.min.css">                <!-- Font Awesome -->
   <link rel="stylesheet" href="css/bootstrap.min.css">                                      <!-- Bootstrap style -->
   <link rel="stylesheet" type="text/css" href="css/datepicker.css"/>
@@ -25,14 +28,13 @@
   <link rel="stylesheet" href="css/templatemo-style.css"><!-- Templatemo style -->
 
 
-
   <style>
   </style>
 </head>
 
 <body>
 <!-- .main-content 시작-->
-<div class="tm-main-content" >
+<div class="tm-main-content">
 
   <div class="tm-top-bar-bg" style="height: 160px;"></div>
   <!-- navbar 시작 -->
@@ -40,19 +42,20 @@
     <div class="container">
       <div class="row">
         <nav class="navbar navbar-expand-lg navbar-light">
-          <a class="navbar-brand mr-auto" href="/" >
+          <a class="navbar-brand mr-auto" href="/">
             <img src="img/logo.png" alt="Site logo">
             Pet Hotel
           </a>
 
           <!-- 토글 버튼 (모바일용) -->
-          <button type="button" id="nav-toggle" class="navbar-toggler collapsed" data-toggle="collapse" data-target="#mainNav" aria-expanded="false" aria-label="Toggle navigation">
+          <button type="button" id="nav-toggle" class="navbar-toggler collapsed" data-toggle="collapse"
+                  data-target="#mainNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
           <!-- 토글 버튼 (모바일용) 종료-->
 
           <div id="mainNav" class="collapse navbar-collapse justify-content-end tm-bg-white">
-            <ul class="navbar-nav ml-auto" >
+            <ul class="navbar-nav ml-auto">
               <li sec:authorize="!hasAuthority('MANAGER')" class="nav-item">
                 <a class="nav-link active" href="/hotel">Hotel </a>
               </li>
@@ -96,37 +99,62 @@
           <nav class="navbar navbar-expand-lg navbar-dark justify-content-center">
             <form style="display: flex;">
               <div class="form-group tm-form-group m-1">
-                <label for="selectCity2">목적지</label>
-                <select class="form-control tm-select" name="" id="selectCity2">
+                <label for="selectCity">목적지</label>
+                <select class="form-control tm-select" name="" id="selectCity">
                   <option></option>
                 </select>
               </div>
 
               <div class="form-group tm-form-group m-1">
-                <label for="startDate2">체크인</label>
-                <input type="text" class="form-control" id="startDate2" name="startDate2" placeholder="Check In">
+                <label for="startDate">체크인</label>
+                <input type="text" class="form-control" id="startDate" name="startDate" placeholder="Check In">
               </div>
 
               <div class="form-group tm-form-group m-1">
-                <label for="endDate2">체크아웃</label>
-                <input type="text" class="form-control" id="endDate2" name="endDate2" placeholder="Check Out">
+                <label for="endDate">체크아웃</label>
+                <input type="text" class="form-control" id="endDate" name="endDate" placeholder="Check Out">
               </div>
 
               <div class="form-group tm-form-group m-1">
-                <label for="room">방</label>
-                <select class="form-control tm-select" name="" id="room">
-                  <option></option>
+                <label for="inputRoom">방</label>
+                <select name="room" class="form-control tm-select" id="inputRoom">
+                  <option value="1" selected>1 Room</option>
+                  <option value="2">2 Rooms</option>
+                  <option value="3">3 Rooms</option>
+                  <option value="4">4 Rooms</option>
+                  <option value="5">5 Rooms</option>
+                  <option value="6">6 Rooms</option>
+                  <option value="7">7 Rooms</option>
+                  <option value="8">8 Rooms</option>
+                  <option value="9">9 Rooms</option>
+                  <option value="10">10 Rooms</option>
                 </select>
               </div>
 
               <div class="form-group tm-form-group m-1">
-                <label for="guest2">인원</label>
-                <input type="number" class="form-control" id="guest2" name="guest2">
+                <label for="guest">인원</label>
+                <select class="form-control tm-select" id="guest" name="guest">
+                  <option value="1" selected>1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                  <option value="5">5</option>
+                  <option value="6">6</option>
+                  <option value="7">7</option>
+                  <option value="8">8</option>
+                  <option value="9">9</option>
+                  <option value="10">10</option>
+                </select>
               </div>
 
               <div class="form-group tm-form-group m-1">
-                <label for="pet2">펫</label>
-                <input type="number" class="form-control" id="pet2" name="pet2" >
+                <label for="pet">펫</label>
+                <select class="form-control tm-select" id="pet" name="pet">
+                  <option value="1" selected>1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                </select>
               </div>
             </form>
           </nav>
@@ -141,92 +169,30 @@
   <div class="tm-page-wrap mx-auto justify-content-center">
     <div class="tm-container-outer">
       <div class="container">
-        <div class="row justify-content-center mobile-d-none"  >
-          <form class="tm-search-form mt-5 mb-5">
-            <div class="form-row">
-              <div class="form-group tm-form-group tm-form-group-pad tm-form-group-1">
-                <label for="selectCity">Choose Your Destination</label>
-                <select class="form-control tm-select" id="selectCity" name="selectCity">
-                  <option></option>
-                </select>
+        <div>
+          <ol style="list-style: none;">
+            <li>
+              <div>
+                <a>
+                  <div style="display: flex;">
+                    <div>
+                      이미지 들어갈곳
+                    </div>
+                    <div>
+                      호텔 이름 들어갈곳
+                    </div>
+                    <div>
+                      가격
+                    </div>
+                  </div>
+                </a>
               </div>
-              <div class="form-group tm-form-group tm-form-group-1">
-                <div class="form-group tm-form-group tm-form-group-pad tm-form-group-2">
-                  <label for="inputRoom">How many rooms?</label>
-                  <select name="room" class="form-control tm-select" id="inputRoom">
-                    <option value="1" selected>1 Room</option>
-                    <option value="2">2 Rooms</option>
-                    <option value="3">3 Rooms</option>
-                    <option value="4">4 Rooms</option>
-                    <option value="5">5 Rooms</option>
-                    <option value="6">6 Rooms</option>
-                    <option value="7">7 Rooms</option>
-                    <option value="8">8 Rooms</option>
-                    <option value="9">9 Rooms</option>
-                    <option value="10">10 Rooms</option>
-                  </select>
-                </div>
-                <div class="form-group tm-form-group tm-form-group-pad tm-form-group-3">
-                  <label for="guest">Guest</label>
-                  <select class="form-control tm-select" id="guest" name="guest" >
-                    <option value="1" selected>1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                    <option value="6">6</option>
-                    <option value="7">7</option>
-                    <option value="8">8</option>
-                    <option value="9">9</option>
-                    <option value="10">10</option>
-                  </select>
-                </div>
-                <div class="form-group tm-form-group tm-form-group-pad tm-form-group-3">
-
-                  <label for="pet">Pet</label>
-                  <select class="form-control tm-select" id="pet" name="pet" >
-                    <option value="1" selected>1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                  </select>
-                </div>
-              </div>
-            </div> <!-- form-row -->
-            <div class="form-row tm-search-form-row">
-              <div class="form-group tm-form-group tm-form-group-pad tm-form-group-3">
-                <label for="startDate">Check In Date</label>
-                <input type="text" class="form-control" id="startDate" name="startDate" placeholder="Check In">
-              </div>
-              <div class="form-group tm-form-group tm-form-group-pad tm-form-group-3">
-                <label for="endDate">Check Out Date</label>
-                <input type="text" class="form-control" id="endDate" name="endDate" placeholder="Check Out">
-              </div>
-              <div class="form-group tm-form-group tm-form-group-pad tm-form-group-1">
-                <label for="btnSubmit">&nbsp;</label>
-                <button type="submit" class="btn btn-primary tm-btn tm-btn-search text-uppercase" id="btnSubmit">Search</button>
-              </div>
-            </div>
-          </form>
-        </div> <!-- row -->
+            </li>
+          </ol>
+        </div>
       </div>  <!-- .container -->
     </div>     <!-- .tm-container-outer -->
 
-    <div class="tm-container-outer">
-      <div class="container">
-        <div class="row justify-content-center" >
-
-        </div>
-      </div>
-    </div>
-
-    <!-- 지역별 탭 시작 -->
-    <div class="tm-container-outer">
-
-
-
-    </div>
-    <!-- 지역별 탭 종료 -->
 
     <footer class="tm-container-outer">
       <p class="mb-0">Copyright © <span class="tm-current-year">2018</span> Your Company
@@ -244,49 +210,75 @@
 <script src="js/popper.min.js"></script>                    <!-- https://popper.js.org/ -->
 <script src="js/bootstrap.min.js"></script>                 <!-- https://getbootstrap.com/ -->
 <script src="js/datepicker.min.js"></script>                <!-- https://github.com/qodesmith/datepicker -->
-<script src="js/jquery.singlePageNav.min.js"></script>      <!-- Single Page Nav (https://github.com/ChrisWojcik/single-page-nav) -->
+<script src="js/jquery.singlePageNav.min.js"></script>
+<!-- Single Page Nav (https://github.com/ChrisWojcik/single-page-nav) -->
 <script src="slick/slick.min.js"></script>                  <!-- http://kenwheeler.github.io/slick/ -->
 <script src="js/jquery.scrollTo.min.js"></script>           <!-- https://github.com/flesler/jquery.scrollTo -->
 
 
 <script>
-  $(function(){
+    $(function () {
 
-    // Date Picker in Search form
-    let pickerCheckIn = datepicker('#startDate');
-    let pickerCheckOut = datepicker('#endDate');
-    // Date Picker in Search form
-    let pickerCheckIn2 = datepicker('#startDate2');
-    let pickerCheckOut2 = datepicker('#endDate2');
+        // Date Picker in Search form
+        let pickerCheckIn = datepicker('#startDate');
+        let pickerCheckOut = datepicker('#endDate');
 
-    // Close navbar after clicked
-    $('.nav-link').click(function(){
-      $('#mainNav').removeClass('show');
-    });
-
-    let selectCity = $('#selectCity');
-
-    $.ajax({
-      url: '/main/commoncode/REG',
-      type: 'get',
-      success: function (data){
-        selectCity.empty();
-        $.each(data.codes, function (i, code){
-          let option = $('<option></option>')
-                  .val(code.codeName)  // 호텔의 id를 value로 설정
-                  .text(code.codeName);  // 호텔의 이름을 텍스트로 설정
-          selectCity.append(option);  // select에 option 추가
+        // Close navbar after clicked
+        $('.nav-link').click(function () {
+            $('#mainNav').removeClass('show');
         });
-      },
-      error: function (request, status, error){
-        let result = jQuery.parseJSON(request.responseText)
-        alert(result.msg);
-      }
-    })
+
+        let selectCity = $('#selectCity');
+
+        $.ajax({
+            url: '/main/commoncode/REG',
+            type: 'get',
+            success: function (data) {
+                selectCity.empty();
+                $.each(data.codes, function (i, code) {
+                    let option = $('<option></option>')
+                        .val(code.codeName)  // 호텔의 id를 value로 설정
+                        .text(code.codeName);  // 호텔의 이름을 텍스트로 설정
+                    selectCity.append(option);  // select에 option 추가
+                });
+            },
+            error: function (request, status, error) {
+                let result = jQuery.parseJSON(request.responseText)
+                alert(result.msg);
+            }
+        })
+
+        $('#roomImgForm').on('submit', function (e) {
+            e.preventDefault();
+
+            let roomId = $('#roomId').val();
+            let formData = new FormData();
+            // 파일 데이터를 FormData에 추가 (파일은 #hotelPhoto input을 사용)
+            Array.from($('#roomPhotos')[0].files).forEach(function (file) {
+                formData.append('roomPhotos', file);  // hotelPhotos는 서버에서 처리할 파라미터 이름입니다.
+            });
+
+            $.ajax({
+                url: '/manager/myroomImg/' + BigInt(roomId),
+                type: 'post',
+                async: true,
+                data: formData,  // FormData 객체 전송
+                processData: false,  // jQuery가 데이터를 자동으로 변환하지 않도록 설정
+                contentType: false,  // jQuery가 contentType을 자동으로 설정하도록 함
+                success: function (result) {
+                    alert(result.msg);
+                    imgReLoad();
+                },
+                error: function (request, status, error) {
+                    let result = jQuery.parseJSON(request.responseText);
+                    alert(result.msg);  // 오류 메시지에 삽입
+                }
+
+            })
+        })
 
 
-
-  });
+    });
 
 </script>
 

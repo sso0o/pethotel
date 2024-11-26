@@ -104,7 +104,7 @@
                         </div>  <!-- col-xs-12 -->
                     </div> <!-- row -->
                     <div class="row tm-banner-row" id="tm-section-search">
-                        <form action="index.html" method="get" class="tm-search-form tm-section-pad-2">
+                        <form class="tm-search-form tm-section-pad-2" id="searchForm">
                             <div class="form-row tm-search-form-row">
                                 <div class="form-group tm-form-group tm-form-group-pad tm-form-group-1">
                                     <label for="selectCity">Choose Your Destination</label>
@@ -512,7 +512,7 @@
 
         <footer class="tm-container-outer">
             <p class="mb-0">Copyright © <span class="tm-current-year">2018</span> Your Company
-                . Designed by <a rel="nofollow" href="http://www.google.com/+templatemo" target="_parent">Template Mo</a></p>
+                . Designed by <a rel="nofollow" href="http://www.google.com/+templatemo" target="_parent">Template</a></p>
         </footer>
     </div>
     <!-- 본문 종료 -->
@@ -560,6 +560,33 @@
                 let result = jQuery.parseJSON(request.responseText)
                 alert(result.msg);
             }
+        })
+
+        $('#searchForm').on('submit', function (e){
+            e.preventDefault();
+
+            let data;
+            data = JSON.stringify({
+                codeHead : '',
+                codeDetail: '',
+                codeName : '',
+                codeUse : ''
+            })
+
+
+            $.ajax({
+                url: '/hotel/search',
+                type: 'get',
+                async: true,
+                data: data,
+                success: function(result) {
+                },
+                error: function (request, status, error){
+                    let result = jQuery.parseJSON(request.responseText);
+                    alert(result.msg);  // 오류 메시지에 삽입
+                }
+
+            })
         })
     });
 
