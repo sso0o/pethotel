@@ -27,12 +27,6 @@
 
 
   <style>
-    @media screen and (max-width: 768px) {
-      #nav-custom {
-        display: none !important;
-      }
-      
-    }
   </style>
 </head>
 
@@ -40,7 +34,7 @@
 <!-- .main-content 시작-->
 <div class="tm-main-content" >
 
-  <div class="tm-top-bar-bg" ></div>
+  <div class="tm-top-bar-bg" style="height: 160px;"></div>
   <!-- navbar 시작 -->
   <div class="tm-top-bar active" id="tm-top-bar">
     <div class="container">
@@ -60,7 +54,7 @@
           <div id="mainNav" class="collapse navbar-collapse justify-content-end tm-bg-white">
             <ul class="navbar-nav ml-auto" >
               <li sec:authorize="!hasAuthority('MANAGER')" class="nav-item">
-                <a class="nav-link" href="/hotel">Hotel </a>
+                <a class="nav-link active" href="/hotel">Hotel </a>
               </li>
               <!-- 로그인하지 않은 사용자가 볼 수 있는 링크 -->
               <li sec:authorize="isAnonymous()" class="nav-item">
@@ -95,45 +89,44 @@
     </div> <!-- container -->
   </div> <!-- .tm-top-bar -->
 
-  <div id="nav-custom">
+  <div class="mobile-d-none">
     <div class="tm-top-bar-form tm-bg-primary justify-content-center" style="display: flex; align-items: center">
       <div class="container">
         <div class="row">
           <nav class="navbar navbar-expand-lg navbar-dark justify-content-center">
             <form style="display: flex;">
-
-              <div class="form-group tm-form-group m-1" style="display: flex; align-items: center;">
+              <div class="form-group tm-form-group m-1">
                 <label for="selectCity2">목적지</label>
-                <select class="form-control tm-select ml-2" name="" id="selectCity2">
+                <select class="form-control tm-select" name="" id="selectCity2">
                   <option></option>
                 </select>
               </div>
 
-              <div class="form-group tm-form-group m-1" style="display: flex; align-items: center;">
+              <div class="form-group tm-form-group m-1">
                 <label for="startDate2">체크인</label>
-                <input type="text" class="form-control ml-2" id="startDate2" name="startDate2" placeholder="Check In">
+                <input type="text" class="form-control" id="startDate2" name="startDate2" placeholder="Check In">
               </div>
 
-              <div class="form-group tm-form-group m-1" style="display: flex; align-items: center;">
+              <div class="form-group tm-form-group m-1">
                 <label for="endDate2">체크아웃</label>
-                <input type="text" class="form-control ml-2" id="endDate2" name="endDate2" placeholder="Check Out">
+                <input type="text" class="form-control" id="endDate2" name="endDate2" placeholder="Check Out">
               </div>
 
-              <div class="form-group tm-form-group m-1" style="display: flex; align-items: center;">
+              <div class="form-group tm-form-group m-1">
                 <label for="room">방</label>
-                <select class="form-control tm-select ml-2" name="" id="room">
+                <select class="form-control tm-select" name="" id="room">
                   <option></option>
                 </select>
               </div>
 
-              <div class="form-group tm-form-group m-1" style="display: flex; align-items: center;">
+              <div class="form-group tm-form-group m-1">
                 <label for="guest2">인원</label>
-                <input type="number" class="form-control ml-2" id="guest2" name="guest2">
+                <input type="number" class="form-control" id="guest2" name="guest2">
               </div>
 
-              <div class="form-group tm-form-group m-1" style="display: flex; align-items: center;">
+              <div class="form-group tm-form-group m-1">
                 <label for="pet2">펫</label>
-                <input type="number" class="form-control ml-2" id="pet2" name="pet2" >
+                <input type="number" class="form-control" id="pet2" name="pet2" >
               </div>
             </form>
           </nav>
@@ -148,7 +141,7 @@
   <div class="tm-page-wrap mx-auto justify-content-center">
     <div class="tm-container-outer">
       <div class="container">
-        <div class="row justify-content-center d-none d-md-block" >
+        <div class="row justify-content-center mobile-d-none"  >
           <form class="tm-search-form mt-5 mb-5">
             <div class="form-row">
               <div class="form-group tm-form-group tm-form-group-pad tm-form-group-1">
