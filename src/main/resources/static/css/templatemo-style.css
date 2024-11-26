@@ -81,6 +81,18 @@ p:last-child { margin-bottom: 0; }
     height: 119px;
     background: white;
 }
+.tm-top-bar-form {
+    position: fixed;
+    top: 60px;
+    left: 0;
+    width: 100%;
+    padding: 0;
+    z-index: 10000;
+    transition: all 0.2s ease-in-out;
+    height: 60px;
+    background: #69c6ba;
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.25);
+}
 
 .tm-top-bar.active {
     height: 60px;

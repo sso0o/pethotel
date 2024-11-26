@@ -6,6 +6,9 @@
         xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 >
 <head>
+  <!-- 미디어쿼리 사용시 설정 해줘야함  -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>Pet Hotel</title>
   <!-- Bootstrap  CSS -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"  integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
@@ -19,30 +22,31 @@
   <link rel="stylesheet" type="text/css" href="css/datepicker.css"/>
   <link rel="stylesheet" type="text/css" href="slick/slick.css"/>
   <link rel="stylesheet" type="text/css" href="slick/slick-theme.css"/>
-  <link rel="stylesheet" href="css/templatemo-style.css">                                   <!-- Templatemo style -->
+  <link rel="stylesheet" href="css/templatemo-style.css"><!-- Templatemo style -->
 
-  <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-  <!--[if lt IE 9]>
-  <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-  <![endif]-->
+
 
   <style>
-
+    @media screen and (max-width: 768px) {
+      #nav-custom {
+        display: none !important;
+      }
+      
+    }
   </style>
 </head>
 
 <body>
 <!-- .main-content 시작-->
 <div class="tm-main-content" >
-  <div class="tm-top-bar-bg"></div>
+
+  <div class="tm-top-bar-bg" ></div>
   <!-- navbar 시작 -->
-  <div class="tm-top-bar" id="tm-top-bar">
+  <div class="tm-top-bar active" id="tm-top-bar">
     <div class="container">
       <div class="row">
         <nav class="navbar navbar-expand-lg navbar-light">
-          <a class="navbar-brand mr-auto" href="/">
+          <a class="navbar-brand mr-auto" href="/" >
             <img src="img/logo.png" alt="Site logo">
             Pet Hotel
           </a>
@@ -88,24 +92,63 @@
           </div>
         </nav>
       </div> <!-- row -->
-      <div class="row">
-        <nav class="navbar navbar-expand-lg navbar-dark">
-          <a class="navbar-brand mr-auto" href="/">
-            <img src="img/logo.png" alt="Site logo">
-            Pet Hotel
-          </a>
-
-        </nav>
-      </div>
     </div> <!-- container -->
   </div> <!-- .tm-top-bar -->
-  <!-- navbar 종료 -->
+
+  <div id="nav-custom">
+    <div class="tm-top-bar-form tm-bg-primary justify-content-center" style="display: flex; align-items: center">
+      <div class="container">
+        <div class="row">
+          <nav class="navbar navbar-expand-lg navbar-dark justify-content-center">
+            <form style="display: flex;">
+
+              <div class="form-group tm-form-group m-1" style="display: flex; align-items: center;">
+                <label for="selectCity2">목적지</label>
+                <select class="form-control tm-select ml-2" name="" id="selectCity2">
+                  <option></option>
+                </select>
+              </div>
+
+              <div class="form-group tm-form-group m-1" style="display: flex; align-items: center;">
+                <label for="startDate2">체크인</label>
+                <input type="text" class="form-control ml-2" id="startDate2" name="startDate2" placeholder="Check In">
+              </div>
+
+              <div class="form-group tm-form-group m-1" style="display: flex; align-items: center;">
+                <label for="endDate2">체크아웃</label>
+                <input type="text" class="form-control ml-2" id="endDate2" name="endDate2" placeholder="Check Out">
+              </div>
+
+              <div class="form-group tm-form-group m-1" style="display: flex; align-items: center;">
+                <label for="room">방</label>
+                <select class="form-control tm-select ml-2" name="" id="room">
+                  <option></option>
+                </select>
+              </div>
+
+              <div class="form-group tm-form-group m-1" style="display: flex; align-items: center;">
+                <label for="guest2">인원</label>
+                <input type="number" class="form-control ml-2" id="guest2" name="guest2">
+              </div>
+
+              <div class="form-group tm-form-group m-1" style="display: flex; align-items: center;">
+                <label for="pet2">펫</label>
+                <input type="number" class="form-control ml-2" id="pet2" name="pet2" >
+              </div>
+            </form>
+          </nav>
+        </div>
+      </div> <!-- .tm-top-bar-form -->
+
+    </div>
+    <!-- navbar 종료 -->
+  </div>
 
   <!-- 본문 시작 -->
   <div class="tm-page-wrap mx-auto justify-content-center">
     <div class="tm-container-outer">
       <div class="container">
-        <div class="row justify-content-center" >
+        <div class="row justify-content-center d-none d-md-block" >
           <form class="tm-search-form mt-5 mb-5">
             <div class="form-row">
               <div class="form-group tm-form-group tm-form-group-pad tm-form-group-1">
@@ -219,6 +262,9 @@
     // Date Picker in Search form
     let pickerCheckIn = datepicker('#startDate');
     let pickerCheckOut = datepicker('#endDate');
+    // Date Picker in Search form
+    let pickerCheckIn2 = datepicker('#startDate2');
+    let pickerCheckOut2 = datepicker('#endDate2');
 
     // Close navbar after clicked
     $('.nav-link').click(function(){
