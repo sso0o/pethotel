@@ -1,0 +1,36 @@
+.hotel-detail-container {
+
+}
+
+.hotel-detail-content {
+
+}
+
+.hotel-detail-ol {
+    list-style: none;
+}
+
+.hotel-detail {
+    display: flex;
+    min-height: 200px;
+}
+
+.hotel-detail-1 {
+    width: 30%;
+    border: 1px solid #787676;
+    border-radius: 0.8rem 0 0 0.8rem;
+}
+
+.hotel-detail-2 {
+    width: 40%;
+    border: 1px solid #787676;
+    border-left: 0;
+    border-right: 0;
+}
+
+.hotel-detail-3 {
+    width: 30%;
+    border: 1px solid #787676;
+    border-radius: 0 0.8rem 0.8rem 0;
+    text-align: right;
+}

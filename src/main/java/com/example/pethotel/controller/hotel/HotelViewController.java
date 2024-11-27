@@ -13,4 +13,9 @@ public class HotelViewController {
     public String showHotelPage(Model model) {
         return "hotel/hotelList";
     }
+
+    @GetMapping("/hotelDetail")
+    public String showHotelDetailPage(Model model) {
+        return "hotel/hotelDetail";
+    }
 }
