@@ -52,8 +52,8 @@ public class HotelApiController {
     public ResponseEntity getHotelImg(@PathVariable Long hotelId) {
         HashMap<Object, Object> resultMap = new HashMap<>();
         Hotel hotel = hotelService.findById(hotelId);
-//        List<HotelImg> imgs = hotelImgService.findByHotelId(hotelId);
-//        resultMap.put("hotelPhotos", imgs);
+        List<HotelImg> imgs = hotelImgService.findByHotel(hotel);
+        resultMap.put("hotelPhotos", imgs);
         return ResponseEntity.ok().body(resultMap);
     }
 

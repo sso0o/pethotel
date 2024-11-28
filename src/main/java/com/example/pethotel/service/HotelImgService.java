@@ -1,6 +1,7 @@
 package com.example.pethotel.service;
 
 import com.example.pethotel.dto.AddHotelImgRequest;
+import com.example.pethotel.entity.Hotel;
 import com.example.pethotel.entity.HotelImg;
 import com.example.pethotel.repository.HotelImgRepository;
 import lombok.RequiredArgsConstructor;
@@ -34,9 +35,9 @@ public class HotelImgService {
         hotelImgRepository.deleteById(himgId);
     }
 
-//    // 호텔 아이디로 이미지 가져오기
-//    public List<HotelImg> findByHotelId(Long hotelId) {
-//        return hotelImgRepository.findByHotelId(hotelId);
-//    }
+    // 호텔 아이디로 이미지 가져오기
+    public List<HotelImg> findByHotel(Hotel hotel) {
+        return hotelImgRepository.findByHotel(hotel);
+    }
 
 }
