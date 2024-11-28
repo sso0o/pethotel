@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -32,5 +33,10 @@ public class HotelImgService {
         }
         hotelImgRepository.deleteById(himgId);
     }
+
+//    // 호텔 아이디로 이미지 가져오기
+//    public List<HotelImg> findByHotelId(Long hotelId) {
+//        return hotelImgRepository.findByHotelId(hotelId);
+//    }
 
 }

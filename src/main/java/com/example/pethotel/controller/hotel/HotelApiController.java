@@ -2,6 +2,9 @@ package com.example.pethotel.controller.hotel;
 
 import com.example.pethotel.dto.hotel.SearchHotelRequest;
 import com.example.pethotel.dto.hotel.SearchHotelResponse;
+import com.example.pethotel.entity.Hotel;
+import com.example.pethotel.entity.HotelImg;
+import com.example.pethotel.service.HotelImgService;
 import com.example.pethotel.service.HotelService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +20,7 @@ import java.util.List;
 public class HotelApiController {
 
     private final HotelService hotelService;
+    private final HotelImgService hotelImgService;
 
     //=============================================================================================
     //================================              get               =============================
@@ -39,10 +43,18 @@ public class HotelApiController {
         if(searchData == null){
             searchData = new SearchHotelRequest();
         }
-
         resultMap.put("searchData", searchData);
         return ResponseEntity.ok().body(resultMap);
+    }
 
+    // 호텔 아이디별 사진 가져오기
+    @GetMapping("/hotel/img/{hotelId}")
+    public ResponseEntity getHotelImg(@PathVariable Long hotelId) {
+        HashMap<Object, Object> resultMap = new HashMap<>();
+        Hotel hotel = hotelService.findById(hotelId);
+//        List<HotelImg> imgs = hotelImgService.findByHotelId(hotelId);
+//        resultMap.put("hotelPhotos", imgs);
+        return ResponseEntity.ok().body(resultMap);
     }
 
     //=============================================================================================
