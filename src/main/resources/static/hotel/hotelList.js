@@ -7,7 +7,7 @@ function updateHotelList(hotels) {
           <div class="hotel-detail-content">
             <a href="/hotelDetail">
               <div class="hotel-detail">
-                <div class="hotel-detail-1">
+                <div class="hotel-detail-1" >
                 </div>
                 <div class="hotel-detail-2">
                   ${hotel.hotelName}

@@ -36,3 +36,13 @@
     border-radius: 0 0.8rem 0.8rem 0;
     text-align: right;
 }
+
+.hotel-images-slick {
+    max-height: 260px;
+    max-width: 260px;
+}
+
+.hotel-images-slick img.img-fluid {
+    max-width: 100%;   /* 이미지의 최대 너비를 100%로 설정 */
+    height: 100%;      /* 비율에 맞게 높이를 자동으로 설정 */
+}
