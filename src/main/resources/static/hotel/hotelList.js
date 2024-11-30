@@ -5,7 +5,7 @@ function updateHotelList(hotels) {
         let hotelItem = `
         <li class="mb-4" id="hotel-${hotel.hotelId}">
           <div class="hotel-detail-content">
-            <a href="/hotelDetail">
+            <a href="/hotel/hotelDetail/${hotel.hotelId}">
               <div class="hotel-detail">
                 <div class="hotel-detail-1" >
                 </div>
@@ -13,7 +13,7 @@ function updateHotelList(hotels) {
                   ${hotel.hotelName}
                 </div>
                 <div class="hotel-detail-3">
-                  ${hotel.minPrice}
+                  ${Number(hotel.minPrice).toLocaleString()}  <!-- minPrice를 천 단위 콤마로 포맷 -->
                 </div>
               </div>
             </a>
@@ -61,7 +61,7 @@ function imgRender(hotelId) {
         type: 'get',
         success: function (result){
             if (result.hotelPhotos.length > 0){
-                let slickHtml = '<div class="hotel-images-slick">';
+                let slickHtml = '<div class="hotel-images-slick img-div" >';
                 result.hotelPhotos.forEach(photo => {
                     slickHtml += `
                     <div><img src="./hotel/uploads/hotel/${photo.himgFile}" alt="호텔 이미지" class="img-fluid"></div>
@@ -72,8 +72,6 @@ function imgRender(hotelId) {
                 // HTML 구조에 슬릭 HTML 추가
                 let hotelImageContainer = $('#hotel-' + hotelId + ' .hotel-detail-1');
                 hotelImageContainer.html(slickHtml);  // 기존의 이미지를 덮어씌운다
-
-
             }
 
         },

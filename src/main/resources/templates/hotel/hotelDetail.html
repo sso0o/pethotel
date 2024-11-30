@@ -10,7 +10,6 @@
 
   <title>Pet Hotel</title>
 
-  <script src="/hotel/hotelList.js"></script>
   <!-- Bootstrap  CSS -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
@@ -21,15 +20,21 @@
 
   <!-- load stylesheets -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700">
-  <link rel="stylesheet" href="font-awesome-4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/font-awesome-4.7.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css" />
   <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
   <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css"/>
 
 
   <!-- Templatemo style -->
-  <link rel="stylesheet" href="css/templatemo-style.css">
-  <link rel="stylesheet" type="text/css" href="hotel/hotelList.css">
+  <link rel="stylesheet" href="/css/templatemo-style.css">
+
+
+  <link rel="stylesheet" type="text/css" href="/hotel/hotelDetail.css">
+  <script src="/hotel/hotelDetail.js"></script>
+
+
+
 
 
   <style>
@@ -47,7 +52,7 @@
       <div class="row">
         <nav class="navbar navbar-expand-lg navbar-light">
           <a class="navbar-brand mr-auto" href="/">
-            <img src="img/logo.png" alt="Site logo">
+            <img src="/img/logo.png" alt="Site logo">
             Pet Hotel
           </a>
 
@@ -178,13 +183,26 @@
       <div class="pt-3 pb-3">ㅍ필터 넣을 자리</div>
     </div>
     <div class="tm-container-outer">
+      <div>여기엔 호텔 사진들</div>
+
+    </div>
+    <div class="tm-container-outer">
+      <div>여기엔 호텔 정보들</div>
+      <input type="hidden" th:value="${hotel.hotelId}" id="hotelId">
+      <div th:text="${hotel.hotelInfo}">
+
+      </div>
+
+    </div>
+    <div class="tm-container-outer mt-3">
       <div class="container">
-        <div class="hotel-detail-container">
-          <ol class="hotel-detail-ol" id="hotelListContainer">
+        <div class="room-detail-container">
+          <ol class="room-detail-ol" id="roomListContainer">
           </ol>
         </div>
       </div>  <!-- .container -->
     </div>     <!-- .tm-container-outer -->
+
 
 
     <footer class="tm-container-outer">
@@ -212,11 +230,8 @@
 
 
 <script>
-
     let currentPage = 1;  // 현재 페이지 번호
     let isLoading = false;  // 데이터 로딩 상태
-
-    let searchData = JSON.parse(sessionStorage.getItem('searchData'));
 
     // 무한 스크롤 초기화
     function initializeInfiniteScroll() {
@@ -224,19 +239,20 @@
             // 스크롤이 끝에 가까워졌고, 아직 로딩 중이지 않으면
             if (!isLoading && $(window).scrollTop() + $(window).height() >= $(document).height() - 100) {
                 isLoading = true;  // 데이터 로딩 시작
-                loadMoreHotels(searchData);  // 더 많은 호텔 로드
+                loadMoreRooms($('#hotelId').val());  // 더 많은 호텔 로드
             }
         });
     }
     $(function () {
-
         // Close navbar after clicked
         $('.nav-link').click(function () {
             $('#mainNav').removeClass('show');
         });
 
         initializeInfiniteScroll();  // 무한 스크롤 초기화
-        loadMoreHotels(searchData);
+        loadMoreRooms($('#hotelId').val());
+
+        let searchData = JSON.parse(sessionStorage.getItem('searchData'));
 
         // Date Picker in Search form
         $('#startDate, #endDate').datepicker({
@@ -273,50 +289,8 @@
             }
         })
 
-        $('#searchForm').on('submit', function (e) {
-            e.preventDefault();
-
-            // 검색 조건을 sessionStorage에 저장
-            let location = $('#selectCity').val();
-            let checkIn = $('#startDate').val();
-            let checkOut = $('#endDate').val();
-            let room = $('#inputRoom').val();
-            let guest = $('#guest').val();
-            let pet = $('#pet').val();
-
-            // 조건이 모두 채워져 있는지 체크
-            if (!location || !checkIn || !checkOut || !room || !guest || !pet) {
-                // 조건이 비어 있는 경우
-                alert('모든 검색 조건을 입력해주세요.');
-            } else {
-                // 서버로 조건을 POST 요청
-                $.ajax({
-                    url: '/hotel/saveSearchOption',  // 서버로 조건 저장 요청
-                    method: 'POST',
-                    contentType: 'application/json',
-                    data: JSON.stringify({
-                        location: location,
-                        checkIn: checkIn,
-                        checkOut: checkOut,
-                        room: room,
-                        guest: guest,
-                        pet: pet
-                    }),
-                    success: function (data) {
-                        // 저장이 성공하면 호텔 리스트 페이지로 이동
-                        sessionStorage.setItem('searchData', JSON.stringify(data));
-                        window.location.href = '/hotel';
-                    },
-                    error: function (request, status, error) {
-                        let result = jQuery.parseJSON(request.responseText)
-                        alert(result.msg);
-                    }
-                });
-            }
-        })
-
         // 슬릭 슬라이더 초기화
-        $('.hotel-images-slick').slick({
+        $('.room-images-slick').slick({
             slidesToShow: 1,
             slidesToScroll: 1,
             arrows: false,

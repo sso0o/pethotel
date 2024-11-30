@@ -1,15 +1,20 @@
 package com.example.pethotel.controller.hotel;
 
 import com.example.pethotel.dto.hotel.SearchHotelRequest;
+import com.example.pethotel.entity.Hotel;
+import com.example.pethotel.service.HotelService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 @Controller
 @RequiredArgsConstructor
 public class HotelViewController {
+
+    private final HotelService hotelService;
 
     @GetMapping("/hotel")
     public String showHotelPage(HttpSession session, Model model) {
@@ -25,8 +30,10 @@ public class HotelViewController {
         return "hotel/hotelList";
     }
 
-    @GetMapping("/hotelDetail")
-    public String showHotelDetailPage(Model model) {
+    @GetMapping("/hotel/hotelDetail/{hotelId}")
+    public String showHotelDetailPage(@PathVariable Long hotelId, Model model) {
+        Hotel hotel = hotelService.findById(hotelId);
+        model.addAttribute("hotel", hotel);
         return "hotel/hotelDetail";
     }
 }

@@ -93,6 +93,31 @@ public class FileController {
         }
     }
 
+    // 이미지 파일 제공 엔드포인트
+    @GetMapping("/hotel/hotelDetail/uploads/room/{fileName}")
+    public ResponseEntity<?> getRoomImageForSlick(@PathVariable String fileName) {
+        try {
+            // 파일 경로 설정
+            Path filePath = Paths.get("./uploads/room/" + fileName);
+            Resource resource = new UrlResource(filePath.toUri());
+
+            if (resource.exists() && resource.isReadable()) {
+                return ResponseEntity.ok()
+                        .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
+                        .contentType(MediaType.IMAGE_JPEG) // 이미지 형식에 맞게 설정 (예: JPEG)
+                        .body(resource);
+            } else {
+                throw new FileNotFoundException("파일을 찾을 수 없습니다. \n -> "+fileName);
+            }
+        } catch (IOException e) {
+            // IOException 발생 시 JSON 형태로 에러 메시지 반환
+            HashMap<String, String> errorMap = new HashMap<>();
+            errorMap.put("msg", "파일을 처리하는 중 오류가 발생했습니다: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMap);
+
+        }
+    }
+
 
 //
 //    @DeleteMapping("/manager/hotelImg/{fileName}")

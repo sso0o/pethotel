@@ -221,6 +221,13 @@ label { font-weight: 700; }
 .tm-btn-white-primary { color: #69c6ba; }
 .tm-btn-white-highlight { color: #c66995; }
 
+.tm-btn-white:hover,
+.tm-btn-white:focus,
+.tm-btn-white:active {
+    background: #69c6ba;
+    color: white;
+}
+
 .tm-btn-white-primary:hover,
 .tm-btn-white-primary:focus,
 .tm-btn-white-primary:active {

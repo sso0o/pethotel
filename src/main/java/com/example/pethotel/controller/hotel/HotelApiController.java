@@ -4,8 +4,10 @@ import com.example.pethotel.dto.hotel.SearchHotelRequest;
 import com.example.pethotel.dto.hotel.SearchHotelResponse;
 import com.example.pethotel.entity.Hotel;
 import com.example.pethotel.entity.HotelImg;
+import com.example.pethotel.entity.Room;
 import com.example.pethotel.service.HotelImgService;
 import com.example.pethotel.service.HotelService;
+import com.example.pethotel.service.RoomService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -21,6 +23,7 @@ public class HotelApiController {
 
     private final HotelService hotelService;
     private final HotelImgService hotelImgService;
+    private final RoomService roomService;
 
     //=============================================================================================
     //================================              get               =============================
@@ -57,6 +60,14 @@ public class HotelApiController {
         return ResponseEntity.ok().body(resultMap);
     }
 
+    @GetMapping("/hotel/valuableRoom/{hotelId}")
+    public ResponseEntity getHotelValuableRoom(@PathVariable Long hotelId, @RequestParam("page") int page, @RequestParam("size") int size) {
+        HashMap<Object, Object> resultMap = new HashMap<>();
+        List<Room> rooms = roomService.findAllByHotelId(hotelId);
+        resultMap.put("rooms", rooms);
+        return ResponseEntity.ok().body(resultMap);
+    }
+
     //=============================================================================================
     //================================             post               =============================
     //=============================================================================================
@@ -65,7 +76,7 @@ public class HotelApiController {
     @PostMapping("/hotel/saveSearchOption")
     public ResponseEntity saveSearchOption(HttpSession session, @RequestBody SearchHotelRequest req){
         session.setAttribute("searchData", req);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok().body(req);
     }
 
 
