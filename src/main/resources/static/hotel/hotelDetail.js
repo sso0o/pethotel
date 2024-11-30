@@ -31,7 +31,9 @@ function updateRoomList(rooms) {
                   </div>
                 </div>
                 <div class="col-1 room-detail-5">
-                  <button type="button" class="btn btn-primary p-2" style="max-width: fit-content; margin: 10px">예약</button>
+                  <button type="button" class="btn btn-primary p-2" style="max-width: fit-content; margin: 10px" onclick="makeBooking()">
+                  예약
+                  </button>
                 </div>
               </div>
           </div>
@@ -85,4 +87,10 @@ function imgRender(room) {
         let hotelImageContainer = $('#room-' + room.roomId + ' .room-detail-1');
         hotelImageContainer.html(slickHtml);  // 기존의 이미지를 덮어씌운다
     }
+}
+
+
+// 예약 요청
+function makeBooking(){
+
 }
