@@ -2,7 +2,9 @@ package com.example.pethotel.controller.hotel;
 
 import com.example.pethotel.dto.hotel.SearchHotelRequest;
 import com.example.pethotel.entity.Hotel;
+import com.example.pethotel.entity.Room;
 import com.example.pethotel.service.HotelService;
+import com.example.pethotel.service.RoomService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 public class HotelViewController {
 
     private final HotelService hotelService;
+    private final RoomService roomService;
 
     @GetMapping("/hotel")
     public String showHotelPage(HttpSession session, Model model) {
@@ -35,5 +38,12 @@ public class HotelViewController {
         Hotel hotel = hotelService.findById(hotelId);
         model.addAttribute("hotel", hotel);
         return "hotel/hotelDetail";
+    }
+
+    @GetMapping("/hotel/makeBooking/{roomId}")
+    public String makeBookingPage(@PathVariable Long roomId, Model model) {
+        Room room = roomService.findById(roomId);
+        model.addAttribute("room", room);
+        return "hotel/makeBooking";
     }
 }

@@ -11,6 +11,8 @@ import com.example.pethotel.service.RoomService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.web.PagedModel;
+import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,6 +40,15 @@ public class HotelApiController {
         return ResponseEntity.ok().body(resultMap);
     }
 
+    // 검색 조건에 맞는 객실 가져오기
+    @GetMapping("/hotel/search/{hotelId}")
+    public ResponseEntity getAvailableRoom(@PathVariable("hotelId") Long hotelId, @RequestParam("page") int page, @RequestParam("size") int size) {
+        HashMap<Object, Object> resultMap = new HashMap<>();
+        Page<Room> rooms = roomService.findBySearchOption(hotelId, page, size);
+        resultMap.put("rooms", rooms);
+        return ResponseEntity.ok().body(resultMap);
+    }
+
     // 세션에 있는 검색조건 가져오기
     @GetMapping("/hotel/getSearchOption")
     public ResponseEntity getHotelSearchOption(HttpSession session){
@@ -60,13 +71,7 @@ public class HotelApiController {
         return ResponseEntity.ok().body(resultMap);
     }
 
-    @GetMapping("/hotel/valuableRoom/{hotelId}")
-    public ResponseEntity getHotelValuableRoom(@PathVariable Long hotelId, @RequestParam("page") int page, @RequestParam("size") int size) {
-        HashMap<Object, Object> resultMap = new HashMap<>();
-        List<Room> rooms = roomService.findAllByHotelId(hotelId);
-        resultMap.put("rooms", rooms);
-        return ResponseEntity.ok().body(resultMap);
-    }
+
 
     //=============================================================================================
     //================================             post               =============================

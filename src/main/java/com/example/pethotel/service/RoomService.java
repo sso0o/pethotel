@@ -2,12 +2,16 @@ package com.example.pethotel.service;
 
 import com.example.pethotel.dto.AddRoomRequest;
 import com.example.pethotel.dto.UpdateRoomRequest;
+import com.example.pethotel.dto.hotel.SearchHotelResponse;
 import com.example.pethotel.entity.Hotel;
 import com.example.pethotel.entity.Room;
 import com.example.pethotel.exception.InvalidlValueException;
 import com.example.pethotel.repository.RoomRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -46,5 +50,15 @@ public class RoomService {
     public Room findById(Long roomId) {
         return roomRepository.findById(roomId)
                 .orElseThrow(() ->  new IllegalArgumentException("객실을 찾을수 없습니다."));
+    }
+
+
+
+
+
+
+    public Page<Room> findBySearchOption(Long hotelId, int page, int size){
+        Pageable pageable = PageRequest.of(page - 1, size);  // 페이지는 0부터 시작하므로, 1을 빼서 전달
+        return roomRepository.findBySearchOption(pageable, hotelId);
     }
 }
