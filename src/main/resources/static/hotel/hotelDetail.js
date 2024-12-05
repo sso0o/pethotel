@@ -31,14 +31,13 @@ function updateRoomList(rooms) {
                   </div>
                 </div>
                 <div class="col-1 room-detail-5">
-                  <button type="button" class="btn btn-primary p-2" style="max-width: fit-content; margin: 10px" onclick="window.location.href='/hotel/makeBooking/${room.roomId}'">
+                  <button type="button" class="btn btn-primary p-2" style="max-width: fit-content; margin: 10px" onclick="window.location.href='/booking/${room.roomId}'">
                   예약
                   </button>
                 </div>
               </div>
           </div>
         </div>
-          
         </li>
         `;
         roomListContainer.append(roomItem);

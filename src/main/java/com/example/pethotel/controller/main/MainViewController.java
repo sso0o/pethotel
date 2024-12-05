@@ -1,5 +1,6 @@
 package com.example.pethotel.controller.main;
 
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
@@ -12,7 +13,11 @@ public class MainViewController {
     }
 
     @GetMapping("/login")
-    public String login() {
+    public String login(HttpServletRequest request) {
+        String uri = request.getHeader("Referer");
+        if(!uri.contains("/login")){
+            request.getSession().setAttribute("prevPage", uri);
+        }
         return "login";
     }
 

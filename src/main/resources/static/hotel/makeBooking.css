@@ -1,0 +1,6 @@
+.content-box{
+    max-width: fit-content;
+    border: 1px solid;
+    border-radius: 0.8rem;
+    margin: 0 auto;
+}

@@ -40,10 +40,12 @@ public class HotelViewController {
         return "hotel/hotelDetail";
     }
 
-    @GetMapping("/hotel/makeBooking/{roomId}")
+    @GetMapping("/booking/{roomId}")
     public String makeBookingPage(@PathVariable Long roomId, Model model) {
         Room room = roomService.findById(roomId);
+        Hotel hotel = hotelService.findById(room.getHotel().getHotelId());
         model.addAttribute("room", room);
+        model.addAttribute("hotel", hotel);
         return "hotel/makeBooking";
     }
 }

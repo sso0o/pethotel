@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import java.util.Date;
 import java.util.UUID;
 
 @Entity
@@ -21,13 +20,13 @@ public class Booking {
     private UUID bookingId;
 
     @Column(name = "userid", updatable = false)
-    private String userId;
+    private Long userId;
 
     @Column(name = "hotel_id", updatable = false)
     private Long hotelId;
 
     @Column(name = "roonm_id", updatable = false)
-    private Long roonmId;
+    private Long roomId;
 
     @Column(name = "start_date", updatable = false)
     private String startDate;
@@ -50,21 +49,15 @@ public class Booking {
     @Column(name = "total_date", updatable = false)
     private int totalDate;
 
-    @Column(name = "guest_name")
-    private String guestName;
-
-    @Column(name = "guest_phone")
-    private String guestPhone;
 
     @Builder
-    public Booking (String userId, Long hotelId, Long roonmId,
+    public Booking (Long userId, Long hotelId, Long roomId,
                     String startDate, String endDate,
                     int bookingGuest, int bookingPet,
-                    String payChk, int totalPrice, int totalDate,
-                    String guestName, String guestPhone) {
+                    String payChk, int totalPrice, int totalDate) {
         this.userId = userId;
         this.hotelId = hotelId;
-        this.roonmId = roonmId;
+        this.roomId = roomId;
         this.startDate = startDate;
         this.endDate = endDate;
         this.bookingGuest = bookingGuest;
@@ -72,18 +65,7 @@ public class Booking {
         this.payChk = payChk;
         this.totalPrice = totalPrice;
         this.totalDate = totalDate;
-        this.guestName = guestName;
-        this.guestPhone = guestPhone;
     }
-
-    public void update(int bookingGuest, int bookingPet, String guestName, String guestPhone) {
-        this.bookingGuest = bookingGuest;
-        this.bookingPet = bookingPet;
-        this.guestName = guestName;
-        this.guestPhone = guestPhone;
-    }
-
-
 
 
 }
