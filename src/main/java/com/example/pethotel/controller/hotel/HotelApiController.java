@@ -11,8 +11,6 @@ import com.example.pethotel.service.RoomService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.web.PagedModel;
-import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -70,8 +68,6 @@ public class HotelApiController {
         resultMap.put("hotelPhotos", imgs);
         return ResponseEntity.ok().body(resultMap);
     }
-
-
 
     //=============================================================================================
     //================================             post               =============================
