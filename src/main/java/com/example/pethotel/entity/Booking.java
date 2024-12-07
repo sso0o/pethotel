@@ -49,12 +49,16 @@ public class Booking {
     @Column(name = "total_date", updatable = false)
     private int totalDate;
 
+    @Column(name = "payment_id", updatable = false)
+    private String paymentId;
+
 
     @Builder
     public Booking (Long userId, Long hotelId, Long roomId,
                     String startDate, String endDate,
                     int bookingGuest, int bookingPet,
-                    String payChk, int totalPrice, int totalDate) {
+                    String payChk, int totalPrice, int totalDate,
+                    String paymentId) {
         this.userId = userId;
         this.hotelId = hotelId;
         this.roomId = roomId;
@@ -65,6 +69,12 @@ public class Booking {
         this.payChk = payChk;
         this.totalPrice = totalPrice;
         this.totalDate = totalDate;
+        this.paymentId = paymentId;
+    }
+
+    public void updatePaycheck(String payChk, String paymentId) {
+        this.payChk = payChk;
+        this.paymentId = paymentId;
     }
 
 

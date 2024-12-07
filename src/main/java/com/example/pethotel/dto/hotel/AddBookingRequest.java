@@ -16,9 +16,9 @@ public class AddBookingRequest {
     private int pet;
     private int totalPrice;
     private int totalDate;
+    private String paymentId;
 
-    public Booking toEntity(Long userId, Long roomId, Long hotelId, String checkIn, String checkOut,
-                     int guest, int pet, int totalPrice, int totalDate) {
+    public Booking toEntity() {
         return Booking.builder()
                 .userId(userId)
                 .roomId(roomId)
@@ -29,6 +29,7 @@ public class AddBookingRequest {
                 .bookingPet(pet)
                 .totalPrice(totalPrice)
                 .totalDate(totalDate)
+                .paymentId(paymentId)
                 .build();
 
     }

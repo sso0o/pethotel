@@ -29,31 +29,19 @@
 
   <!-- Templatemo style -->
   <link rel="stylesheet" href="/css/templatemo-style.css">
-  <link rel="stylesheet" href="/hotel/makeBooking.css">
-  <script src="/hotel/makeBooking.js"></script>
-
 
   <style>
   </style>
 </head>
 
 <body>
-
-<div id="room"
-     th:data-room-id="${room.roomId}"
-     th:data-room-name="${room.roomName}"
-     th:data-room-type="${room.roomType}"
-     th:data-room-price="${room.roomPrice}"
-     th:data-room-limit-guest="${room.limitGuest}"
-     th:data-room-limit-pet="${room.limitPet}">
-</div>
-<div id="hotel"
-     th:data-hotel-id="${hotel.hotelId}"
-     th:data-hotel-name="${hotel.hotelName}">
+<div id="payResult"
+     th:data-result-code="${resultCode}"
+     th:data-payment-id="${paymentId}">
 </div>
 
 <div id="user"
-      th:data-user-id="${#authentication.principal.id}"
+     th:data-user-id="${#authentication.principal.id}"
      th:data-user-name="${#authentication.principal.username}">
 </div>
 
@@ -115,7 +103,7 @@
       </div> <!-- row -->
     </div> <!-- container -->
   </div> <!-- .tm-top-bar -->
-    <!-- navbar 종료 -->
+  <!-- navbar 종료 -->
 
   <!-- 본문 시작 -->
   <div class="tm-page-wrap mx-auto justify-content-center">
@@ -123,20 +111,14 @@
       <div class="container">
         <!-- Page Content -->
         <div class="p-5">
-          <div class="row content-box p-4">
-            <div class=" col-6 content-box-main" id="bookingDetail">
-              <h2 th:text="${hotel.hotelName}"></h2>
-              <h3 th:text="${room.roomName}"></h3>
-              <p text=""></p>
-            </div>
-            <div class=" col-6 content-box-main">
-              <div>
-                여기다가는 객실 정보 넣을거야
-              </div>
+          <div class="content-box p-4">
+            <div class="content-box-main" id="result-container">
+              <p th:text="${resultMessage}"></p>
             </div>
             <hr/>
-            <div class="content-box-bottom">
-              <button type="button" class="btn btn-primary tm-btn tm-btn-search" id="btnPayment" >결제</button>
+            <div class="content-box-bottom" style="display: flex">
+              <button type="button" class="btn btn-primary tm-btn " id="btnHome" > 홈으로</button>
+              <button type="button" class="btn btn-primary tm-btn " id="btnMybooking" > 예약 확인</button>
             </div>
           </div>
 
@@ -193,72 +175,48 @@
 <script>
 
     $(function () {
-        // Close navbar after clicked
-        $('.nav-link').click(function () {
-            $('#mainNav').removeClass('show');
-        });
 
-        let btnLogout = $('#btnLogout');
-        btnLogout.click(function () {
-            let myModal = new bootstrap.Modal(document.getElementById('logoutModal'));
-            myModal.show();
+        $('#btnHome').click(function () {
+            location.href = "/";
         })
-        drawBookingDetail();
 
-        let roomDetail = $('#room');
-        let hotelDetail = $('#hotel');
-        let user = $('#user');
+        $('#btnMybooking').click(function () {
+            location.href = "/mybooking";
+        })
 
-        let searchData = JSON.parse(sessionStorage.getItem('searchData'));
-        let checkInDate = new Date(searchData.checkIn);  // 체크인 날짜
-        let checkOutDate = new Date(searchData.checkOut);  // 체크아웃 날짜
+        let payResult = $('#payResult');
+        // let bookingData = JSON.parse(sessionStorage.getItem('bookingData'));
+        let data = JSON.stringify({
+            userId: bookingData.userId,
+            roomId: bookingData.roomId,
+            hotelId: bookingData.hotelId,
+            checkIn: bookingData.checkIn,
+            checkOut: bookingData.checkOut,
+            guest: bookingData.guest,
+            pet: bookingData.pet,
+            totalPrice: bookingData.totalPrice,
+            totalDate: bookingData.totalDate
+        })
 
-        let timeDiff = checkOutDate.getTime() - checkInDate.getTime();
-        let dayDiff = timeDiff / (1000 * 3600 * 24);  // 밀리초를 일수로 변환
-
-        let oPay = Naver.Pay.create({
-            "mode" : "development", // development or production
-            "clientId": "HN3GGCMDdTgGUfl0kFCo", // clientId
-            "chainId": "Wms3cFptanlpSjR" // chainId
-        });
-
-
-        let btnPayment = $('#btnPayment');
-        btnPayment.click(function () {
+        if(payResult.data('result-code') == "Success") {
             $.ajax({
-                url: '/booking/saveBookingData',
-                async: false,
-                type: 'post',
-                data: JSON.stringify({
-                    userId: user.data('user-id'),
-                    roomId: roomDetail.data('room-id'),
-                    hotelId: hotelDetail.data('hotel-id'),
-                    checkIn: searchData.checkIn,
-                    checkOut: searchData.checkOut,
-                    guest: searchData.guest,
-                    pet: searchData.pet,
-                    totalPrice: roomDetail.data('room-price')*dayDiff,
-                    totalDate: dayDiff
-                }),
-                success: function (data) {
-                    oPay.open({
-                        "merchantPayKey": "20241207WWKEnn",
-                        "productName": hotelDetail.data('hotel-name')+" - "+roomDetail.data('room-name'),
-                        "productCount": "1",
-                        "totalPayAmount": roomDetail.data('room-price')*dayDiff,
-                        "taxScopeAmount": roomDetail.data('room-price')*dayDiff,
-                        "taxExScopeAmount": "0",
-                        "returnUrl": "http://localhost:8081/booking/complete"
-                    });
+                url: "/booking/approve/"+payResult.data('payment-id'),
+                type: "POST",
+                data: data,
+                success: function(response) {
+                    console.log(response.paymentResult);
+                    location.href = "/booking/complete";
                 },
-                error: function (request, status, error) {
-                    let result = jQuery.parseJSON(request.responseText)
-                    alert(result.msg);
+                error: function(error) {
+
                 }
             })
+        } else if (payResult.data('result-code') == "UserCancel") {
+
+        }
 
 
-        });
+
 
     });
 

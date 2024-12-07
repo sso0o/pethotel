@@ -1,13 +1,17 @@
 package com.example.pethotel.controller.hotel;
 
+import com.example.pethotel.dto.hotel.AddBookingRequest;
 import com.example.pethotel.dto.hotel.SearchHotelRequest;
 import com.example.pethotel.dto.hotel.SearchHotelResponse;
+import com.example.pethotel.entity.Booking;
 import com.example.pethotel.entity.Hotel;
 import com.example.pethotel.entity.HotelImg;
 import com.example.pethotel.entity.Room;
+import com.example.pethotel.service.BookingService;
 import com.example.pethotel.service.HotelImgService;
 import com.example.pethotel.service.HotelService;
 import com.example.pethotel.service.RoomService;
+import com.example.pethotel.service.payment.PaymentService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -16,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -24,6 +29,9 @@ public class HotelApiController {
     private final HotelService hotelService;
     private final HotelImgService hotelImgService;
     private final RoomService roomService;
+    private final BookingService bookingService;
+
+    private final PaymentService paymentService;
 
     //=============================================================================================
     //================================              get               =============================
@@ -69,6 +77,9 @@ public class HotelApiController {
         return ResponseEntity.ok().body(resultMap);
     }
 
+
+
+
     //=============================================================================================
     //================================             post               =============================
     //=============================================================================================
@@ -79,6 +90,40 @@ public class HotelApiController {
         session.setAttribute("searchData", req);
         return ResponseEntity.ok().body(req);
     }
+
+    // 예약조건 저장
+    @PostMapping("/hotel/saveBookingData")
+    public ResponseEntity saveBookingData(@RequestBody AddBookingRequest req){
+        HashMap<Object, Object> resultMap = new HashMap<>();
+        Booking booking = bookingService.save(req);
+        resultMap.put("booking", booking);
+        return ResponseEntity.ok().body(req);
+    }
+
+
+    // nPay 승인 로직
+    @PostMapping("/booking/approve/{paymentId}")
+    public ResponseEntity bookingApprove(@PathVariable String paymentId, @RequestBody AddBookingRequest req){
+        HashMap<Object, Object> resultMap = new HashMap<>();
+        Map<String, Object> paymentResult = paymentService.nPayProgress(paymentId);
+        if(paymentResult.get("code").equals("Success")){
+            Booking booking = bookingService.save(req);
+            resultMap.put("booking", booking);
+        }
+
+        resultMap.put("paymentResult", paymentResult);
+        return ResponseEntity.ok().body(resultMap);
+    }
+
+    // 예약정보 저장
+    @PostMapping("/booking/saveBooking")
+    public ResponseEntity bookingSave(@RequestBody AddBookingRequest req){
+        HashMap<Object, Object> resultMap = new HashMap<>();
+        Booking booking = bookingService.save(req);
+        resultMap.put("booking", booking);
+        return ResponseEntity.ok().body(req);
+    }
+
 
 
 

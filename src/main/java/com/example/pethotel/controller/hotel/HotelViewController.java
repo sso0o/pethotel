@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequiredArgsConstructor
@@ -47,5 +48,16 @@ public class HotelViewController {
         model.addAttribute("room", room);
         model.addAttribute("hotel", hotel);
         return "hotel/makeBooking";
+    }
+
+    @GetMapping("/booking/complete")
+    public String bookingCompletePage(@RequestParam(required = false) String resultCode, @RequestParam(required = false) String resultMessage,
+                                              @RequestParam(required = false) String reserveId, @RequestParam(required = false) String paymentId,
+                                              Model model){
+        model.addAttribute("resultCode", resultCode);
+        model.addAttribute("resultMessage", resultMessage!= null? resultMessage : "No message provided");
+        model.addAttribute("paymentId", paymentId );
+        return "hotel/bookingComplete";
+
     }
 }
