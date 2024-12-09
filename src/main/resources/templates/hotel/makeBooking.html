@@ -227,8 +227,8 @@
         btnPayment.click(function () {
             $.ajax({
                 url: '/booking/saveBookingData',
-                async: false,
                 type: 'post',
+                contentType: 'application/json',
                 data: JSON.stringify({
                     userId: user.data('user-id'),
                     roomId: roomDetail.data('room-id'),
@@ -248,7 +248,7 @@
                         "totalPayAmount": roomDetail.data('room-price')*dayDiff,
                         "taxScopeAmount": roomDetail.data('room-price')*dayDiff,
                         "taxExScopeAmount": "0",
-                        "returnUrl": "http://localhost:8081/booking/complete"
+                        "returnUrl": "http://localhost:8081/booking/complete?bookingId="+data.booking.bookingId.toString(),
                     });
                 },
                 error: function (request, status, error) {

@@ -3,6 +3,7 @@ package com.example.pethotel.controller.hotel;
 import com.example.pethotel.dto.hotel.SearchHotelRequest;
 import com.example.pethotel.entity.Hotel;
 import com.example.pethotel.entity.Room;
+import com.example.pethotel.service.BookingService;
 import com.example.pethotel.service.HotelService;
 import com.example.pethotel.service.RoomService;
 import jakarta.servlet.http.HttpSession;
@@ -19,6 +20,7 @@ public class HotelViewController {
 
     private final HotelService hotelService;
     private final RoomService roomService;
+    private final BookingService bookingService;
 
     @GetMapping("/hotel")
     public String showHotelPage(HttpSession session, Model model) {
@@ -51,13 +53,13 @@ public class HotelViewController {
     }
 
     @GetMapping("/booking/complete")
-    public String bookingCompletePage(@RequestParam(required = false) String resultCode, @RequestParam(required = false) String resultMessage,
-                                              @RequestParam(required = false) String reserveId, @RequestParam(required = false) String paymentId,
-                                              Model model){
+    public String bookingCompletePage(@RequestParam(required = false) String bookingId, @RequestParam(required = false) String resultCode,
+                                      @RequestParam(required = false) String resultMessage, @RequestParam(required = false) String reserveId,
+                                      @RequestParam(required = false) String paymentId, Model model){
+        model.addAttribute("bookingId", bookingId);
         model.addAttribute("resultCode", resultCode);
         model.addAttribute("resultMessage", resultMessage!= null? resultMessage : "No message provided");
         model.addAttribute("paymentId", paymentId );
         return "hotel/bookingComplete";
-
     }
 }

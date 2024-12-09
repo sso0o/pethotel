@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
@@ -92,23 +93,27 @@ public class HotelApiController {
     }
 
     // 예약조건 저장
-    @PostMapping("/hotel/saveBookingData")
-    public ResponseEntity saveBookingData(@RequestBody AddBookingRequest req){
+    @PostMapping("/booking/saveBookingData")
+    public ResponseEntity saveBookingData(HttpSession session, @RequestBody AddBookingRequest req){
         HashMap<Object, Object> resultMap = new HashMap<>();
         Booking booking = bookingService.save(req);
+//        session.setAttribute("bookingData", req);
+//        session.setAttribute("booking", booking);
         resultMap.put("booking", booking);
-        return ResponseEntity.ok().body(req);
+        return ResponseEntity.ok().body(resultMap);
     }
 
 
     // nPay 승인 로직
     @PostMapping("/booking/approve/{paymentId}")
-    public ResponseEntity bookingApprove(@PathVariable String paymentId, @RequestBody AddBookingRequest req){
+    public ResponseEntity bookingApprove(@PathVariable String paymentId, @RequestBody UUID bookingId){
         HashMap<Object, Object> resultMap = new HashMap<>();
         Map<String, Object> paymentResult = paymentService.nPayProgress(paymentId);
         if(paymentResult.get("code").equals("Success")){
-            Booking booking = bookingService.save(req);
+            Booking booking = bookingService.findById(bookingId);
+            booking.updatePaycheck("paid", paymentId);
             resultMap.put("booking", booking);
+            return ResponseEntity.ok().body(resultMap);
         }
 
         resultMap.put("paymentResult", paymentResult);

@@ -40,6 +40,10 @@
      th:data-payment-id="${paymentId}">
 </div>
 
+<div id="booking"
+     th:data-booking-id="${bookingId}">
+</div>
+
 <div id="user"
      th:data-user-id="${#authentication.principal.id}"
      th:data-user-name="${#authentication.principal.username}">
@@ -185,39 +189,25 @@
         })
 
         let payResult = $('#payResult');
-        // let bookingData = JSON.parse(sessionStorage.getItem('bookingData'));
-        let data = JSON.stringify({
-            userId: bookingData.userId,
-            roomId: bookingData.roomId,
-            hotelId: bookingData.hotelId,
-            checkIn: bookingData.checkIn,
-            checkOut: bookingData.checkOut,
-            guest: bookingData.guest,
-            pet: bookingData.pet,
-            totalPrice: bookingData.totalPrice,
-            totalDate: bookingData.totalDate
-        })
+        let bookingId = $('#booking').data('booking-id');
 
         if(payResult.data('result-code') == "Success") {
             $.ajax({
                 url: "/booking/approve/"+payResult.data('payment-id'),
                 type: "POST",
-                data: data,
+                contentType: "application/json",
+                data: JSON.stringify({ bookingId: bookingId }),
                 success: function(response) {
-                    console.log(response.paymentResult);
                     location.href = "/booking/complete";
                 },
-                error: function(error) {
-
+                error: function (request, status, error) {
+                    let result = jQuery.parseJSON(request.responseText)
+                    alert(result.msg);
                 }
             })
         } else if (payResult.data('result-code') == "UserCancel") {
 
         }
-
-
-
-
     });
 
 </script>

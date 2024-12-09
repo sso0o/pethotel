@@ -27,4 +27,9 @@ public class BookingService {
         booking.updatePaycheck(payChk, paymentId);
         return bookingRepository.save(booking);
     }
+
+    public Booking findById(UUID bookingId) {
+        return bookingRepository.findById(bookingId)
+               .orElseThrow(() -> new IllegalArgumentException("not found: " + bookingId));
+    }
 }
