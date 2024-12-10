@@ -41,13 +41,23 @@
 </div>
 
 <div id="booking"
-     th:data-booking-id="${bookingId}">
+     th:if="${booking != null}"
+     th:data-booking="${booking}"
+     th:data-booking-id="${booking.bookingId}"
+     th:data-booking-room-id="${booking.roomId}"
+     th:data-booking-hotel-id="${booking.hotelId}"
+     th:data-booking-user-id="${booking.userId}"
+     th:data-booking-start-date="${booking.startDate}"
+     th:data-booking-end-date="${booking.endDate}"
+     th:data-booking-total-price="${booking.totalPrice}"
+     th:data-booking-total-date="${booking.totalDate}">
 </div>
 
 <div id="user"
      th:data-user-id="${#authentication.principal.id}"
      th:data-user-name="${#authentication.principal.username}">
 </div>
+
 
 <!-- .main-content 시작-->
 <div class="tm-main-content">
@@ -189,25 +199,39 @@
         })
 
         let payResult = $('#payResult');
-        let bookingId = $('#booking').data('booking-id');
 
-        if(payResult.data('result-code') == "Success") {
-            $.ajax({
-                url: "/booking/approve/"+payResult.data('payment-id'),
-                type: "POST",
-                contentType: "application/json",
-                data: JSON.stringify({ bookingId: bookingId }),
-                success: function(response) {
-                    location.href = "/booking/complete";
-                },
-                error: function (request, status, error) {
-                    let result = jQuery.parseJSON(request.responseText)
-                    alert(result.msg);
-                }
+        if ($('#booking').length > 0) {
+            let data = JSON.stringify({
+                bookingId: $('#booking').data('booking-id'),
+                roomId: $('#booking').data('booking-room-id'),
+                hotelId: $('#booking').data('booking-hotel-id'),
+                userId: $('#booking').data('booking-user-id'),
+                startDate: $('#booking').data('booking-start-date'),
+                endDate: $('#booking').data('booking-end-date'),
+                totalPrice: $('#booking').data('booking-total-price'),
+                totalDate: $('#booking').data('booking-total-date')
             })
-        } else if (payResult.data('result-code') == "UserCancel") {
 
+            if(payResult.data('result-code') == "Success") {
+                $.ajax({
+                    url: "/booking/approve/"+payResult.data('payment-id'),
+                    type: "POST",
+                    contentType: "application/json",
+                    data: data,
+                    success: function(response) {
+                        location.href = "/booking/complete";
+                    },
+                    error: function (request, status, error) {
+                        let result = jQuery.parseJSON(request.responseText)
+                        alert(result.msg);
+                    }
+                })
+            } else if (payResult.data('result-code') == "UserCancel") {
+
+            }
         }
+
+
     });
 
 </script>

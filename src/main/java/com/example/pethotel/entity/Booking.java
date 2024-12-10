@@ -2,8 +2,11 @@ package com.example.pethotel.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
@@ -49,8 +52,16 @@ public class Booking {
     @Column(name = "total_date", updatable = false)
     private int totalDate;
 
-    @Column(name = "payment_id", updatable = false)
+    @Column(name = "payment_id")
     private String paymentId;
+
+    @CreationTimestamp
+    @Column(name = "createdat", updatable = false)
+    private LocalDateTime createdAt;
+
+    @UpdateTimestamp
+    @Column(name = "updatedat")
+    private LocalDateTime updatedAt;
 
 
     @Builder

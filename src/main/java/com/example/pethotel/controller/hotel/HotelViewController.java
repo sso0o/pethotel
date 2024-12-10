@@ -1,6 +1,7 @@
 package com.example.pethotel.controller.hotel;
 
 import com.example.pethotel.dto.hotel.SearchHotelRequest;
+import com.example.pethotel.entity.Booking;
 import com.example.pethotel.entity.Hotel;
 import com.example.pethotel.entity.Room;
 import com.example.pethotel.service.BookingService;
@@ -13,6 +14,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.UUID;
 
 @Controller
 @RequiredArgsConstructor
@@ -56,6 +59,10 @@ public class HotelViewController {
     public String bookingCompletePage(@RequestParam(required = false) String bookingId, @RequestParam(required = false) String resultCode,
                                       @RequestParam(required = false) String resultMessage, @RequestParam(required = false) String reserveId,
                                       @RequestParam(required = false) String paymentId, Model model){
+        if(bookingId!= null){
+            Booking booking = bookingService.findById(UUID.fromString(bookingId));
+            model.addAttribute("booking", booking);
+        }
         model.addAttribute("bookingId", bookingId);
         model.addAttribute("resultCode", resultCode);
         model.addAttribute("resultMessage", resultMessage!= null? resultMessage : "No message provided");
