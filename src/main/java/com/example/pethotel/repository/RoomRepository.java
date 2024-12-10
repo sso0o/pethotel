@@ -1,6 +1,6 @@
 package com.example.pethotel.repository;
 
-import com.example.pethotel.dto.hotel.SearchHotelResponse;
+import com.example.pethotel.dto.hotel.SearchHotelRequest;
 import com.example.pethotel.entity.Room;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,4 +20,13 @@ public interface RoomRepository extends JpaRepository<Room, Long> {
             "FROM Room r " +
             "where r.hotel.hotelId = :hotelId")
     Page<Room> findBySearchOption(Pageable pageable, @Param("hotelId") Long hotelId);
+
+    @Query(value = "SELECT r " +
+            "From Room r " +
+            "where r.hotel.hotelId = :hotelId")
+    Page<Room> findBySearch(Pageable pageable, @Param("hotelId") Long hotelId, SearchHotelRequest request);
+    // 부킹테이블(시작일~종료일 + roomId)
+    // +
+    // room table
+    // 조인 후 존재하지 않는 객실 아이디만
 }
