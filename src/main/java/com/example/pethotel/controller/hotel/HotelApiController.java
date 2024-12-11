@@ -48,9 +48,15 @@ public class HotelApiController {
 
     // 검색 조건에 맞는 객실 가져오기
     @GetMapping("/hotel/search/{hotelId}")
-    public ResponseEntity getAvailableRoom(@PathVariable("hotelId") Long hotelId, @RequestParam("page") int page, @RequestParam("size") int size) {
+    public ResponseEntity getAvailableRoom(@PathVariable("hotelId") Long hotelId,
+                                           @RequestParam("page") int page,
+                                           @RequestParam("size") int size,
+                                           @RequestParam("startDate") String startDate,
+                                           @RequestParam("endDate") String endDate) throws Exception {
         HashMap<Object, Object> resultMap = new HashMap<>();
-        Page<Room> rooms = roomService.findBySearchOption(hotelId, page, size);
+
+        //Page<Room> rooms = roomService.findBySearchOption(hotelId, page, size);
+        Page<Room> rooms = roomService.findSearchRoom(hotelId, startDate, endDate, page, size);  // addSearchRoom() method added to RoomService.java
         resultMap.put("rooms", rooms);
         return ResponseEntity.ok().body(resultMap);
     }

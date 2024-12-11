@@ -48,15 +48,22 @@ function updateRoomList(rooms) {
 // 처음 및 스크롤시 호텔목롤 요청하 함수
 function loadMoreRooms(hotelId) {
     let searchData = JSON.parse(sessionStorage.getItem('searchData'));
+
     let data = {
-        page: currentPage, size: 4
+        page: currentPage,
+        size: 4,
+        startDate: searchData.checkIn,
+        endDate: searchData.checkOut
+        // guest: searchData.guest,
+        // pet: searchData.pet,
     };
 
+
     $.ajax({
-        url: '/hotel/search/' + hotelId,
+        url: '/hotel/search/' + BigInt(hotelId),
         type: 'get',
         async: false,
-        data: data,
+        data: data, // 쿼리 파라미터로 전달
         success: function (result) {
             if (result.rooms.content.length > 0) {
                 updateRoomList(result.rooms.content);

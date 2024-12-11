@@ -38,6 +38,11 @@
 </head>
 
 <body>
+<div id="hotel"
+     th:if="${hotel != null}"
+     th:data-hotel-id="${hotel.hotelId}">
+</div>
+
 <!-- .main-content 시작-->
 <div class="tm-main-content">
 
@@ -228,6 +233,8 @@
     let currentPage = 1;  // 현재 페이지 번호
     let isLoading = false;  // 데이터 로딩 상태
 
+    let searchData = JSON.parse(sessionStorage.getItem('searchData'));
+
     // 무한 스크롤 초기화
     function initializeInfiniteScroll() {
         $(window).on('scroll', function () {
@@ -247,7 +254,9 @@
         initializeInfiniteScroll();  // 무한 스크롤 초기화
         loadMoreRooms($('#hotelId').val());
 
-        let searchData = JSON.parse(sessionStorage.getItem('searchData'));
+        let hotel = $('#hotel');
+
+
 
         // Date Picker in Search form
         $('#startDate, #endDate').datepicker({
@@ -281,6 +290,48 @@
             error: function (request, status, error) {
                 let result = jQuery.parseJSON(request.responseText)
                 alert(result.msg);
+            }
+        })
+
+        $('#searchForm').on('submit', function (e) {
+            e.preventDefault();
+
+            // 검색 조건을 sessionStorage에 저장
+            let location = $('#selectCity').val();
+            let checkIn = $('#startDate').val();
+            let checkOut = $('#endDate').val();
+            let room = $('#inputRoom').val();
+            let guest = $('#guest').val();
+            let pet = $('#pet').val();
+
+            // 조건이 모두 채워져 있는지 체크
+            if (!location || !checkIn || !checkOut || !room || !guest || !pet) {
+                // 조건이 비어 있는 경우
+                alert('모든 검색 조건을 입력해주세요.');
+            } else {
+                // 서버로 조건을 POST 요청
+                $.ajax({
+                    url: '/hotel/saveSearchOption',  // 서버로 조건 저장 요청
+                    method: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                        location: location,
+                        checkIn: checkIn,
+                        checkOut: checkOut,
+                        room: room,
+                        guest: guest,
+                        pet: pet
+                    }),
+                    success: function (data) {
+                        // 저장이 성공하면 객실 리스트 페이지로 이동
+                        sessionStorage.setItem('searchData', JSON.stringify(data));
+                        window.location.href = '/hotel/hotelDetail/'+hotel.data('hotel-id');
+                    },
+                    error: function (request, status, error) {
+                        let result = jQuery.parseJSON(request.responseText)
+                        alert(result.msg);
+                    }
+                });
             }
         })
 

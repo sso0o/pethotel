@@ -2,11 +2,12 @@ package com.example.pethotel.service;
 
 import com.example.pethotel.dto.AddRoomRequest;
 import com.example.pethotel.dto.UpdateRoomRequest;
-import com.example.pethotel.dto.hotel.SearchHotelResponse;
 import com.example.pethotel.entity.Hotel;
 import com.example.pethotel.entity.Room;
 import com.example.pethotel.exception.InvalidlValueException;
 import com.example.pethotel.repository.RoomRepository;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -20,7 +21,10 @@ import java.util.List;
 @RequiredArgsConstructor
 public class RoomService {
     private final RoomRepository roomRepository;
-    private final HotelService hotelService;  //
+    private final HotelService hotelService;
+
+    @PersistenceContext
+    private EntityManager entityManager;
 
     // 객실 저장 요청
     public Room save(AddRoomRequest req) {
@@ -61,4 +65,45 @@ public class RoomService {
         Pageable pageable = PageRequest.of(page - 1, size);  // 페이지는 0부터 시작하므로, 1을 빼서 전달
         return roomRepository.findBySearchOption(pageable, hotelId);
     }
+
+    public Page<Room> findSearchRoom(Long hotelId, String startDate, String endDate, int page, int size) {
+        // Pageable 객체 생성 (무한 스크롤 페이징)
+        Pageable pageable = PageRequest.of(page-1, size);
+        // 예약되지 않은 방 조회
+        return roomRepository.findBySearchRoom(pageable, hotelId, startDate, endDate);
+    }
+
+//    public Page<Room> findSearchRoom(Long hotelId, String startDate, String endDate, int page, int size) {
+//        Pageable pageable = PageRequest.of(page - 1, size);  // 페이지는 0부터 시작하므로, 1을 빼서 전달
+//        return roomRepository.findBySearchRoom(pageable, hotelId, startDate, endDate);
+//    }
+
+//    public Page<Room> findSearchRoom(Long hotelId, String startDate, String endDate, int page, int size){
+//    String sql = "WITH RECURSIVE search_date AS ( " +
+//                "    SELECT ?1 AS startdate " + // 날짜 변수 1
+//                "    UNION ALL " +
+//                "    SELECT DATE_ADD(startdate, INTERVAL 1 DAY) " +
+//                "    FROM search_date " +
+//                "    WHERE DATE_ADD(startdate, INTERVAL 1 DAY) < ?2 " + // 날짜 변수 2
+//                ") " +
+//                "SELECT r.* " +
+//                "FROM room r " +
+//                "WHERE r.room_id NOT IN ( " +
+//                "    SELECT b.room_id " +
+//                "    FROM booking b " +
+//                "    JOIN search_date ds ON b.start_date <= ds.startdate AND ds.startdate < b.end_date " +
+//                "    WHERE b.payment_id IS NOT NULL " +
+//                ") And r.hotel_id = ?3 ";
+//        Pageable pageable = PageRequest.of(page - 1, size);
+//
+//        Query query = entityManager.createNativeQuery(sql, Room.class);
+//        query.setParameter(1, startDate);
+//        query.setParameter(2, endDate);
+//        query.setParameter(3, hotelId);
+//
+//        List<Room> room = query.getResultList();
+//
+//
+//        return new PageImpl<>(room, pageable, totalCount);
+//    }
 }

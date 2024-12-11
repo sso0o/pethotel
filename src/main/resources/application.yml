@@ -16,7 +16,7 @@ spring:
     username: root
     password: ssoyeon1@3
   jpa:
-    show-sql: true
+    show-sql: false
     hibernate:
       ddl-auto: update
       format_sql: true
@@ -33,3 +33,11 @@ spring:
   jackson:
     stream:
       max-nesting-depth: 2000
+
+
+logging:
+  level:
+    org.springframework.web: DEBUG
+    org.hibernate.SQL: DEBUG
+    org.springframework.transaction: DEBUG
+

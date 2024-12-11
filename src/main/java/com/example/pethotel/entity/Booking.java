@@ -28,7 +28,7 @@ public class Booking {
     @Column(name = "hotel_id", updatable = false)
     private Long hotelId;
 
-    @Column(name = "roonm_id", updatable = false)
+    @Column(name = "room_id", updatable = false)
     private Long roomId;
 
     @Column(name = "start_date", updatable = false)
