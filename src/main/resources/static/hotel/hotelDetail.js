@@ -52,10 +52,12 @@ function loadMoreRooms(hotelId) {
     let data = {
         page: currentPage,
         size: 4,
-        startDate: searchData.checkIn,
-        endDate: searchData.checkOut
-        // guest: searchData.guest,
-        // pet: searchData.pet,
+        location: searchData.location,
+        checkIn: searchData.checkIn,
+        checkOut: searchData.checkOut,
+        room: searchData.room,
+        guest: searchData.guest,
+        pet: searchData.pet
     };
 
 

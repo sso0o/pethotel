@@ -43,15 +43,21 @@ public interface RoomRepository extends JpaRepository<Room, Long> {
     @Query("SELECT r " +
             "FROM Room r " +
             "WHERE r.hotel.hotelId = :hotelId " +
+            "AND r.limitGuest >= :guest " +
+            "AND r.limitPet >= :pet " +
             "AND r.roomId NOT IN (" +
             "   SELECT b.roomId " +
             "   FROM Booking b " +
             "   WHERE b.paymentId IS NOT NULL " +
-            "   AND (b.startDate < :endDate AND b.endDate > :startDate)) ")
+            "   AND (b.startDate < :checkOut AND b.endDate > :checkIn)) ")
     Page<Room> findBySearchRoom(Pageable pageable,
                                 @Param("hotelId") Long hotelId,
-                                @Param("startDate")String startDate,
-                                @Param("endDate")String endDate);
+                                @Param("guest") int guest,
+                                @Param("pet") int pet,
+                                @Param("checkIn") String checkIn,
+                                @Param("checkOut") String checkOut);
+//                                @Param("startDate")String startDate,
+//                                @Param("endDate")String endDate
 
 
 }

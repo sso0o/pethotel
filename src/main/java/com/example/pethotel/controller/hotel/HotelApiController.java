@@ -51,12 +51,20 @@ public class HotelApiController {
     public ResponseEntity getAvailableRoom(@PathVariable("hotelId") Long hotelId,
                                            @RequestParam("page") int page,
                                            @RequestParam("size") int size,
-                                           @RequestParam("startDate") String startDate,
-                                           @RequestParam("endDate") String endDate) throws Exception {
+                                           @RequestParam("location") String location,
+                                           @RequestParam("checkIn") String checkIn,
+                                           @RequestParam("checkOut") String checkOut,
+                                           @RequestParam("room") int room,
+                                           @RequestParam("guest") int guest,
+                                           @RequestParam("pet") int pet) {
         HashMap<Object, Object> resultMap = new HashMap<>();
+        // SearchHotelRequest 객체 생성
+        SearchHotelRequest request = new SearchHotelRequest(location, checkIn, checkOut, room, guest, pet);
+
 
         //Page<Room> rooms = roomService.findBySearchOption(hotelId, page, size);
-        Page<Room> rooms = roomService.findSearchRoom(hotelId, startDate, endDate, page, size);  // addSearchRoom() method added to RoomService.java
+//        Page<Room> rooms = roomService.findSearchRoom(hotelId, startDate, endDate, page, size);  // addSearchRoom() method added to RoomService.java
+        Page<Room> rooms = roomService.findSearchRoom(hotelId, request, page, size);
         resultMap.put("rooms", rooms);
         return ResponseEntity.ok().body(resultMap);
     }

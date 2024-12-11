@@ -2,6 +2,7 @@ package com.example.pethotel.service;
 
 import com.example.pethotel.dto.AddRoomRequest;
 import com.example.pethotel.dto.UpdateRoomRequest;
+import com.example.pethotel.dto.hotel.SearchHotelRequest;
 import com.example.pethotel.entity.Hotel;
 import com.example.pethotel.entity.Room;
 import com.example.pethotel.exception.InvalidlValueException;
@@ -66,11 +67,11 @@ public class RoomService {
         return roomRepository.findBySearchOption(pageable, hotelId);
     }
 
-    public Page<Room> findSearchRoom(Long hotelId, String startDate, String endDate, int page, int size) {
+    public Page<Room> findSearchRoom(Long hotelId, SearchHotelRequest request, int page, int size) {
         // Pageable 객체 생성 (무한 스크롤 페이징)
         Pageable pageable = PageRequest.of(page-1, size);
         // 예약되지 않은 방 조회
-        return roomRepository.findBySearchRoom(pageable, hotelId, startDate, endDate);
+        return roomRepository.findBySearchRoom(pageable, hotelId, request.getGuest(), request.getPet(), request.getCheckIn(), request.getCheckOut());
     }
 
 //    public Page<Room> findSearchRoom(Long hotelId, String startDate, String endDate, int page, int size) {
