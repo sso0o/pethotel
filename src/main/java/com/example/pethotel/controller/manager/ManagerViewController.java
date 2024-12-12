@@ -27,7 +27,10 @@ public class ManagerViewController {
     @GetMapping("/manager/myhotelPage")
     public String hotelPage(Model model) {
         List<CommonCode> HTP = commonCodeService.findByCodeHeadAndCodeDetailNotAndCodeUseLike("HTP", "", "Y");
+        List<CommonCode> REG = commonCodeService.findByCodeHeadAndCodeDetailNotAndCodeUseLike("REG", "", "Y");
         model.addAttribute("HTP", HTP);
+        model.addAttribute("REG", REG);
+
         return "manager/myHotel";
     }
 
@@ -39,5 +42,14 @@ public class ManagerViewController {
         }
 
         return "manager/myHotelRoom";
+    }
+
+    @GetMapping("/manager/myhotelbooking/{hotelId}")
+    public String myBooking(Model model, @PathVariable Long hotelId) {
+        if (hotelId!= 0) {
+            List<Room> rooms = roomService.findAllByHotelId(hotelId);
+            model.addAttribute("rooms", rooms);
+        }
+        return "manager/myHotelBooking";
     }
 }

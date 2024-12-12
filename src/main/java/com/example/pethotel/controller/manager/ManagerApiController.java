@@ -2,10 +2,8 @@ package com.example.pethotel.controller.manager;
 
 
 import com.example.pethotel.dto.*;
-import com.example.pethotel.entity.Hotel;
-import com.example.pethotel.entity.HotelImg;
-import com.example.pethotel.entity.Room;
-import com.example.pethotel.entity.RoomImg;
+import com.example.pethotel.dto.manager.HotelBookingResponse;
+import com.example.pethotel.entity.*;
 import com.example.pethotel.exception.InvalidlValueException;
 import com.example.pethotel.service.*;
 import com.example.pethotel.service.admin.ManagerService;
@@ -28,6 +26,7 @@ public class ManagerApiController {
     private final HotelImgService hotelImgService;
     private final RoomService roomService;
     private final RoomImgService roomImgService;
+    private final BookingService bookingService;
 
     private final CommonService commonService;
     private final FileService fileService;
@@ -72,6 +71,15 @@ public class ManagerApiController {
         return ResponseEntity.ok().body(resultMap);
     }
 
+    @GetMapping("/manager/mybooking/{hotelId}")
+    public ResponseEntity getMyBooking(@PathVariable Long hotelId) {
+        HashMap<Object, Object> resultMap = new HashMap<>();
+        List<HotelBookingResponse> bookings = bookingService.findBookingByHotelId(hotelId);
+        resultMap.put("bookings", bookings);
+        return ResponseEntity.ok().body(resultMap);
+    }
+
+
 
 
 
@@ -86,6 +94,7 @@ public class ManagerApiController {
 
         // 필수 항목들 체크
         commonService.checkRequiredField(request.getHotelName(), "호텔 이름은 필수 입력 항목입니다.");
+        commonService.checkRequiredField(request.getLocation(), "호텔 지역은 필수 입력 항목입니다.");
         commonService.checkRequiredField(request.getPostcode(), "호텔 우편번호는 필수 입력 항목입니다.");
         commonService.checkRequiredField(request.getAddress(), "호텔 주소는 필수 입력 항목입니다.");
         commonService.checkRequiredField(request.getHotelPhone(), "호텔 번호는 필수 입력 항목입니다.");
@@ -178,6 +187,7 @@ public class ManagerApiController {
 
         // 필수 항목들 체크
         commonService.checkRequiredField(request.getHotelName(), "호텔 이름은 필수 입력 항목입니다.");
+        commonService.checkRequiredField(request.getLocation(), "호텔 지역은 필수 입력 항목입니다.");
         commonService.checkRequiredField(request.getPostcode(), "호텔 우편번호는 필수 입력 항목입니다.");
         commonService.checkRequiredField(request.getAddress(), "호텔 주소는 필수 입력 항목입니다.");
         commonService.checkRequiredField(request.getHotelPhone(), "호텔 번호는 필수 입력 항목입니다.");

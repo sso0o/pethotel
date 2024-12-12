@@ -1,12 +1,14 @@
 package com.example.pethotel.service;
 
 import com.example.pethotel.dto.hotel.AddBookingRequest;
+import com.example.pethotel.dto.manager.HotelBookingResponse;
 import com.example.pethotel.entity.Booking;
 import com.example.pethotel.repository.BookingRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -31,5 +33,10 @@ public class BookingService {
     public Booking findById(UUID bookingId) {
         return bookingRepository.findById(bookingId)
                .orElseThrow(() -> new IllegalArgumentException("not found: " + bookingId));
+    }
+
+    // 호텔 아이디별 예약 가져오기(manager 사용)
+    public List<HotelBookingResponse> findBookingByHotelId(Long hotelId) {
+        return bookingRepository.findAllByHotelId(hotelId);
     }
 }

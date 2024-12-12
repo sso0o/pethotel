@@ -31,7 +31,13 @@ function loadMoreHotels() {
     let searchData = JSON.parse(sessionStorage.getItem('searchData'));
     let data = {
         page: currentPage,
-        size: 4
+        size: 4,
+        location: searchData.location,
+        checkIn: searchData.checkIn,
+        checkOut: searchData.checkOut,
+        room: searchData.room,
+        guest: searchData.guest,
+        pet: searchData.pet
     };
 
     $.ajax({

@@ -18,10 +18,10 @@ function addHotelModal(hotelId) {
             url: '/manager/myhotel/' + BigInt(hotelId),
             type: 'get',
             success: function (data) {
-
                 $('#hotelId').val(data.hotel.hotelId);
                 $('#hotelName').val(data.hotel.hotelName);
                 $('#hotelType').val(data.hotel.hotelType);
+                $('#location').val(data.hotel.location);
                 $('#postcode').val(data.hotel.postcode);
                 $('#address').val(data.hotel.address);
                 $('#detailAddress').val(data.hotel.detailAddress);
@@ -43,6 +43,7 @@ function saveHotel(type) {
     let hotelId = $('#hotelId').val();
     let hotelName = $('#hotelName').val();
     let hotelType = $('#hotelType').val();
+    let location = $('#location').val();
     let postcode = $('#postcode').val();
     let address = $('#address').val();
     let detailAddress = $('#detailAddress').val();
@@ -63,6 +64,7 @@ function saveHotel(type) {
         userId: userId,
         hotelName: hotelName,
         hotelType: hotelType,
+        location: location,
         postcode: postcode,
         address: address,
         detailAddress: detailAddress,
@@ -81,7 +83,7 @@ function saveHotel(type) {
             $('#errorDiv').hide();
             $('#errorMsg').text('');
             alert(result.msg)
-            location.reload();
+            window.location.reload();
         },
         error: function (request, status, error) {
             let result = jQuery.parseJSON(request.responseText)

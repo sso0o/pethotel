@@ -96,7 +96,7 @@
         <div class="bg-white py-2 collapse-inner rounded">
           <a class="collapse-item active" href="/manager/myhotelPage">호텔 관리</a>
           <a class="collapse-item" href="/manager/myhotelroom/0">객실 관리</a>
-          <a class="collapse-item" href="/manager/myhotelroom">객실 관리</a>
+          <a class="collapse-item" href="/manager/myhotelbooking/0">예약 관리</a>
         </div>
       </div>
     </li>
@@ -178,7 +178,7 @@
                       <th>타입</th>
                       <th>전화번호</th>
                       <th>설명</th>
-                      <th>주소</th>
+                      <th>지역</th>
                       <th>수정</th>
                     </tr>
                     </thead>
@@ -305,6 +305,13 @@
               <span id="hotelType2" class="input-group-text" style="width: 25%">타입</span>
               <select class="form-select" id="hotelType" name="hotelType">
                 <option th:each="htp : ${HTP}" th:value="${htp.codeName}" th:text="${htp.codeName}"></option>
+              </select>
+            </div>
+            <label class="form-label" for="location"></label>
+            <div class="input-group input-group-merge">
+              <span id="location2" class="input-group-text" style="width: 25%">지역</span>
+              <select class="form-select" id="location" name="location">
+                <option th:each="reg : ${REG}" th:value="${reg.codeName}" th:text="${reg.codeName}"></option>
               </select>
             </div>
             <label class="form-label" for="postcode"></label>
@@ -475,7 +482,7 @@
                 {data: "hotelType"},
                 {data: "hotelPhone"},
                 {data: "hotelInfo"},
-                {data: "address"},
+                {data: "location"},
                 {
                     render: function (data, type, row) {
                         return '<button type="button" class="btn btn-outline-secondary" onclick="addHotelModal(' + row.hotelId + ')"><i class="fas fa-pen"></i></button>'
@@ -483,12 +490,12 @@
                 }
             ],
             columnDefs: [
-                {targets: 0, width: '15%',},
+                {targets: 0, width: '20%',},
                 {targets: 1, width: '10%',},
                 {targets: 2, width: '15%',},
-                {targets: 3, width: '30%',},
-                {targets: 4, width: '25%',},
-                {targets: 5, width: '5%',}
+                {targets: 3, width: '35%',},
+                {targets: 4, width: '10%',},
+                {targets: 5, width: '10%',}
             ]
         })
 

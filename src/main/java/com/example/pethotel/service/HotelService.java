@@ -12,11 +12,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -35,7 +33,7 @@ public class HotelService {
     public Hotel update(Long hotelId, UpdateHotelRequest req) {
         Hotel hotel = hotelRepository.findById(hotelId)
                 .orElseThrow(() ->  new IllegalArgumentException("not found : "+hotelId));
-        hotel.update(req.getHotelName(), req.getHotelType(),
+        hotel.update(req.getHotelName(), req.getHotelType(), req.getLocation(),
                 req.getPostcode(), req.getAddress(),
                 req.getDetailAddress(), req.getExtraAddress(),
                 req.getHotelPhone(), req.getHotelInfo());
@@ -59,8 +57,8 @@ public class HotelService {
     ////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////
 
-    public Page<SearchHotelResponse> findBySearchOption(int page, int size){
+    public Page<SearchHotelResponse> findBySearchOption(SearchHotelRequest request, int page, int size){
         Pageable pageable = PageRequest.of(page - 1, size);  // 페이지는 0부터 시작하므로, 1을 빼서 전달
-        return hotelRepository.findBySearchOption(pageable);
+        return hotelRepository.findBySearchOption(pageable, request.getLocation(), request.getGuest(), request.getPet(), request.getCheckIn(), request.getCheckOut());
     }
 }

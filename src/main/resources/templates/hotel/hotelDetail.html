@@ -34,13 +34,18 @@
 
 
   <style>
+      .slick-slide{
+          height: 230px;
+      }
   </style>
 </head>
 
 <body>
 <div id="hotel"
      th:if="${hotel != null}"
-     th:data-hotel-id="${hotel.hotelId}">
+     th:data-hotel-id="${hotel.hotelId}"
+     th:data-hotel-name="${hotel.hotelName}"
+     th:data-hotel-info="${hotel.hotelInfo}">
 </div>
 
 <!-- .main-content 시작-->
@@ -323,9 +328,16 @@
                         pet: pet
                     }),
                     success: function (data) {
-                        // 저장이 성공하면 객실 리스트 페이지로 이동
                         sessionStorage.setItem('searchData', JSON.stringify(data));
-                        window.location.href = '/hotel/hotelDetail/'+hotel.data('hotel-id');
+                        // 목적지가 변경되면 호텔 목록으로
+                        if (location !== searchData.location){
+                            window.location.href = '/hotel';
+                        } else {// 목적지가 변경되지 않으면 객실 상세로
+                            window.location.href = '/hotel/hotelDetail/'+hotel.data('hotel-id');
+                        }
+
+
+
                     },
                     error: function (request, status, error) {
                         let result = jQuery.parseJSON(request.responseText)
