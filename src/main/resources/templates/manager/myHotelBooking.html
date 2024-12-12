@@ -240,6 +240,7 @@
         let currentUrl = window.location.href;
         let hotelIdFromUrl = currentUrl.split('/').pop();  // URL의 마지막 부분 ("/" 이후 값) 추출
         let user = $('#user');
+        let hotelId;
 
         let selectMyHotles = $('#myHotles');
 
@@ -273,7 +274,7 @@
             initalView: 'dayGreidMonth',
             events: function (info, successCallback, failureCallback){
                 $.ajax({
-                    url: '/manager/mybooking/'+hotelIdFromUrl,
+                    url: '/manager/mybooking/'+hotelId,
                     type: 'GET',
                     success: function(data){
                         let events = [];
@@ -285,8 +286,8 @@
                                     end: item.endDate
                                 });
                             });
-                            successCallback(events);
                         }
+                        successCallback(events);
                     }
                 })
             }
@@ -294,7 +295,7 @@
         calendar.render();
 
         selectMyHotles.on("change", function (){
-            hotelIdFromUrl = this.value;
+            hotelId = this.value;
             // 셀렉트박스에서 선택된 호텔 ID를 기반으로 캘린더를 새로 고침
             calendar.refetchEvents();  // 이벤트를 새로 가져오도록 요청
         })
