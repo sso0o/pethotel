@@ -31,7 +31,7 @@ public class Booking {
     @Column(name = "room_id", updatable = false)
     private Long roomId;
 
-    @Column(name = "room_d_id", updatable = false)
+    @Column(name = "room_d_id")
     private Long roomDetailId;
 
     @Column(name = "start_date", updatable = false)
@@ -90,6 +90,10 @@ public class Booking {
     public void updatePaycheck(String payChk, String paymentId) {
         this.payChk = payChk;
         this.paymentId = paymentId;
+    }
+
+    public void updateRoomDetailId(Long roomDetailId) {
+        this.roomDetailId = roomDetailId;
     }
 
 

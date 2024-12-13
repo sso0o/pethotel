@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -118,26 +117,26 @@ public class HotelApiController {
         return ResponseEntity.ok().body(resultMap);
     }
 
-
-    // nPay 승인 로직
-    @PostMapping("/booking/approve/{paymentId}")
-    public ResponseEntity bookingApprove(@PathVariable String paymentId, @RequestBody Booking booking){
-        HashMap<Object, Object> resultMap = new HashMap<>();
-        Map<String, Object> paymentResult = paymentService.nPayProgress(paymentId);
-        if(paymentResult.get("code").equals("Success")){
-            bookingService.updatePaycheck(booking.getBookingId(), "paid", paymentId);
-            resultMap.put("booking", booking);
-        }
-
-        resultMap.put("paymentResult", paymentResult);
-        return ResponseEntity.ok().body(resultMap);
-    }
+//    // nPay 승인 로직
+//    @PostMapping("/booking/approve/{paymentId}")
+//    public ResponseEntity bookingApprove(@PathVariable String paymentId, @RequestBody Booking booking){
+//        HashMap<Object, Object> resultMap = new HashMap<>();
+//        Map<String, Object> paymentResult = paymentService.nPayProgress(paymentId);
+//        if(paymentResult.get("code").equals("Success")){
+//            bookingService.updatePaycheck(booking.getBookingId(), "paid", paymentId);
+//            resultMap.put("booking", booking);
+//        }
+//
+//        resultMap.put("paymentResult", paymentResult);
+//        return ResponseEntity.ok().body(resultMap);
+//    }
 
     // 예약정보 저장
     @PostMapping("/booking/saveBooking")
     public ResponseEntity bookingSave(@RequestBody AddBookingRequest req){
         HashMap<Object, Object> resultMap = new HashMap<>();
         Booking booking = bookingService.save(req);
+        resultMap.put("msg", "예약 요청 성공");
         resultMap.put("booking", booking);
         return ResponseEntity.ok().body(req);
     }

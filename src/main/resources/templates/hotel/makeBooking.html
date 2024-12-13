@@ -247,7 +247,8 @@
                         "totalPayAmount": roomDetail.data('room-price')*dayDiff,
                         "taxScopeAmount": roomDetail.data('room-price')*dayDiff,
                         "taxExScopeAmount": "0",
-                        "returnUrl": "http://localhost:8081/booking/complete?bookingId="+data.booking.bookingId.toString(),
+                        "returnUrl": "http://localhost:8081/booking/complete?msg="+data.msg,
+                        // "returnUrl": "http://localhost:8081/booking/complete?bookingId="+data.booking.bookingId.toString(),
                     });
                 },
                 error: function (request, status, error) {
