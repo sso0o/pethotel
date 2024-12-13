@@ -41,7 +41,6 @@
 
 <div id="room"
      th:data-room-id="${room.roomId}"
-     th:data-room-name="${room.roomName}"
      th:data-room-type="${room.roomType}"
      th:data-room-price="${room.roomPrice}"
      th:data-room-limit-guest="${room.limitGuest}"
@@ -126,7 +125,7 @@
           <div class="row content-box p-4">
             <div class=" col-6 content-box-main" id="bookingDetail">
               <h2 th:text="${hotel.hotelName}"></h2>
-              <h3 th:text="${room.roomName}"></h3>
+              <h3 th:text="${room.roomType}"></h3>
               <p text=""></p>
             </div>
             <div class=" col-6 content-box-main">
@@ -243,7 +242,7 @@
                 success: function (data) {
                     oPay.open({
                         "merchantPayKey": "20241207WWKEnn",
-                        "productName": hotelDetail.data('hotel-name')+" - "+roomDetail.data('room-name'),
+                        "productName": hotelDetail.data('hotel-name')+" - "+roomDetail.data('room-type'),
                         "productCount": "1",
                         "totalPayAmount": roomDetail.data('room-price')*dayDiff,
                         "taxScopeAmount": roomDetail.data('room-price')*dayDiff,

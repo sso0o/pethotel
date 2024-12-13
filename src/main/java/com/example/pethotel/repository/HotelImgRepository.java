@@ -10,5 +10,5 @@ public interface HotelImgRepository extends JpaRepository<HotelImg, Long> {
 
     List<HotelImg> findByHotel(Hotel hotel);
 
-
+    void deleteAllByHotel(Hotel hotel);
 }

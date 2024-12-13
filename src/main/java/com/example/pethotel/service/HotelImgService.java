@@ -1,6 +1,6 @@
 package com.example.pethotel.service;
 
-import com.example.pethotel.dto.AddHotelImgRequest;
+import com.example.pethotel.dto.manager.AddHotelImgRequest;
 import com.example.pethotel.entity.Hotel;
 import com.example.pethotel.entity.HotelImg;
 import com.example.pethotel.repository.HotelImgRepository;

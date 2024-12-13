@@ -6,7 +6,7 @@ function updateRoomList(rooms) {
         <li class="mb-4" id="room-${room.roomId}">
         <div class="room-container">
           <div class="row room-head-content">
-            <div class="col">${room.roomName}</div>
+            <div class="col">${room.roomType}</div>
            </div>
           <div class="row room-detail-content">
             <div class="room-detail">
@@ -14,7 +14,7 @@ function updateRoomList(rooms) {
                 </div>
                 <div class="col-4 room-detail-2">
                   <div style="margin: 10px">
-                    ${room.roomInfo}
+                    ${room.roomType}
                   </div>
                 </div>
                 <div class="col-2 room-detail-3">

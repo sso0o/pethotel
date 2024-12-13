@@ -56,8 +56,8 @@ function saveHotel(type) {
         url = "/manager/myhotel"
     } else if (type === "put") {
         url = "/manager/myhotel/" + BigInt(hotelId);
-    } else if (type === "del") {
-
+    } else if (type === "delete") {
+        url = "/manager/myhotel/" + BigInt(hotelId);
     }
 
     data = JSON.stringify({

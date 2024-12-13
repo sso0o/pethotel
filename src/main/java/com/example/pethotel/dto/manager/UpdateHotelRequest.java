@@ -1,4 +1,4 @@
-package com.example.pethotel.dto;
+package com.example.pethotel.dto.manager;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

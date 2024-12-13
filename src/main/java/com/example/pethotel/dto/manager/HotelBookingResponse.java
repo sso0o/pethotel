@@ -16,11 +16,11 @@ public class HotelBookingResponse {
     private String paymentId;
 
     private String hotelName;
-    private String roomName;
+    private String roomType;
 
     public HotelBookingResponse( Long roomId, Long hotelId, String startDate, String endDate,
             int bookingGuest, int bookingPet, int totalPrice,
-            int totalDate, String paymentId, String hotelName, String roomName ) {
+            int totalDate, String paymentId, String hotelName, String roomType ) {
         this.roomId = roomId;
         this.hotelId = hotelId;
         this.startDate = startDate;
@@ -31,7 +31,7 @@ public class HotelBookingResponse {
         this.totalDate = totalDate;
         this.paymentId = paymentId;
         this.hotelName = hotelName;
-        this.roomName = roomName;
+        this.roomType = roomType;
     }
 
 }

@@ -1,5 +1,14 @@
-function addRoomModal(hotelId){
-    if(hotelId === "add") {
+function hotelRoomList(roomId){
+
+    getRoomDetail(roomId);
+
+    let myModal = new bootstrap.Modal(document.getElementById('roomDetailModal'));
+    myModal.show();
+}
+
+
+function addRoomModal(roomId){
+    if(roomId === "add") {
         // 처음 초기화
         document.getElementById('roomForm').reset();
         // 추가모드
@@ -11,7 +20,6 @@ function addRoomModal(hotelId){
         $("#saveBtn").hide();
         $("#modifyBtn").show();
         $("#deleteBtn").show();
-
     }
 
     $('#errorDiv').hide();
@@ -26,33 +34,38 @@ function saveRoom(type){
     let url;
     let data;
     let hotelId = $('#hotelId').val();
-    let roomName = $('#roomName').val();
+    let roomId = $('#roomId').val();
     let roomType = $('#roomType').val();
     let roomPrice = $('#roomPrice').val();
     let limitGuest = $('#limitGuest').val();
     let limitPet = $('#limitPet').val();
     let checkIn = $('#checkIn').val();
     let checkOut = $('#checkOut').val();
-    let roomInfo = $('#roomInfo').val();
 
     if(type === "post"){
         url = "/manager/myroom";
+        data = JSON.stringify({
+            hotelId : hotelId,
+            roomType : roomType,
+            roomPrice : roomPrice,
+            limitGuest : limitGuest,
+            limitPet : limitPet,
+            checkIn : checkIn,
+            checkOut : checkOut
+        })
     }else if (type === "put"){
-        url = "/manager/myroom/"+BigInt(hotelId);
+        url = "/manager/myroom/"+BigInt(roomId);
+        data = JSON.stringify({
+            roomType : roomType,
+            roomPrice : roomPrice,
+            limitGuest : limitGuest,
+            limitPet : limitPet,
+            checkIn : checkIn,
+            checkOut : checkOut
+        })
+    }else if (type === "delete"){
+        url = "/manager/myroom/"+BigInt(roomId);
     }
-
-    data = JSON.stringify({
-        hotelId : hotelId,
-        roomName: roomName,
-        roomType : roomType,
-        roomPrice : roomPrice,
-        limitGuest : limitGuest,
-        limitPet : limitPet,
-        checkIn : checkIn,
-        checkOut : checkOut,
-        roomInfo : roomInfo
-    })
-
 
     $.ajax({
         url: url,
@@ -123,5 +136,60 @@ function imgReLoad(){
             $('#roomPhotos').val(''); // 파일 input 초기화
         }
     })
+}
 
+function addRoomDetail(type){
+    let roomId = $('#roomId').val();
+    let roomDetailId = $('#roomDetailId').val();
+    let roomName = $('#roomName').val();
+
+    let url = "/manager/myroomdetail/"+BigInt(roomId)
+    if(type === "post"){
+        url = "/manager/myroomdetail/"+BigInt(roomId)
+    }else if (type === "put"){
+        url = "/manager/myroomdetail/"+BigInt(roomDetailId);
+
+    }else if (type === "delete"){
+        url = "/manager/myroomdetail/"+BigInt(roomDetailId);
+    }
+
+    let data = roomName;
+
+    $.ajax({
+        url: url,
+        type: type,
+        async: false,
+        contentType: 'application/json',
+        data: data,
+        success: function (result){
+            alert(result.msg);
+            getRoomDetail(roomId);
+            $('#roomName').val('');
+        },
+        error: function (request, status, error){
+            let result = jQuery.parseJSON(request.responseText)
+            alert(result.msg);
+        }
+    })
+
+}
+
+function getRoomDetail(roomId){
+    // ajax호출
+    $.ajax({
+        url: '/manager/myroomdetail/' + BigInt(roomId),
+        type: 'get',
+        success: function(response) {
+            let tabMyRoomDetail = $('#tabMyRoomDetail').DataTable();
+            // 기존 데이터 초기화
+            tabMyRoomDetail.clear();
+            // 받아온 데이터를 테이블에 추가
+            tabMyRoomDetail.rows.add(response.roomdetails).draw();
+        },
+        error: function (request, status, error){
+            let result = jQuery.parseJSON(request.responseText)
+            $('#errorDiv').show();  // 오류 메시지를 표시하는 div를 보이게
+            $('#errorMsg').text(result.msg);  // 오류 메시지에 삽입
+        }
+    });
 }

@@ -1,5 +1,6 @@
 package com.example.pethotel.repository;
 
+import com.example.pethotel.entity.Hotel;
 import com.example.pethotel.entity.Room;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -13,33 +14,15 @@ public interface RoomRepository extends JpaRepository<Room, Long> {
 
     @Query(value = "SELECT r from Room r where r.hotel.hotelId = :hotelId")
     List<Room> findAllByHotelId(@Param("hotelId") Long hotelId);
-
+    List<Room> findAllByHotel(Hotel hotel);
 
     @Query(value = "SELECT r " +
             "FROM Room r " +
             "where r.hotel.hotelId = :hotelId")
     Page<Room> findBySearchOption(Pageable pageable, @Param("hotelId") Long hotelId);
 
-//    @Query(value = "WITH RECURSIVE search_date AS ( " +
-//            "    SELECT :startDate AS startdate " +
-//            "    UNION ALL " +
-//            "    SELECT DATE_ADD(startdate, INTERVAL 1 DAY) " +
-//            "    FROM search_date " +
-//            "    WHERE DATE_ADD(startdate, INTERVAL 1 DAY) < :endDate " +
-//            ") " +
-//            "SELECT r.* FROM room r " +
-//            "WHERE r.room_id NOT IN ( " +
-//            "    SELECT b.room_id " +
-//            "    FROM booking b " +
-//            "    JOIN search_date ds ON b.start_date <= ds.startdate AND ds.startdate < b.end_date " +
-//            "    WHERE b.payment_id IS NOT NULL " +
-//            ") " +
-//            "AND r.hotel_id = :hotelId ",
-//            nativeQuery = true)
-//    Page<Room> findBySearchRoom(Pageable pageable, @Param("hotelId") Long hotelId,
-//                                @Param("startDate")String startDate,
-//                                @Param("endDate")String endDate);
 
+    // 고객이 검색할때 조회하는 객실
     @Query("SELECT r " +
             "FROM Room r " +
             "WHERE r.hotel.hotelId = :hotelId " +
@@ -56,8 +39,5 @@ public interface RoomRepository extends JpaRepository<Room, Long> {
                                 @Param("pet") int pet,
                                 @Param("checkIn") String checkIn,
                                 @Param("checkOut") String checkOut);
-//                                @Param("startDate")String startDate,
-//                                @Param("endDate")String endDate
-
 
 }

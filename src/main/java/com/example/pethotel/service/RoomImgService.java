@@ -1,6 +1,6 @@
 package com.example.pethotel.service;
 
-import com.example.pethotel.dto.AddRoomImgRequest;
+import com.example.pethotel.dto.manager.AddRoomImgRequest;
 import com.example.pethotel.entity.RoomImg;
 import com.example.pethotel.repository.RoomImgRepository;
 import lombok.RequiredArgsConstructor;

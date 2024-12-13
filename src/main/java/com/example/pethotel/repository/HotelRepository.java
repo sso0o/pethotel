@@ -15,7 +15,7 @@ public interface HotelRepository extends JpaRepository<Hotel, Long> {
 
     List<Hotel> findAllByUserId(Long userId);
 
-    Optional<Hotel> findById(Long id);
+    Optional<Hotel> findById(Long hotelId);
 
 
     @Query(value = "SELECT new com.example.pethotel.dto.hotel.SearchHotelResponse(" +

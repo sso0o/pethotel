@@ -25,9 +25,6 @@ public class Room {
     @JsonBackReference // 직렬화 제외
     private Hotel hotel;
 
-    @Column(name = "room_name")
-    private String roomName;
-
     @Column(name = "room_type")
     private String roomType;
 
@@ -40,9 +37,6 @@ public class Room {
     @Column(name = "limit_pet")
     private int limitPet;
 
-    @Column(name = "room_info")
-    private String roomInfo;
-
     @Column(name = "check_in")
     private String checkIn;
 
@@ -53,30 +47,26 @@ public class Room {
     private List<RoomImg> roomPhotos;
 
     @Builder
-    public Room (Hotel hotel, String roomName, String roomType,
+    public Room (Hotel hotel, String roomType,
                  int roomPrice, int limitGuest, int limitPet,
-                 String roomInfo, String checkIn, String checkOut) {
+                 String checkIn, String checkOut) {
         this.hotel = hotel;
-        this.roomName = roomName;
         this.roomType = roomType;
         this.roomPrice = roomPrice;
         this.limitGuest = limitGuest;
         this.limitPet = limitPet;
-        this.roomInfo = roomInfo;
         this.checkIn = checkIn;
         this.checkOut = checkOut;
     }
 
 
-    public void update(String roomName, String roomType,
+    public void update(String roomType,
                        int roomPrice, int limitGuest, int limitPet,
-                       String roomInfo, String checkIn, String checkOut) {
-        this.roomName = roomName;
+                       String checkIn, String checkOut) {
         this.roomType = roomType;
         this.roomPrice = roomPrice;
         this.limitGuest = limitGuest;
         this.limitPet = limitPet;
-        this.roomInfo = roomInfo;
         this.checkIn = checkIn;
         this.checkOut = checkOut;
     }

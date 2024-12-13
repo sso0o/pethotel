@@ -1,10 +1,8 @@
 package com.example.pethotel.controller.manager;
 
 
-import com.example.pethotel.dto.*;
-import com.example.pethotel.dto.manager.HotelBookingResponse;
+import com.example.pethotel.dto.manager.*;
 import com.example.pethotel.entity.*;
-import com.example.pethotel.exception.InvalidlValueException;
 import com.example.pethotel.service.*;
 import com.example.pethotel.service.admin.ManagerService;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +28,7 @@ public class ManagerApiController {
 
     private final CommonService commonService;
     private final FileService fileService;
+    private final RoomDetailService roomDetailService;
 
     //=============================================================================================
     //================================              get               =============================
@@ -53,6 +52,16 @@ public class ManagerApiController {
         return ResponseEntity.ok().body(resultMap);
     }
 
+
+    // 객실 타입으로 디테일 조회
+    @GetMapping("/manager/myroomdetail/{roomId}")
+    public ResponseEntity getMyRoomDetail(@PathVariable Long roomId) {
+        HashMap<Object, Object> resultMap = new HashMap<>();
+        List<RoomDetail> roomDetail = roomDetailService.findAllByRoomId(roomId);
+        resultMap.put("roomdetails", roomDetail);
+        return ResponseEntity.ok().body(resultMap);
+    }
+
     // 호텔 아이디로 호텔 조회
     @GetMapping("/manager/myhotel/{hotelId}")
     public ResponseEntity getMyHotel(@PathVariable Long hotelId) {
@@ -71,6 +80,7 @@ public class ManagerApiController {
         return ResponseEntity.ok().body(resultMap);
     }
 
+    // 호텔 아이디별 예약 조회
     @GetMapping("/manager/mybooking/{hotelId}")
     public ResponseEntity getMyBooking(@PathVariable Long hotelId) {
         HashMap<Object, Object> resultMap = new HashMap<>();
@@ -81,8 +91,6 @@ public class ManagerApiController {
 
 
 
-
-
     //=============================================================================================
     //================================              post              =============================
     //=============================================================================================
@@ -90,8 +98,6 @@ public class ManagerApiController {
     // 매니저가 호텔 저장
     @PostMapping("/manager/myhotel")
     public ResponseEntity saveHotel(@RequestBody AddHotelRequest request) throws Exception {
-        HashMap<Object, Object> resultMap = new HashMap<>();
-
         // 필수 항목들 체크
         commonService.checkRequiredField(request.getHotelName(), "호텔 이름은 필수 입력 항목입니다.");
         commonService.checkRequiredField(request.getLocation(), "호텔 지역은 필수 입력 항목입니다.");
@@ -99,7 +105,7 @@ public class ManagerApiController {
         commonService.checkRequiredField(request.getAddress(), "호텔 주소는 필수 입력 항목입니다.");
         commonService.checkRequiredField(request.getHotelPhone(), "호텔 번호는 필수 입력 항목입니다.");
 
-
+        HashMap<Object, Object> resultMap = new HashMap<>();
 
         Hotel saveHotel = hotelService.save(request);
         resultMap.put("hotel", saveHotel);
@@ -110,15 +116,15 @@ public class ManagerApiController {
     // 매니저가 객실 저장
     @PostMapping("/manager/myroom")
     public ResponseEntity saveRoom(@RequestBody AddRoomRequest request) throws Exception {
-        HashMap<Object, Object> resultMap = new HashMap<>();
-
         // 필수 항목들 체크
-        commonService.checkRequiredField(request.getRoomName(), "객실 이름은 필수 입력 항목입니다.");
+        commonService.checkRequiredField(request.getRoomType(), "객실 타입은 필수 입력 항목입니다.");
         commonService.checkRequiredField(request.getRoomPrice(), "객실 가격은 필수 입력 항목입니다.");
         commonService.checkRequiredField(request.getLimitGuest(), "최대 인원은 필수 입력 항목입니다.");
         commonService.checkRequiredField(request.getLimitPet(), "최대 펫 수는 필수 입력 항목입니다.");
         commonService.checkRequiredField(request.getCheckIn(), "체크인 시간은 필수 입력 항목입니다.");
         commonService.checkRequiredField(request.getCheckOut(), "체크아웃 시간은 필수 입력 항목입니다.");
+
+        HashMap<Object, Object> resultMap = new HashMap<>();
 
         Room saveRoom = roomService.save(request);
 
@@ -173,6 +179,26 @@ public class ManagerApiController {
         return ResponseEntity.ok().body(resultMap);
     }
 
+    // 매니저가 객실 상세 저장
+    @PostMapping("/manager/myroomdetail/{roomId}")
+    public ResponseEntity saveRoomDetail(@PathVariable Long roomId, @RequestBody String roomName) throws Exception {
+        // 필수 항목들 체크
+        commonService.checkRequiredField(roomName, "객실 이름은 필수 입력 항목입니다.");
+
+        HashMap<Object, Object> resultMap = new HashMap<>();
+        Room room = roomService.findById(roomId);
+        AddRoomDetailRequest request = new AddRoomDetailRequest(room, roomName);
+
+        RoomDetail roomDetail = roomDetailService.save(request);
+
+        resultMap.put("msg", "요청 성공");
+        resultMap.put("room", roomDetail);
+
+        return ResponseEntity.ok().body(resultMap);
+
+    }
+
+
 
 
 
@@ -183,8 +209,6 @@ public class ManagerApiController {
     // 매니저가 호텔 수정
     @PutMapping("/manager/myhotel/{hotelId}")
     public ResponseEntity updateHotel(@PathVariable Long hotelId, @RequestBody UpdateHotelRequest request) throws Exception {
-        HashMap<Object, Object> resultMap = new HashMap<>();
-
         // 필수 항목들 체크
         commonService.checkRequiredField(request.getHotelName(), "호텔 이름은 필수 입력 항목입니다.");
         commonService.checkRequiredField(request.getLocation(), "호텔 지역은 필수 입력 항목입니다.");
@@ -192,6 +216,7 @@ public class ManagerApiController {
         commonService.checkRequiredField(request.getAddress(), "호텔 주소는 필수 입력 항목입니다.");
         commonService.checkRequiredField(request.getHotelPhone(), "호텔 번호는 필수 입력 항목입니다.");
 
+        HashMap<Object, Object> resultMap = new HashMap<>();
 
         Hotel updateHotel = hotelService.update(hotelId, request);
         resultMap.put("msg", "요청 성공");
@@ -203,19 +228,15 @@ public class ManagerApiController {
     // 매니저가 객실 수정
     @PutMapping("/manager/myroom/{roomId}")
     public ResponseEntity updateRoom(@PathVariable Long roomId, @RequestBody UpdateRoomRequest request) throws Exception {
-        HashMap<Object, Object> resultMap = new HashMap<>();
-
         // 필수 항목들 체크
-        commonService.checkRequiredField(request.getRoomName(), "객실 이름은 필수 입력 항목입니다.");
+        commonService.checkRequiredField(request.getRoomType(), "객실 타입은 필수 입력 항목입니다.");
         commonService.checkRequiredField(request.getRoomPrice(), "객실 가격은 필수 입력 항목입니다.");
         commonService.checkRequiredField(request.getLimitGuest(), "최대 인원은 필수 입력 항목입니다.");
         commonService.checkRequiredField(request.getLimitPet(), "최대 펫 수는 필수 입력 항목입니다.");
         commonService.checkRequiredField(request.getCheckIn(), "체크인 시간은 필수 입력 항목입니다.");
         commonService.checkRequiredField(request.getCheckOut(), "체크아웃 시간은 필수 입력 항목입니다.");
 
-        if (request.getCheckOut() == null){
-            throw new InvalidlValueException("가격 입력");
-        }
+        HashMap<Object, Object> resultMap = new HashMap<>();
 
         Room updateRoom = roomService.update(roomId, request);
         resultMap.put("msg", "요청 성공");
@@ -223,11 +244,36 @@ public class ManagerApiController {
         return ResponseEntity.ok().body(resultMap);
     }
 
+    // 매니저가 객실 이름 수정
+    @PutMapping("/manager/myroomdetail/{roomDetailId}")
+    public ResponseEntity updateRoomDetail(@PathVariable Long roomDetailId, @RequestBody String roomName) throws Exception {
+        // 필수 항목들 체크
+        commonService.checkRequiredField(roomName, "객실 이름은 필수 입력 항목입니다.");
+
+        HashMap<Object, Object> resultMap = new HashMap<>();
+
+        RoomDetail updateRoomDetail = roomDetailService.update(roomDetailId, roomName);
+        resultMap.put("msg", "요청 성공");
+        resultMap.put("roomDetail", updateRoomDetail);
+        return ResponseEntity.ok().body(resultMap);
+
+    }
 
 
     //=============================================================================================
     //================================              del               =============================
     //=============================================================================================
+
+    // 매니저가 호텔 삭제
+    @DeleteMapping("/manager/myhotel/{hotelId}")
+    public ResponseEntity delmyHotel(@PathVariable Long hotelId) {
+        HashMap<Object, Object> resultMap = new HashMap<>();
+
+        hotelService.delete(hotelId);
+
+        resultMap.put("msg", "요청 성공");
+        return ResponseEntity.ok().body(resultMap);
+    }
 
     // 매니저가 호텔 사진 삭제
     @DeleteMapping("/manager/myhotelImg")
@@ -254,5 +300,50 @@ public class ManagerApiController {
         resultMap.put("msg", "요청 성공");
         return ResponseEntity.ok().body(resultMap);
     }
+
+    // 매니저가 room 삭제
+    @DeleteMapping("/manager/myroom/{roomId}")
+    public ResponseEntity delmyRoom(@PathVariable Long roomId) {
+        HashMap<Object, Object> resultMap = new HashMap<>();
+
+        roomService.delete(roomId);
+
+        resultMap.put("msg", "요청 성공");
+        return ResponseEntity.ok().body(resultMap);
+    }
+
+    // 매니저가 객실디테일 삭제
+    @DeleteMapping("/manager/myroomdetail/{roomDetailId}")
+    public ResponseEntity delmyRoomDetail(@PathVariable Long roomDetailId) {
+        HashMap<Object, Object> resultMap = new HashMap<>();
+
+        roomDetailService.delete(roomDetailId);
+
+        resultMap.put("msg", "요청 성공");
+        return ResponseEntity.ok().body(resultMap);
+    }
+//
+//    // 매니저가 호텔 삭지
+//    @DeleteMapping("/manager/myhotel/{hotelId}")
+//    public ResponseEntity delmyHotel(@PathVariable Long hotelId) {
+//        HashMap<Object, Object> resultMap = new HashMap<>();
+//
+//        roomService.deleteAllByHotelId(hotelId);
+//        hotelService.delete(hotelId);
+//
+//        resultMap.put("msg", "요청 성공");
+//        return ResponseEntity.ok().body(resultMap);
+//    }
+//
+//    // 매니저가 객실 타입 삭제
+//    @DeleteMapping("/manager/myroom/{roomId}")
+//    public ResponseEntity delmyRoom(@PathVariable Long roomId) {
+//        HashMap<Object, Object> resultMap = new HashMap<>();
+//
+//        roomService.delete(roomId);
+//
+//        resultMap.put("msg", "요청 성공");
+//        return ResponseEntity.ok().body(resultMap);
+//    }
 
 }

@@ -1,4 +1,4 @@
-package com.example.pethotel.dto;
+package com.example.pethotel.dto.manager;
 
 import com.example.pethotel.entity.Room;
 import com.example.pethotel.entity.RoomImg;
