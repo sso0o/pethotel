@@ -31,6 +31,9 @@ public class Booking {
     @Column(name = "room_id", updatable = false)
     private Long roomId;
 
+    @Column(name = "room_d_id", updatable = false)
+    private Long roomDetailId;
+
     @Column(name = "start_date", updatable = false)
     private String startDate;
 
@@ -65,7 +68,7 @@ public class Booking {
 
 
     @Builder
-    public Booking (Long userId, Long hotelId, Long roomId,
+    public Booking (Long userId, Long hotelId, Long roomId, Long roomDetailId,
                     String startDate, String endDate,
                     int bookingGuest, int bookingPet,
                     String payChk, int totalPrice, int totalDate,
@@ -73,6 +76,7 @@ public class Booking {
         this.userId = userId;
         this.hotelId = hotelId;
         this.roomId = roomId;
+        this.roomDetailId = roomDetailId;
         this.startDate = startDate;
         this.endDate = endDate;
         this.bookingGuest = bookingGuest;

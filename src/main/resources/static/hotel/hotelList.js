@@ -13,7 +13,7 @@ function updateHotelList(hotels) {
                   ${hotel.hotelName}
                 </div>
                 <div class="hotel-detail-3">
-                  ${Number(hotel.minPrice).toLocaleString()}  <!-- minPrice를 천 단위 콤마로 포맷 -->
+                  ~ ${Number(hotel.minPrice).toLocaleString()} 부터 <!-- minPrice를 천 단위 콤마로 포맷 -->
                 </div>
               </div>
             </a>

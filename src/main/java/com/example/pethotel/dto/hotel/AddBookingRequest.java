@@ -8,8 +8,9 @@ import lombok.NoArgsConstructor;
 @Getter
 public class AddBookingRequest {
     private Long userId;
-    private Long roomId;
     private Long hotelId;
+    private Long roomId;
+    private Long roomDetailId;
     private String checkIn;
     private String checkOut;
     private int guest;
@@ -21,8 +22,9 @@ public class AddBookingRequest {
     public Booking toEntity() {
         return Booking.builder()
                 .userId(userId)
-                .roomId(roomId)
                 .hotelId(hotelId)
+                .roomId(roomId)
+                .roomDetailId(roomDetailId)
                 .startDate(checkIn)
                 .endDate(checkOut)
                 .bookingGuest(guest)

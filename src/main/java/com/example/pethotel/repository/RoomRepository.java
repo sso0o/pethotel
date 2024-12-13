@@ -29,7 +29,7 @@ public interface RoomRepository extends JpaRepository<Room, Long> {
             "AND r.limitGuest >= :guest " +
             "AND r.limitPet >= :pet " +
             "AND r.roomId NOT IN (" +
-            "   SELECT b.roomId " +
+            "   SELECT b.roomDetailId " +
             "   FROM Booking b " +
             "   WHERE b.paymentId IS NOT NULL " +
             "   AND (b.startDate < :checkOut AND b.endDate > :checkIn)) ")

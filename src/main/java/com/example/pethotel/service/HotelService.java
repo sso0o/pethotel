@@ -69,7 +69,7 @@ public class HotelService {
 
     public Page<SearchHotelResponse> findBySearchOption(SearchHotelRequest request, int page, int size){
         Pageable pageable = PageRequest.of(page - 1, size);  // 페이지는 0부터 시작하므로, 1을 빼서 전달
-        return hotelRepository.findBySearchOption(pageable, request.getLocation(), request.getGuest(), request.getPet(), request.getCheckIn(), request.getCheckOut());
+        return hotelRepository.findBySearchOption(pageable, request.getLocation(), request.getGuest(), request.getPet(), request.getCheckIn(), request.getCheckOut(), request.getRoom());
     }
 
 
