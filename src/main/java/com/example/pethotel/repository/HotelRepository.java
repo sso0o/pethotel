@@ -32,14 +32,14 @@ public interface HotelRepository extends JpaRepository<Hotel, Long> {
             "   WHERE b.paymentId IS NOT NULL " +
             "   AND (b.startDate < :checkOut AND b.endDate > :checkIn)) " +
             "GROUP BY h.hotelId, h.hotelName, h.hotelType, h.hotelInfo " +
-            "having COUNT(d) >= :roomCount ")
+            "having COUNT(d) >= :room ")
     Page<SearchHotelResponse> findBySearchOption(Pageable pageable,
                                                  @Param("location") String location,
                                                  @Param("guest") int guest,
                                                  @Param("pet") int pet,
                                                  @Param("checkIn") String checkIn,
                                                  @Param("checkOut") String checkOut,
-                                                 @Param("roomCount") int roomCount);
+                                                 @Param("room") int room);
 
 
 }
