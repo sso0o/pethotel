@@ -2,6 +2,7 @@ package com.example.pethotel.controller.manager;
 
 import com.example.pethotel.entity.CommonCode;
 import com.example.pethotel.entity.Room;
+import com.example.pethotel.service.BookingService;
 import com.example.pethotel.service.RoomService;
 import com.example.pethotel.service.admin.CommonCodeService;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +19,7 @@ public class ManagerViewController {
 
     public final CommonCodeService commonCodeService;
     public final RoomService roomService;
+    public final BookingService bookingService;
 
     @GetMapping("/manager/hotelmainPage")
     public String hotelMainPage() {
@@ -45,11 +47,17 @@ public class ManagerViewController {
     }
 
     @GetMapping("/manager/myhotelbooking/{hotelId}")
-    public String myBooking(Model model, @PathVariable Long hotelId) {
+    public String myHotelBooking(Model model, @PathVariable Long hotelId) {
         if (hotelId!= 0) {
             List<Room> rooms = roomService.findAllByHotelId(hotelId);
             model.addAttribute("rooms", rooms);
         }
         return "manager/myHotelBooking";
     }
+
+    @GetMapping("manager/myhotelrequest/{hotelId}")
+    public String myHotelRequest(Model model, @PathVariable Long hotelId) {
+        return "manager/myHotelRequest";
+    }
+
 }

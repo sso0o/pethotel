@@ -94,4 +94,9 @@ public class RoomService {
         });
     }
 
+    // 매니저가 예약관리 페이지때 씀
+    public List<Room> findAllByHotel(Hotel hotel) {
+        return roomRepository.findAllByHotel(hotel);
+    }
+
 }

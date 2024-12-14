@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
@@ -139,6 +141,23 @@ public class HotelApiController {
         resultMap.put("msg", "예약 요청 성공");
         resultMap.put("booking", booking);
         return ResponseEntity.ok().body(req);
+    }
+
+
+    //=============================================================================================
+    //================================              put               =============================
+    //=============================================================================================
+
+    @PutMapping("/booking/paymentChk/{bookingId}")
+    public ResponseEntity updatePaymentId(@PathVariable UUID bookingId,
+                                          @RequestBody Map<String, String> payload){
+        HashMap<Object, Object> resultMap = new HashMap<>();
+        String paymentId = payload.get("paymentId");
+        String payChk = payload.get("payChk");
+        bookingService.updatePaycheck(bookingId, payChk, paymentId);
+        resultMap.put("msg", "요청 성공");
+        return ResponseEntity.ok().body(resultMap);
+
     }
 
 

@@ -40,4 +40,5 @@ public interface RoomRepository extends JpaRepository<Room, Long> {
                                 @Param("checkIn") String checkIn,
                                 @Param("checkOut") String checkOut);
 
+
 }

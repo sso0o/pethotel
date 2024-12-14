@@ -18,9 +18,12 @@
   <link rel="icon" type="image/x-icon" href="/img/favicon.png">
 
   <!-- Bootstrap  CSS -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"  integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
   <!-- jQuery UI CSS -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" integrity="sha512-aOG0c6nPNzGk+5zjwyJaoRUgCdOrfSDhmMID2u4+OIslr0GjpLKo7Xm0Ao3xmpM4T8AmIouRkqwj1nrdVsLKEQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css"
+        integrity="sha512-aOG0c6nPNzGk+5zjwyJaoRUgCdOrfSDhmMID2u4+OIslr0GjpLKo7Xm0Ao3xmpM4T8AmIouRkqwj1nrdVsLKEQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
 
   <!-- Custom fonts for this template-->
   <link href="/tem2/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -32,7 +35,7 @@
   <!-- Custom styles for this page -->
   <link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.css"/>
   <link rel="stylesheet" href="https://cdn.datatables.net/select/2.1.0/css/select.dataTables.css"/>
-  <script src="/manager/myHotelBooking.js"></script>
+  <script src="/manager/myHotelRequest.js"></script>
 
 
 </head>
@@ -81,6 +84,7 @@
           <a class="collapse-item" href="/manager/myhotelPage">호텔 관리</a>
           <a class="collapse-item" href="/manager/myhotelroom/0">객실 관리</a>
           <a class="collapse-item active" href="/manager/myhotelbooking/0">예약 관리</a>
+          <a class="collapse-item" href="/manager/myhotelrequest/0">예약 요청 관리</a>
         </div>
       </div>
     </li>
@@ -155,7 +159,7 @@
               </div>
               <div class="card-body">
                 <div style="display: flex;">
-                  <select class="form-select mb-3" id="myHotles" name="myHotles" style="width: fit-content;">
+                  <select class="form-select mb-3" id="myHotels" name="myHotels" style="width: fit-content;">
                     <option></option>
                   </select>
                 </div>
@@ -214,7 +218,8 @@
 
 <!-- Bootstrap core JavaScript-->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"></script>
 
 <!-- Core plugin JavaScript-->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"
@@ -242,22 +247,22 @@
         let user = $('#user');
         let hotelId;
 
-        let selectMyHotles = $('#myHotles');
+        let selectMyHotels = $('#myHotels');
 
         $.ajax({
             url: '/manager/myhotels/'+BigInt(user.data('user-id')),
             type: 'get',
             success: function (data){
-                selectMyHotles.empty();
+                selectMyHotels.empty();
                 $.each(data.hotels, function (i, hotel){
                     let option = $('<option></option>')
                         .val(hotel.hotelId)  // 호텔의 id를 value로 설정
                         .text(hotel.hotelName);  // 호텔의 이름을 텍스트로 설정
-                    selectMyHotles.append(option);  // select에 option 추가
+                    selectMyHotels.append(option);  // select에 option 추가
                 });
                 // URL에서 가져온 호텔 ID가 목록에 있다면, 그 호텔을 자동으로 선택
                 if (hotelIdFromUrl) {
-                    selectMyHotles.val(hotelIdFromUrl);  // 호텔 ID로 옵션을 선택
+                    selectMyHotels.val(hotelIdFromUrl);  // 호텔 ID로 옵션을 선택
                 }
             },
             error: function (e){
@@ -294,7 +299,7 @@
         });
         calendar.render();
 
-        selectMyHotles.on("change", function (){
+        selectMyHotels.on("change", function (){
             hotelId = this.value;
             // 셀렉트박스에서 선택된 호텔 ID를 기반으로 캘린더를 새로 고침
             calendar.refetchEvents();  // 이벤트를 새로 가져오도록 요청

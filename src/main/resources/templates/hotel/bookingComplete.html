@@ -199,36 +199,27 @@
         })
 
         let payResult = $('#payResult');
+        let resultCode = payResult.data('result-code');
 
         if ($('#booking').length > 0) {
             let data = JSON.stringify({
-                bookingId: $('#booking').data('booking-id'),
-                roomId: $('#booking').data('booking-room-id'),
-                hotelId: $('#booking').data('booking-hotel-id'),
-                userId: $('#booking').data('booking-user-id'),
-                startDate: $('#booking').data('booking-start-date'),
-                endDate: $('#booking').data('booking-end-date'),
-                totalPrice: $('#booking').data('booking-total-price'),
-                totalDate: $('#booking').data('booking-total-date')
+                paymentId: payResult.data('payment-id'),
+                payChk: resultCode
             })
 
-            if(payResult.data('result-code') == "Success") {
-                $.ajax({
-                    url: "/booking/approve/"+payResult.data('payment-id'),
-                    type: "POST",
-                    contentType: "application/json",
-                    data: data,
-                    success: function(response) {
-                        location.href = "/booking/complete";
-                    },
-                    error: function (request, status, error) {
-                        let result = jQuery.parseJSON(request.responseText)
-                        alert(result.msg);
-                    }
-                })
-            } else if (payResult.data('result-code') == "UserCancel") {
-
-            }
+            $.ajax({
+                url: '/booking/paymentChk/'+$('#booking').data('booking-id'),
+                type: "PUT",
+                contentType: "application/json",
+                data: data,
+                success: function(response) {
+                    location.href = "/booking/complete";
+                },
+                error: function (request, status, error) {
+                    let result = jQuery.parseJSON(request.responseText)
+                    alert(result.msg);
+                }
+            })
         }
 
 

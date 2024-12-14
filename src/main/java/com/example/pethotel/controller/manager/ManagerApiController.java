@@ -84,8 +84,25 @@ public class ManagerApiController {
     @GetMapping("/manager/mybooking/{hotelId}")
     public ResponseEntity getMyBooking(@PathVariable Long hotelId) {
         HashMap<Object, Object> resultMap = new HashMap<>();
-        List<HotelBookingResponse> bookings = bookingService.findBookingByHotelId(hotelId);
+        List<HotelBookingResponse> bookings = bookingService.findBookingResponseByHotelId(hotelId);
         resultMap.put("bookings", bookings);
+        return ResponseEntity.ok().body(resultMap);
+    }
+
+    @GetMapping("/manager/myrequest/{hotelId}")
+    public ResponseEntity getMyRequest(@PathVariable Long hotelId) {
+        HashMap<Object, Object> resultMap = new HashMap<>();
+        List<HotelRequestResponse> bookings = bookingService.findAllByHotelIdAndPayChkIsNull(hotelId);
+        resultMap.put("bookings", bookings);
+        return ResponseEntity.ok().body(resultMap);
+    }
+
+    @GetMapping("/manager/roomtype/{hotelId}")
+    public ResponseEntity getMyHotelRoom(@PathVariable Long hotelId) {
+        HashMap<Object, Object> resultMap = new HashMap<>();
+        Hotel hotel = hotelService.findById(hotelId);
+        List<Room> rooms = roomService.findAllByHotel(hotel);
+        resultMap.put("roomTypes", rooms);
         return ResponseEntity.ok().body(resultMap);
     }
 

@@ -2,6 +2,7 @@ package com.example.pethotel.service;
 
 import com.example.pethotel.dto.hotel.AddBookingRequest;
 import com.example.pethotel.dto.manager.HotelBookingResponse;
+import com.example.pethotel.dto.manager.HotelRequestResponse;
 import com.example.pethotel.entity.Booking;
 import com.example.pethotel.repository.BookingRepository;
 import jakarta.transaction.Transactional;
@@ -36,7 +37,14 @@ public class BookingService {
     }
 
     // 호텔 아이디별 예약 가져오기(manager 사용)
-    public List<HotelBookingResponse> findBookingByHotelId(Long hotelId) {
-        return bookingRepository.findAllByHotelId(hotelId);
+    public List<HotelBookingResponse> findBookingResponseByHotelId(Long hotelId) {
+        return bookingRepository.findBookingResponseByHotelId(hotelId);
     }
+
+    // 매니저가 예약 요청 페이지에서 사용
+    public List<HotelRequestResponse> findAllByHotelIdAndPayChkIsNull(Long hotelId) {
+        return bookingRepository.findAllByHotelIdAndPayChkIsNull(hotelId);
+    }
+
+
 }
