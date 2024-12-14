@@ -349,14 +349,6 @@
                 {data: "bookingGuest"},
                 {data: "bookingPet"}
             ],
-            // columnDefs: [
-            //     {targets: 0, width: '33%',},
-            //     {targets: 1, width: '33%',},
-            //     {targets: 2, width: '33%',},
-            //     {targets: 3, width: '33%',},
-            //     {targets: 4, width: '33%',},
-            //     {targets: 5, width: '33%',},
-            // ]
         })
 
         let tabMyBooking = $('#tabMyBooking').DataTable({
@@ -372,7 +364,7 @@
                 style: 'single'
             },
             ajax: {
-                url: '/manager/myrequest/'+BigInt(hotelId),
+                url: '/manager/myroomdetail/booking/0',
                 type: 'get',
                 dataSrc: 'bookings'
             },
@@ -386,14 +378,20 @@
             ],
         })
 
-        // 더블 클릭시
-        $('#tabMyRequest tbody').on('dblclick', 'tr', function () {
-            let checkedVal = $('#tabMyRequest').DataTable().row(this).data();
-        })
-
-        // 클릭시
+        // 클릭시 같은 타입의 객실 목록 조회
         $('#tabMyRequest tbody').on('click', 'tr', function () {
             let checkedVal = $('#tabMyRequest').DataTable().row(this).data();
+
+            $.ajax({
+                url:'/manager/myroomdetail/booking/' + checkedVal.roomId,
+                type: 'get',
+                data: checkedVal.paymentId,
+                success:function (data){
+                    tabMyBooking.clear().rows.add(data.bookings).draw();
+                }
+            })
+
+
 
         })
 

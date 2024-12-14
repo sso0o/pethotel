@@ -11,9 +11,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -92,7 +93,7 @@ public class ManagerApiController {
     @GetMapping("/manager/myrequest/{hotelId}")
     public ResponseEntity getMyRequest(@PathVariable Long hotelId) {
         HashMap<Object, Object> resultMap = new HashMap<>();
-        List<HotelRequestResponse> bookings = bookingService.findAllByHotelIdAndPayChkIsNull(hotelId);
+        List<HotelRequestResponse> bookings = bookingService.findAllByHotelIdAndPayChk(hotelId);
         resultMap.put("bookings", bookings);
         return ResponseEntity.ok().body(resultMap);
     }
@@ -103,6 +104,62 @@ public class ManagerApiController {
         Hotel hotel = hotelService.findById(hotelId);
         List<Room> rooms = roomService.findAllByHotel(hotel);
         resultMap.put("roomTypes", rooms);
+        return ResponseEntity.ok().body(resultMap);
+    }
+
+    @GetMapping("/manager/myroomdetail/booking/{roomId}")
+    public ResponseEntity getMyRoomDetailBooking(@PathVariable Long roomId, @RequestParam(required = false)  String bookingId) {
+        LocalDate startDate;
+        LocalDate endDate;
+        if (bookingId != null) {
+            Booking booking = bookingService.findById(UUID.fromString(bookingId));
+            startDate = LocalDate.parse(booking.getStartDate());
+            endDate = LocalDate.parse(booking.getEndDate());
+        } else {
+            // bookingId가 없을 경우 현재 날짜부터 7일간의 범위를 설정
+            startDate = LocalDate.now();
+            endDate = startDate.plusDays(6);
+        }
+
+        List<LocalDate> dateRange = new ArrayList<>();
+        LocalDate adjustedStart = startDate.minusDays(1);
+        while (!adjustedStart.isAfter(endDate)) {
+            dateRange.add(adjustedStart);
+            adjustedStart = adjustedStart.plusDays(1);
+        }
+
+        // 만약 일자 수가 7일 미만이면 7일을 채움
+        while (dateRange.size() < 7) {
+            dateRange.add(0, dateRange.get(0).minusDays(1));
+        }
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String startDateStr = dateRange.get(0).format(formatter);
+        String endDateStr = dateRange.get(dateRange.size() - 1).format(formatter);
+
+
+        List<Booking> bookings = bookingService.findAllByRoomIdAndStartDateBetween(roomId, startDateStr, endDateStr);
+
+        Map<Long, List<String>> roomReservations = new HashMap<>();
+        for (Booking b : bookings) {
+            Long roomNumber = b.getRoomDetailId();
+            LocalDate reservationDate = LocalDate.parse(b.getStartDate());
+
+            roomReservations.computeIfAbsent(roomNumber, k ->
+                    dateRange.stream().map(d -> "").collect(Collectors.toList()));
+
+            int index = dateRange.indexOf(reservationDate);
+            if (index != -1) {
+                roomReservations.get(roomNumber).set(index, "예약");
+            }
+        }
+
+        Map<String, Object> resultMap = new LinkedHashMap<>();
+        resultMap.put("dates", dateRange.stream()
+                .map(d -> d.format(DateTimeFormatter.ISO_DATE))
+                .collect(Collectors.toList()));
+        resultMap.put("bookings", roomReservations);
+
         return ResponseEntity.ok().body(resultMap);
     }
 

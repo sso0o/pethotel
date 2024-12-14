@@ -42,9 +42,12 @@ public class BookingService {
     }
 
     // 매니저가 예약 요청 페이지에서 사용
-    public List<HotelRequestResponse> findAllByHotelIdAndPayChkIsNull(Long hotelId) {
-        return bookingRepository.findAllByHotelIdAndPayChkIsNull(hotelId);
+    public List<HotelRequestResponse> findAllByHotelIdAndPayChk(Long hotelId) {
+        return bookingRepository.findAllByHotelIdAndPayChk(hotelId);
     }
 
 
+    public List<Booking> findAllByRoomIdAndStartDateBetween(Long roomId, String startDate, String endDate) {
+        return bookingRepository.findAllByRoomIdAndStartDateBetween(roomId, startDate, endDate);
+    }
 }

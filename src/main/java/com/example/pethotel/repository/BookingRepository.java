@@ -24,6 +24,20 @@ public interface BookingRepository extends JpaRepository<Booking, UUID> {
             "FROM Booking b " +
             "left join Room r on b.roomId = r.roomId " +
             "WHERE b.hotelId = :hotelId " +
-            "AND b.payChk IS NULL")
-    List<HotelRequestResponse> findAllByHotelIdAndPayChkIsNull(Long hotelId);
+            "AND b.payChk = 'Success' " +
+            "AND b.paymentId IS NOT NULL")
+    List<HotelRequestResponse> findAllByHotelIdAndPayChk(Long hotelId);
+
+
+
+
+    @Query(value = "SELECT d " +
+            "FROM RoomDetail d " +
+            "LEFT JOIN Booking b on d.roomDetailId = b.roomDetailId " +
+            "WHERE b.roomId = :roomId " +
+            "AND b.payChk = 'paid' " +
+            "AND b.paymentId IS NOT NULL " +
+            "AND b.startDate BETWEEN :startDate and :endDate ")
+    List<Booking> findAllByRoomIdAndStartDateBetween(Long roomId, String startDate, String endDate);
+
 }
