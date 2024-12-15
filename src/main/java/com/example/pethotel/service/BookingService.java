@@ -3,13 +3,16 @@ package com.example.pethotel.service;
 import com.example.pethotel.dto.hotel.AddBookingRequest;
 import com.example.pethotel.dto.manager.HotelBookingResponse;
 import com.example.pethotel.dto.manager.HotelRequestResponse;
+import com.example.pethotel.dto.manager.PaidBookingResponse;
 import com.example.pethotel.entity.Booking;
 import com.example.pethotel.repository.BookingRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @Service
@@ -50,4 +53,28 @@ public class BookingService {
     public List<Booking> findAllByRoomIdAndStartDateBetween(Long roomId, String startDate, String endDate) {
         return bookingRepository.findAllByRoomIdAndStartDateBetween(roomId, startDate, endDate);
     }
+
+    public List<PaidBookingResponse> findPaidBookingResponseByRoomId(Long roomId, String startDate, String endDate) {
+        List<PaidBookingResponse> paidBookingResponses = new ArrayList<>();
+        // <hotelId, roomId, roomDetailId, targetDate, totalDate, startDate, endDate>
+        List<Map<String, Object>> maps = bookingRepository.findPaidBookingResponseByRoomId(roomId, startDate, endDate);
+        for (Map<String, Object> map : maps) {
+            PaidBookingResponse response = new PaidBookingResponse(
+                (Long) map.get("hotelId"),
+                (Long) map.get("roomId"),
+                (Long) map.get("roomDetailId"),
+                (String) map.get("targetDate"),
+                (Integer) map.get("totalDate"),
+                (String) map.get("startDate"),
+                (String) map.get("endDate"),
+                (String) map.get("paymentId")
+            );
+            paidBookingResponses.add(response);
+        }
+        return paidBookingResponses;
+    }
+
+    public List<Object[]> findRoomBookingStatus(Long roomId, String startDate, String endDate) {
+        return bookingRepository.findRoomBookingStatus(roomId, startDate, endDate);
+    };
 }

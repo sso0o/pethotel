@@ -18,7 +18,7 @@ function drawBookingDetail(data) {
     <p>체크아웃 일자 : ${searchData.checkOut}</p>
     <p>총 인원 : ${searchData.guest} / ${limitGuest}</p>
     <p>총 펫 : ${searchData.pet} / ${limitPet}</p>
-    <p>총 가격 : ${Number(roomPrice).toLocaleString()} 원</p>
+    <p>총 가격 : ${Number(roomPrice).toLocaleString()}*${dayDiff} 원</p>
     <p>총 일수 : ${dayDiff} 일</p>
     <p></p>
     `;

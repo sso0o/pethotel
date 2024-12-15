@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 public interface BookingRepository extends JpaRepository<Booking, UUID> {
@@ -28,16 +29,54 @@ public interface BookingRepository extends JpaRepository<Booking, UUID> {
             "AND b.paymentId IS NOT NULL")
     List<HotelRequestResponse> findAllByHotelIdAndPayChk(Long hotelId);
 
-
-
-
     @Query(value = "SELECT d " +
             "FROM  Booking b " +
             "RIGHT OUTER JOIN RoomDetail d on d.roomDetailId = b.roomDetailId " +
             "WHERE b.roomId = :roomId " +
             "AND b.payChk = 'paid' " +
             "AND b.paymentId IS NOT NULL " +
-            "AND b.startDate BETWEEN :startDate and :endDate ")
+            "AND (b.startDate BETWEEN :startDate and :endDate OR b.endDate BETWEEN :startDate and :endDate)")
     List<Booking> findAllByRoomIdAndStartDateBetween(Long roomId, String startDate, String endDate);
+
+    @Query(value = "" +
+            "WITH recursive date_range AS ( " +
+            "   SELECT b.hotel_id as hotelId, b.room_id as roomId, b.room_d_id as roomDetailId, b.start_date AS targetDate, b.total_date as totalDate, b.start_date as startDate, b.end_date as endDate, b.payment_id as paymentId " +
+            "   FROM booking b" +
+            "   WHERE b.pay_chk = 'paid' " +
+            "   AND b.start_date BETWEEN :startDate AND :endDate " +
+            "   AND b.room_id = :roomId " +
+            "   UNION ALL " +
+            "   SELECT hotelId, roomId, roomDetailId, DATE_ADD(r.targetDate, INTERVAL 1 DAY) AS targetDate, totalDate, startDate, endDate, paymentId " +
+            "   FROM date_range r" +
+            "   WHERE DATE_ADD(r.targetDate, INTERVAL 1 DAY) < r.endDate " +
+            ") " +
+            "SELECT b.hotelId, b.roomId, b.roomDetailId, b.targetDate, b.totalDate, b.startDate, b.endDate, b.paymentId " +
+            "FROM date_range b", nativeQuery = true)
+    List<Map<String, Object>> findPaidBookingResponseByRoomId(Long roomId, String startDate, String endDate);
+
+    @Query(value = "" +
+            "With recursive date_range as (" +
+            "   select :startDate as target_date " +
+            "   union all " +
+            "   select date_add(target_date, interval 1 day) " +
+            "   from date_range " +
+            "   where target_date < :endDate " +
+            ") " +
+            "select d.room_name, " +
+            "group_concat(" +
+            "   case " +
+            "      when ( select count(*) from vw_paid_booking v where v.target_date = r.target_date and v.room_d_id = d.roomdetail_id) then 'O' " +
+            "      else 'X' " +
+            "   end " +
+            "   Order by r.target_date separator ', ' ) as days " +
+            "from roomdetail d " +
+            "join date_range r on 1=1 " +
+            "where d.room_id = :roomId " +
+            "Group by d.room_name " +
+            "order by d.room_name", nativeQuery = true)
+    List<Object[]> findRoomBookingStatus(Long roomId, String startDate, String endDate);
+
+
+
 
 }

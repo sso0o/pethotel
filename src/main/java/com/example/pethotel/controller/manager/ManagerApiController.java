@@ -109,13 +109,18 @@ public class ManagerApiController {
 
     @GetMapping("/manager/myroomdetail/booking/{roomId}")
     public ResponseEntity getMyRoomDetailBooking(@PathVariable Long roomId, @RequestParam(required = false) String bookingId) {
+        HashMap<Object, Object> resultMap = new HashMap<>();
+
         LocalDate startDate;
         LocalDate endDate;
-        System.out.println("========booking: " + bookingId );
         if (bookingId != null) {
             Booking booking = bookingService.findById(UUID.fromString(bookingId));
-            startDate = LocalDate.parse(booking.getStartDate());
+            startDate = LocalDate.parse(booking.getStartDate()).minusDays(1); // 하루 전 날짜로 설정
             endDate = LocalDate.parse(booking.getEndDate());
+            // 만약 예약 기간이 7일이 아니면, endDate를 6일로 설정
+            if (endDate.toEpochDay() - startDate.toEpochDay() <= 7) {
+                endDate = startDate.plusDays(6);
+            }
 
         } else {
             // bookingId가 없을 경우 현재 날짜부터 7일간의 범위를 설정
@@ -124,43 +129,47 @@ public class ManagerApiController {
         }
 
         List<LocalDate> dateRange = new ArrayList<>();
-        LocalDate adjustedStart = startDate.minusDays(1);
-        while (!adjustedStart.isAfter(endDate)) {
-            dateRange.add(adjustedStart);
-            adjustedStart = adjustedStart.plusDays(1);
-        }
-
-        // 만약 일자 수가 7일 미만이면 7일을 채움
-        while (dateRange.size() < 7) {
-            dateRange.add(0, dateRange.get(0).minusDays(1));
+        // 시작일에서 끝일까지 하루씩 증가시키며 날짜를 추가
+        while (!startDate.isAfter(endDate)) {
+            dateRange.add(startDate);
+            startDate = startDate.plusDays(1);
         }
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         String startDateStr = dateRange.get(0).format(formatter);
         String endDateStr = dateRange.get(dateRange.size() - 1).format(formatter);
+        //=============================================================================================================
+        //=============================================================================================================
+
+        List<RoomDetail> roomDetails = roomDetailService.findAllByRoomId(roomId);
+        List<Object[]> testbooking = bookingService.findRoomBookingStatus(roomId, startDateStr, endDateStr);
+        List<PaidBookingResponse> paidBooking = bookingService.findPaidBookingResponseByRoomId(roomId, startDateStr, endDateStr);
 
 
-        List<Booking> bookings = bookingService.findAllByRoomIdAndStartDateBetween(roomId, startDateStr, endDateStr);
+        List<Map<String, Object>> result = new ArrayList<>();
+        for (RoomDetail room : roomDetails) {
+            Map<String, Object> roomData = new HashMap<>();
+            roomData.put("room", room.getRoomName());
 
-        Map<Long, List<String>> roomReservations = new HashMap<>();
-        for (Booking b : bookings) {
-            Long roomNumber = b.getRoomDetailId();
-            LocalDate reservationDate = LocalDate.parse(b.getStartDate());
-
-            roomReservations.computeIfAbsent(roomNumber, k ->
-                    dateRange.stream().map(d -> "").collect(Collectors.toList()));
-
-            int index = dateRange.indexOf(reservationDate);
-            if (index != -1) {
-                roomReservations.get(roomNumber).set(index, "예약");
+            List<String> reservationDates = new ArrayList<>();
+            for (LocalDate date : dateRange) {
+                if (paidBooking.stream().anyMatch(r -> r.getRoomDetailId().equals(room.getRoomDetailId()) && r.getTargetDate().equals(date))) {
+                    reservationDates.add(date.toString());
+                }
             }
+            roomData.put("dates", reservationDates);
+
+            result.add(roomData);
         }
 
-        Map<String, Object> resultMap = new LinkedHashMap<>();
+
         resultMap.put("dates", dateRange.stream()
                 .map(d -> d.format(DateTimeFormatter.ISO_DATE))
                 .collect(Collectors.toList()));
-        resultMap.put("bookings", roomReservations);
+//        resultMap.put("roomDetails", roomDetails);
+//        resultMap.put("paidBookings", paidBooking);
+//        resultMap.put("roomReservations", result);
+        resultMap.put("paidBookings", testbooking);
 
         return ResponseEntity.ok().body(resultMap);
     }
