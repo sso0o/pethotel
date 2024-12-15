@@ -385,7 +385,9 @@
             $.ajax({
                 url:'/manager/myroomdetail/booking/' + checkedVal.roomId,
                 type: 'get',
-                data: checkedVal.paymentId,
+                data: JSON.stringify({
+                    bookingId: checkedVal.bookingId
+                }),
                 success:function (data){
                     tabMyBooking.clear().rows.add(data.bookings).draw();
                 }

@@ -2,8 +2,11 @@ package com.example.pethotel.dto.manager;
 
 import lombok.Getter;
 
+import java.util.UUID;
+
 @Getter
 public class HotelRequestResponse {
+    private UUID bookingId;
     private String paymentId;
     private String roomType;
     private Long roomId;
@@ -15,11 +18,12 @@ public class HotelRequestResponse {
     private int bookingGuest;
     private int bookingPet;
 
-    public HotelRequestResponse(String paymentId, String roomType,
+    public HotelRequestResponse(UUID bookingId, String paymentId, String roomType,
                                 Long roomId, Long hotelId,
                                 String startDate, String endDate,
                                 int totalPrice, int totalDate,
                                 int bookingGuest, int bookingPet) {
+        this.bookingId = bookingId;
         this.paymentId = paymentId;
         this.roomType = roomType;
         this.roomId = roomId;

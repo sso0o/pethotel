@@ -108,13 +108,15 @@ public class ManagerApiController {
     }
 
     @GetMapping("/manager/myroomdetail/booking/{roomId}")
-    public ResponseEntity getMyRoomDetailBooking(@PathVariable Long roomId, @RequestParam(required = false)  String bookingId) {
+    public ResponseEntity getMyRoomDetailBooking(@PathVariable Long roomId, @RequestParam(required = false) String bookingId) {
         LocalDate startDate;
         LocalDate endDate;
+        System.out.println("========booking: " + bookingId );
         if (bookingId != null) {
             Booking booking = bookingService.findById(UUID.fromString(bookingId));
             startDate = LocalDate.parse(booking.getStartDate());
             endDate = LocalDate.parse(booking.getEndDate());
+
         } else {
             // bookingId가 없을 경우 현재 날짜부터 7일간의 범위를 설정
             startDate = LocalDate.now();

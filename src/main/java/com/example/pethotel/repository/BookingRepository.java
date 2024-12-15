@@ -20,7 +20,7 @@ public interface BookingRepository extends JpaRepository<Booking, UUID> {
     List<HotelBookingResponse> findBookingResponseByHotelId(Long hotelId);
 
     @Query(value = "SELECT new com.example.pethotel.dto.manager.HotelRequestResponse( " +
-            "b.paymentId, r.roomType, b.roomId, b.hotelId, b.startDate, b.endDate, b.totalPrice, b.totalDate, b.bookingGuest, b.bookingPet ) " +
+            "b.bookingId, b.paymentId, r.roomType, b.roomId, b.hotelId, b.startDate, b.endDate, b.totalPrice, b.totalDate, b.bookingGuest, b.bookingPet ) " +
             "FROM Booking b " +
             "left join Room r on b.roomId = r.roomId " +
             "WHERE b.hotelId = :hotelId " +
@@ -32,8 +32,8 @@ public interface BookingRepository extends JpaRepository<Booking, UUID> {
 
 
     @Query(value = "SELECT d " +
-            "FROM RoomDetail d " +
-            "LEFT JOIN Booking b on d.roomDetailId = b.roomDetailId " +
+            "FROM  Booking b " +
+            "RIGHT OUTER JOIN RoomDetail d on d.roomDetailId = b.roomDetailId " +
             "WHERE b.roomId = :roomId " +
             "AND b.payChk = 'paid' " +
             "AND b.paymentId IS NOT NULL " +
