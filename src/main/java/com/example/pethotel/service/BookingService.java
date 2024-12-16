@@ -74,7 +74,30 @@ public class BookingService {
         return paidBookingResponses;
     }
 
-    public List<Object[]> findRoomBookingStatus(Long roomId, String startDate, String endDate) {
-        return bookingRepository.findRoomBookingStatus(roomId, startDate, endDate);
-    };
+    public List<List<String>> findRoomBookingStatus(Long roomId, String startDate, String endDate) {
+        List<Object[]> roomBookingStatus = new ArrayList<>(); // <roomId, startDate, endDate>
+        roomBookingStatus = bookingRepository.findRoomBookingStatus(roomId, startDate, endDate);
+        List<List<String>> result = new ArrayList<>();
+        for(Object[] obj : roomBookingStatus) {
+            String roomName = (String) obj[0];
+            String bookingData = (String) obj[1];
+            String[] dataList = bookingData.split(",");
+
+            List<String> roomData = new ArrayList<>();
+            roomData.add(roomName);
+            for(String data : dataList) {
+                roomData.add(data);
+            }
+            result.add(roomData);
+        }
+
+        return result;
+    }
+
+
+
+
+
+
+
 }

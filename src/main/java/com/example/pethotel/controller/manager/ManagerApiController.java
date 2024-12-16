@@ -120,6 +120,8 @@ public class ManagerApiController {
             // 만약 예약 기간이 7일이 아니면, endDate를 6일로 설정
             if (endDate.toEpochDay() - startDate.toEpochDay() <= 7) {
                 endDate = startDate.plusDays(6);
+            }else{
+                endDate = endDate.plusDays(2);
             }
 
         } else {
@@ -141,26 +143,26 @@ public class ManagerApiController {
         //=============================================================================================================
         //=============================================================================================================
 
-        List<RoomDetail> roomDetails = roomDetailService.findAllByRoomId(roomId);
-        List<Object[]> testbooking = bookingService.findRoomBookingStatus(roomId, startDateStr, endDateStr);
-        List<PaidBookingResponse> paidBooking = bookingService.findPaidBookingResponseByRoomId(roomId, startDateStr, endDateStr);
+//        List<RoomDetail> roomDetails = roomDetailService.findAllByRoomId(roomId);
+        List<List<String>> testbooking = bookingService.findRoomBookingStatus(roomId, startDateStr, endDateStr);
+//        List<PaidBookingResponse> paidBooking = bookingService.findPaidBookingResponseByRoomId(roomId, startDateStr, endDateStr);
 
 
-        List<Map<String, Object>> result = new ArrayList<>();
-        for (RoomDetail room : roomDetails) {
-            Map<String, Object> roomData = new HashMap<>();
-            roomData.put("room", room.getRoomName());
-
-            List<String> reservationDates = new ArrayList<>();
-            for (LocalDate date : dateRange) {
-                if (paidBooking.stream().anyMatch(r -> r.getRoomDetailId().equals(room.getRoomDetailId()) && r.getTargetDate().equals(date))) {
-                    reservationDates.add(date.toString());
-                }
-            }
-            roomData.put("dates", reservationDates);
-
-            result.add(roomData);
-        }
+//        List<Map<String, Object>> result = new ArrayList<>();
+//        for (RoomDetail room : roomDetails) {
+//            Map<String, Object> roomData = new HashMap<>();
+//            roomData.put("room", room.getRoomName());
+//
+//            List<String> reservationDates = new ArrayList<>();
+//            for (LocalDate date : dateRange) {
+//                if (paidBooking.stream().anyMatch(r -> r.getRoomDetailId().equals(room.getRoomDetailId()) && r.getTargetDate().equals(date))) {
+//                    reservationDates.add(date.toString());
+//                }
+//            }
+//            roomData.put("dates", reservationDates);
+//
+//            result.add(roomData);
+//        }
 
 
         resultMap.put("dates", dateRange.stream()
