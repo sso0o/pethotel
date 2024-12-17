@@ -28,6 +28,13 @@ function drawTabMyBooking(data){
             for (let j = 0; j < booking.length; j++) {
                 let cell = document.createElement('td');
                 cell.textContent = booking[j];
+                if(booking[j] === "O"){
+                    cell.classList.add("bg-occupied");
+                } else if (booking[j] === "X"){
+                    cell.classList.add("bg-available");
+                } else {
+                    cell.classList.add("bg-default");
+                }
                 row.appendChild(cell);
             }
             tbody.append(row);

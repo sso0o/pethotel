@@ -1,0 +1,13 @@
+.bg-occupied{
+    background-color: #f5b7b1 !important;
+    text-align: center;
+}
+
+.bg-available{
+    background-color: #c3e6cb !important;
+    text-align: center;
+}
+
+.bg-default{
+    min-width: 160px;
+}
