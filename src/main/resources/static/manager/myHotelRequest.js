@@ -22,23 +22,25 @@ function drawTabMyBooking(data){
     }
 
     if (data && data.paidBookings && Array.isArray(data.paidBookings) && data.paidBookings.length > 0) {
-        for (let i = 0; i < data.paidBookings.length; i++) {
-            let booking = data.paidBookings[i];
-            let row = document.createElement('tr');
-            for (let j = 0; j < booking.length; j++) {
-                let cell = document.createElement('td');
-                cell.textContent = booking[j];
-                if(booking[j] === "O"){
-                    cell.classList.add("bg-occupied");
-                } else if (booking[j] === "X"){
-                    cell.classList.add("bg-available");
-                } else {
-                    cell.classList.add("bg-default");
-                }
-                row.appendChild(cell);
-            }
-            tbody.append(row);
-        }
+
+
+        // for (let i = 0; i < data.paidBookings.length; i++) {
+        //     let booking = data.paidBookings[i];
+        //     let row = document.createElement('tr');
+        //     for (let j = 0; j < booking.length; j++) {
+        //         let cell = document.createElement('td');
+        //         cell.textContent = booking[j];
+        //         if(booking[j] === "O"){
+        //             cell.classList.add("bg-occupied");
+        //         } else if (booking[j] === "X"){
+        //             cell.classList.add("bg-available");
+        //         } else {
+        //             cell.classList.add("bg-default");
+        //         }
+        //         row.appendChild(cell);
+        //     }
+        //     tbody.append(row);
+        // }
     }
 
 
