@@ -1,50 +1,45 @@
 function drawTabMyBooking(data){
-    let table = $('#tabMyBooking');
-    let thead = table.find('thead');
-    let tbody = table.find('tbody');
-
-    // 기존의 테이블 내용을 지웁니다.
-    tbody.empty();
-    thead.empty();
-
     // 데이터가 존재하고 배열인 경우
     if (data && data.dates && Array.isArray(data.dates) && data.dates.length > 0) {
-        let headerRow = `<tr><th>객실</th>`
-        for (let i = 0; i < data.dates.length; i++) {
-            let date = data.dates[i];
-            headerRow += `<th>${date}</th>`;
-        }
-        headerRow += `</tr>`
-        // 헤더 행을 테이블 헤더에 추가
-        thead.append(headerRow);
+
+        let tabMyBooking = $('#tabMyBooking').DataTable();
+
+
+        let columns = [
+            { data: 'roomName' }
+        ];
+
+        data.dates.forEach(function (date, index) {
+            columns.push({ data: 'dates[' + index + ']', title: date });
+        });
+
+        tabMyBooking.clear().destroy();
+        tabMyBooking = $('#tabMyBooking').DataTable({
+            fixedColumns: {
+                start: 1
+            },
+            paging: false,
+            scrollCollapse: false,
+            scrollX: true,
+            searching: false,
+            select: {
+                style: 'single'
+            },
+            columns: columns
+        })
+
+        data.paidBookings.roomData.forEach(function(room) {
+            let rowData = { roomName: room.roomName };
+
+            room.dates.forEach(function(status, index) {
+                rowData['dates[' + index + ']'] = status.trim();  // 날짜에 맞는 상태 추가
+            });
+
+            tabMyBooking.row.add(rowData).draw();
+        });
     } else {
         console.error('데이터에서 헤더를 생성할 수 없습니다.');
     }
-
-    if (data && data.paidBookings && Array.isArray(data.paidBookings) && data.paidBookings.length > 0) {
-
-
-        // for (let i = 0; i < data.paidBookings.length; i++) {
-        //     let booking = data.paidBookings[i];
-        //     let row = document.createElement('tr');
-        //     for (let j = 0; j < booking.length; j++) {
-        //         let cell = document.createElement('td');
-        //         cell.textContent = booking[j];
-        //         if(booking[j] === "O"){
-        //             cell.classList.add("bg-occupied");
-        //         } else if (booking[j] === "X"){
-        //             cell.classList.add("bg-available");
-        //         } else {
-        //             cell.classList.add("bg-default");
-        //         }
-        //         row.appendChild(cell);
-        //     }
-        //     tbody.append(row);
-        // }
-    }
-
-
-
 
 }
 

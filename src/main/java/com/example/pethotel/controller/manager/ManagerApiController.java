@@ -115,6 +115,7 @@ public class ManagerApiController {
         LocalDate endDate;
         if (bookingId != null) {
             Booking booking = bookingService.findById(UUID.fromString(bookingId));
+//            Booking booking = bookingService.findById(bookingId);
             startDate = LocalDate.parse(booking.getStartDate()).minusDays(1); // 하루 전 날짜로 설정
             endDate = LocalDate.parse(booking.getEndDate());
             // 만약 예약 기간이 7일이 아니면, endDate를 6일로 설정
@@ -143,35 +144,14 @@ public class ManagerApiController {
         //=============================================================================================================
         //=============================================================================================================
 
-//        List<RoomDetail> roomDetails = roomDetailService.findAllByRoomId(roomId);
-        List<List<String>> testbooking = bookingService.findRoomBookingStatus(roomId, startDateStr, endDateStr);
-//        List<PaidBookingResponse> paidBooking = bookingService.findPaidBookingResponseByRoomId(roomId, startDateStr, endDateStr);
+        Map<String, Object> paidBookings = bookingService.findRoomBookingStatus(roomId, startDateStr, endDateStr);
 
-
-//        List<Map<String, Object>> result = new ArrayList<>();
-//        for (RoomDetail room : roomDetails) {
-//            Map<String, Object> roomData = new HashMap<>();
-//            roomData.put("room", room.getRoomName());
-//
-//            List<String> reservationDates = new ArrayList<>();
-//            for (LocalDate date : dateRange) {
-//                if (paidBooking.stream().anyMatch(r -> r.getRoomDetailId().equals(room.getRoomDetailId()) && r.getTargetDate().equals(date))) {
-//                    reservationDates.add(date.toString());
-//                }
-//            }
-//            roomData.put("dates", reservationDates);
-//
-//            result.add(roomData);
-//        }
 
 
         resultMap.put("dates", dateRange.stream()
                 .map(d -> d.format(DateTimeFormatter.ISO_DATE))
                 .collect(Collectors.toList()));
-//        resultMap.put("roomDetails", roomDetails);
-//        resultMap.put("paidBookings", paidBooking);
-//        resultMap.put("roomReservations", result);
-        resultMap.put("paidBookings", testbooking);
+        resultMap.put("paidBookings", paidBookings);
 
         return ResponseEntity.ok().body(resultMap);
     }

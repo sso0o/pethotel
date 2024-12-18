@@ -211,6 +211,9 @@
                 <div class="table-responsive" style="height: 90%">
                   <table class="table table-bordered table-hover" id="tabMyBooking" width="100%" cellspacing="0">
                     <thead>
+                    <tr>
+                      <th>객실</th>
+                    </tr>
                     </thead>
                     <tfoot>
                     </tfoot>
@@ -292,6 +295,7 @@
         let currentUrl = window.location.href;
         let hotelId = currentUrl.split('/').pop();  // URL의 마지막 부분 ("/" 이후 값) 추출
         let roomId = 0;
+        let bookingId = null;
         let user = $('#user');
 
         let selectMyHotels = $('#myHotels');
@@ -350,6 +354,12 @@
             ],
         })
 
+        // let tabMyBooking;
+        // // 테이블이 이미 초기화되어 있는지 확인하고 destroy
+        // if ($.fn.dataTable.isDataTable('#tabMyBooking')) {
+        //     tabMyBooking = $('#tabMyBooking').DataTable();
+        //     tabMyBooking.clear().destroy();
+        // }
         let tabMyBooking = $('#tabMyBooking').DataTable({
             fixedColumns: {
                 start: 1
@@ -361,24 +371,60 @@
             select: {
                 style: 'single'
             },
-            // ajax: {
-            //     url: '/manager/myroomdetail/booking/0',
-            //     type: 'get',
-            //     dataSrc: 'bookings'
-            // },
-            // columns: [
-            //     {data: "roomType"},
-            //     {data: "startDate"},
-            //     {data: "endDate"},
-            //     {data: "totalDate"},
-            //     {data: "bookingGuest"},
-            //     {data: "bookingPet"}
-            // ],
+            ajax: {
+                url: '/manager/myroomdetail/booking/' + roomId+'/'+bookingId,
+                type: 'GET',  // HTTP 메서드 (GET)
+                // data: {
+                //     bookingId: bookingId
+                // },
+                dataSrc: function (json) {
+                    let columns = [
+                        { data: 'roomName', title: '객실' }  // 기본 열: 객실 이름
+                    ];
+
+                    // 받아온 데이터로 날짜 열 추가
+                    json.dates.forEach(function (date, index) {
+                        columns.push({
+                            data: 'dates' + index ,  // dates[0], dates[1], ... 형식
+                            title: date  // 열 제목을 날짜로 설정
+                        });
+                    });
+
+                    // columns 배열을 동적으로 반환
+                    let data =  json.paidBookings.roomData.map(function(room) {
+                        let rowData = {
+                            roomName: room.roomName,
+                            roomDetailId: room.roomDetailId
+                        };
+
+                        // 각 날짜 상태 추가
+                        room.dates.forEach(function (status, index) {
+                            rowData['dates' + index] = status.trim();  // 'dates0', 'dates1' 등의 키에 맞게 상태 추가
+                        });
+
+                        return rowData;  // 최종적으로 매핑된 데이터 반환
+                    });
+                    return  {
+                        columns: columns,
+                        data:data
+                    }
+                },
+                error: function (request, status, error) {
+                    let result = jQuery.parseJSON(request.responseText)
+                    alert(result.msg);
+                }
+            },
         })
 
         // 클릭시 같은 타입의 객실 목록 조회
         $('#tabMyRequest tbody').on('click', 'tr', function () {
             let checkedVal = $('#tabMyRequest').DataTable().row(this).data();
+            roomId = checkedVal.roomId;
+            bookingId = checkedVal.bookingId;
+            tabMyBooking.clear();
+            tabMyBooking.ajax.url('/manager/myroomdetail/booking/' + roomId+'/'+bookingId).load();
+
+
 
             $.ajax({
                 url:'/manager/myroomdetail/booking/' + checkedVal.roomId,
@@ -387,13 +433,70 @@
                     bookingId: checkedVal.bookingId
                 },
                 success:function (data){
-                    drawTabMyBooking(data);
-                    // tabMyBooking.clear().rows.add(data.bookings).draw();
+                    tabMyBooking.destroy();
+                    $('#tabMyBooking').empty()
+                    let columns = [
+                        {
+                            data: 'roomName', title: '객실',
+                            // render: function (data, type, row) {
+                            //     return '<a href="#" class="text-decoration-none">' + data + '</a>';
+                            // }
+                        }
+                    ]
+
+                    data.dates.forEach(function (date, index) {
+                        columns.push({
+                            data: 'dates' + index, // dates 배열의 각 인덱스에 해당하는 값을 설정
+                            title: date                  // 해당 날짜를 컬럼 제목으로 설정
+                        });
+                    });
+
+                    tabMyBooking = $('#tabMyBooking').DataTable({
+                        fixedColumns: {
+                            start: 1
+                        },
+                        paging: false,
+                        scrollCollapse: false,
+                        scrollX: true,
+                        searching: false,
+                        select: {
+                            style: 'single'
+                        },
+                        columns: columns,
+                        createdRow: function (row, data, dataIndex) {
+                            // 예시: 'X' 값인 셀에 스타일 적용
+                            $('td', row).each(function (index) {
+                                if ($(this).text().trim() === 'X') {
+                                    $(this).addClass('bg-occupied');  // X 값이 있는 셀에 'highlight' 클래스 추가
+                                } else if ($(this).text().trim() === 'O') {
+                                    $(this).addClass('bg-available');
+                                } else{
+                                    $(this).addClass('bg-default');
+                                }
+                            });
+                        }
+                    })
+                    data.paidBookings.roomData.forEach(function(room) {
+                        let rowData = {
+                            roomName: room.roomName,
+                            roomDetailId: room.roomDetailId
+                        };
+
+                        room.dates.forEach(function (status, index) {
+                            rowData['dates' + index ] = status.trim()
+                        });
+                        tabMyBooking.row.add(rowData).draw();
+                        $('#tabMyBooking').on('click', 'tbody tr', function () {
+                            let checkedVal = tabMyBooking.row(this).data();
+                        })
+                    });
                 }
             })
 
 
         })
+
+
 
     });
 

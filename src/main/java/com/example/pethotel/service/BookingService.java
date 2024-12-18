@@ -3,17 +3,13 @@ package com.example.pethotel.service;
 import com.example.pethotel.dto.hotel.AddBookingRequest;
 import com.example.pethotel.dto.manager.HotelBookingResponse;
 import com.example.pethotel.dto.manager.HotelRequestResponse;
-import com.example.pethotel.dto.manager.PaidBookingResponse;
 import com.example.pethotel.entity.Booking;
 import com.example.pethotel.repository.BookingRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -54,44 +50,50 @@ public class BookingService {
         return bookingRepository.findAllByRoomIdAndStartDateBetween(roomId, startDate, endDate);
     }
 
-    public List<PaidBookingResponse> findPaidBookingResponseByRoomId(Long roomId, String startDate, String endDate) {
-        List<PaidBookingResponse> paidBookingResponses = new ArrayList<>();
-        // <hotelId, roomId, roomDetailId, targetDate, totalDate, startDate, endDate>
-        List<Map<String, Object>> maps = bookingRepository.findPaidBookingResponseByRoomId(roomId, startDate, endDate);
-        for (Map<String, Object> map : maps) {
-            PaidBookingResponse response = new PaidBookingResponse(
-                (Long) map.get("hotelId"),
-                (Long) map.get("roomId"),
-                (Long) map.get("roomDetailId"),
-                (String) map.get("targetDate"),
-                (Integer) map.get("totalDate"),
-                (String) map.get("startDate"),
-                (String) map.get("endDate"),
-                (String) map.get("paymentId")
-            );
-            paidBookingResponses.add(response);
-        }
-        return paidBookingResponses;
-    }
+//    public List<PaidBookingResponse> findPaidBookingResponseByRoomId(Long roomId, String startDate, String endDate) {
+//        List<PaidBookingResponse> paidBookingResponses = new ArrayList<>();
+//        // <hotelId, roomId, roomDetailId, targetDate, totalDate, startDate, endDate>
+//        List<Map<String, Object>> maps = bookingRepository.findPaidBookingResponseByRoomId(roomId, startDate, endDate);
+//        for (Map<String, Object> map : maps) {
+//            PaidBookingResponse response = new PaidBookingResponse(
+//                (Long) map.get("hotelId"),
+//                (Long) map.get("roomId"),
+//                (Long) map.get("roomDetailId"),
+//                (String) map.get("targetDate"),
+//                (Integer) map.get("totalDate"),
+//                (String) map.get("startDate"),
+//                (String) map.get("endDate"),
+//                (String) map.get("paymentId")
+//            );
+//            paidBookingResponses.add(response);
+//        }
+//        return paidBookingResponses;
+//    }
 
-    public List<List<String>> findRoomBookingStatus(Long roomId, String startDate, String endDate) {
+    public Map<String, Object> findRoomBookingStatus(Long roomId, String startDate, String endDate) {
         List<Object[]> roomBookingStatus = new ArrayList<>(); // <roomId, startDate, endDate>
         roomBookingStatus = bookingRepository.findRoomBookingStatus(roomId, startDate, endDate);
-        List<List<String>> result = new ArrayList<>();
+
+        List<Map<String, Object>> result = new ArrayList<>();  // Map 형태로 수정
+
         for(Object[] obj : roomBookingStatus) {
             String roomName = (String) obj[0];
-            String bookingData = (String) obj[1];
+            Long roomDetailId = (Long) obj[1];
+            String bookingData = (String) obj[2];
             String[] dataList = bookingData.split(",");
 
-            List<String> roomData = new ArrayList<>();
-            roomData.add(roomName);
-            for(String data : dataList) {
-                roomData.add(data);
-            }
+            Map<String, Object> roomData = new HashMap<>();
+            roomData.put("roomName", roomName);  // roomId
+            roomData.put("roomDetailId", roomDetailId);
+            roomData.put("dates", Arrays.asList(dataList));  // 예약 상태를 날짜별로 추가
+
             result.add(roomData);
         }
 
-        return result;
+        Map<String, Object> resultMap = new HashMap<>();
+        resultMap.put("roomData", result);
+
+        return resultMap;
     }
 
 
