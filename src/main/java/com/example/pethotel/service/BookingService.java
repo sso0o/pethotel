@@ -102,6 +102,7 @@ public class BookingService {
     public Booking updateRoomDetailId(UUID bookingId, Long roomDetailId) {
         Booking booking = bookingRepository.findById(bookingId)
                 .orElseThrow(() -> new IllegalArgumentException("not found: " + bookingId));
+        // 여기서 중복체크 해야겠따 트랜잭셔널 어노테이션 있으니까
         booking.updateRoomDetailId(roomDetailId);
         return bookingRepository.save(booking);
     }

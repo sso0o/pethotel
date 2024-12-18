@@ -324,10 +324,12 @@ public class ManagerApiController {
 
     }
 
-    // 매니저가 예약대기건 승인(객실 배정 및 결제승인요청
+    // 매니저가 예약대기건 승인(객실 배정 및 결제승인요청 + 중복체크
     @PutMapping("/manager/booking/approve/{bookingId}/{roomDetailId}")
     public ResponseEntity bookingApprove(@PathVariable UUID bookingId, @PathVariable Long roomDetailId){
         HashMap<Object, Object> resultMap = new HashMap<>();
+
+        // 중복체크
 
         Booking booking = bookingService.updateRoomDetailId(bookingId, roomDetailId);
         Map<String, Object> paymentResult = paymentService.nPayProgress(booking.getPaymentId());
