@@ -5,6 +5,7 @@ import com.example.pethotel.dto.manager.*;
 import com.example.pethotel.entity.*;
 import com.example.pethotel.service.*;
 import com.example.pethotel.service.admin.ManagerService;
+import com.example.pethotel.service.payment.PaymentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -30,6 +31,7 @@ public class ManagerApiController {
     private final CommonService commonService;
     private final FileService fileService;
     private final RoomDetailService roomDetailService;
+    private final PaymentService paymentService;
 
     //=============================================================================================
     //================================              get               =============================
@@ -141,12 +143,8 @@ public class ManagerApiController {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         String startDateStr = dateRange.get(0).format(formatter);
         String endDateStr = dateRange.get(dateRange.size() - 1).format(formatter);
-        //=============================================================================================================
-        //=============================================================================================================
 
         Map<String, Object> paidBookings = bookingService.findRoomBookingStatus(roomId, startDateStr, endDateStr);
-
-
 
         resultMap.put("dates", dateRange.stream()
                 .map(d -> d.format(DateTimeFormatter.ISO_DATE))
@@ -324,6 +322,22 @@ public class ManagerApiController {
         resultMap.put("roomDetail", updateRoomDetail);
         return ResponseEntity.ok().body(resultMap);
 
+    }
+
+    // 매니저가 예약대기건 승인(객실 배정 및 결제승인요청
+    @PutMapping("/manager/booking/approve/{bookingId}/{roomDetailId}")
+    public ResponseEntity bookingApprove(@PathVariable UUID bookingId, @PathVariable Long roomDetailId){
+        HashMap<Object, Object> resultMap = new HashMap<>();
+
+        Booking booking = bookingService.updateRoomDetailId(bookingId, roomDetailId);
+        Map<String, Object> paymentResult = paymentService.nPayProgress(booking.getPaymentId());
+        if(paymentResult.get("code").equals("Success")){
+            bookingService.updatePaycheck(bookingId, "paid", booking.getPaymentId());
+            resultMap.put("booking", booking);
+        }
+        resultMap.put("msg", "요청 성공");
+        resultMap.put("paymentResult", paymentResult);
+        return ResponseEntity.ok().body(resultMap);
     }
 
 

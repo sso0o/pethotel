@@ -36,6 +36,7 @@
   <link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.css"/>
   <link rel="stylesheet" href="https://cdn.datatables.net/select/2.1.0/css/select.dataTables.css"/>
 
+
   <script src="/manager/myHotelRequest.js"></script>
   <link rel="stylesheet" href="/manager/myHotelRequest.css">
 
@@ -294,13 +295,10 @@
     $(function () {
         let currentUrl = window.location.href;
         let hotelId = currentUrl.split('/').pop();  // URL의 마지막 부분 ("/" 이후 값) 추출
-        let roomId = 0;
-        let bookingId = null;
+        let bookingId;
         let user = $('#user');
 
         let selectMyHotels = $('#myHotels');
-
-
         selectMyHotels.on("change", function (){
             hotelId = this.value;
             $.ajax({
@@ -354,12 +352,6 @@
             ],
         })
 
-        // let tabMyBooking;
-        // // 테이블이 이미 초기화되어 있는지 확인하고 destroy
-        // if ($.fn.dataTable.isDataTable('#tabMyBooking')) {
-        //     tabMyBooking = $('#tabMyBooking').DataTable();
-        //     tabMyBooking.clear().destroy();
-        // }
         let tabMyBooking = $('#tabMyBooking').DataTable({
             fixedColumns: {
                 start: 1
@@ -371,60 +363,55 @@
             select: {
                 style: 'single'
             },
-            ajax: {
-                url: '/manager/myroomdetail/booking/' + roomId+'/'+bookingId,
-                type: 'GET',  // HTTP 메서드 (GET)
-                // data: {
-                //     bookingId: bookingId
-                // },
-                dataSrc: function (json) {
-                    let columns = [
-                        { data: 'roomName', title: '객실' }  // 기본 열: 객실 이름
-                    ];
-
-                    // 받아온 데이터로 날짜 열 추가
-                    json.dates.forEach(function (date, index) {
-                        columns.push({
-                            data: 'dates' + index ,  // dates[0], dates[1], ... 형식
-                            title: date  // 열 제목을 날짜로 설정
-                        });
-                    });
-
-                    // columns 배열을 동적으로 반환
-                    let data =  json.paidBookings.roomData.map(function(room) {
-                        let rowData = {
-                            roomName: room.roomName,
-                            roomDetailId: room.roomDetailId
-                        };
-
-                        // 각 날짜 상태 추가
-                        room.dates.forEach(function (status, index) {
-                            rowData['dates' + index] = status.trim();  // 'dates0', 'dates1' 등의 키에 맞게 상태 추가
-                        });
-
-                        return rowData;  // 최종적으로 매핑된 데이터 반환
-                    });
-                    return  {
-                        columns: columns,
-                        data:data
-                    }
-                },
-                error: function (request, status, error) {
-                    let result = jQuery.parseJSON(request.responseText)
-                    alert(result.msg);
-                }
-            },
+            // ajax: {
+            //     url: '/manager/myroomdetail/booking/' + roomId+'/'+bookingId,
+            //     type: 'GET',  // HTTP 메서드 (GET)
+            //     // data: {
+            //     //     bookingId: bookingId
+            //     // },
+            //     dataSrc: function (json) {
+            //         let columns = [
+            //             { data: 'roomName', title: '객실' }  // 기본 열: 객실 이름
+            //         ];
+            //
+            //         // 받아온 데이터로 날짜 열 추가
+            //         json.dates.forEach(function (date, index) {
+            //             columns.push({
+            //                 data: 'dates' + index ,  // dates[0], dates[1], ... 형식
+            //                 title: date  // 열 제목을 날짜로 설정
+            //             });
+            //         });
+            //
+            //         // columns 배열을 동적으로 반환
+            //         let data =  json.paidBookings.roomData.map(function(room) {
+            //             let rowData = {
+            //                 roomName: room.roomName,
+            //                 roomDetailId: room.roomDetailId
+            //             };
+            //
+            //             // 각 날짜 상태 추가
+            //             room.dates.forEach(function (status, index) {
+            //                 rowData['dates' + index] = status.trim();  // 'dates0', 'dates1' 등의 키에 맞게 상태 추가
+            //             });
+            //
+            //             return rowData;  // 최종적으로 매핑된 데이터 반환
+            //         });
+            //         return  {
+            //             columns: columns,
+            //             data:data
+            //         }
+            //     },
+            //     error: function (request, status, error) {
+            //         let result = jQuery.parseJSON(request.responseText)
+            //         alert(result.msg);
+            //     }
+            // },
         })
 
         // 클릭시 같은 타입의 객실 목록 조회
         $('#tabMyRequest tbody').on('click', 'tr', function () {
             let checkedVal = $('#tabMyRequest').DataTable().row(this).data();
-            roomId = checkedVal.roomId;
             bookingId = checkedVal.bookingId;
-            tabMyBooking.clear();
-            tabMyBooking.ajax.url('/manager/myroomdetail/booking/' + roomId+'/'+bookingId).load();
-
-
 
             $.ajax({
                 url:'/manager/myroomdetail/booking/' + checkedVal.roomId,
@@ -438,9 +425,9 @@
                     let columns = [
                         {
                             data: 'roomName', title: '객실',
-                            // render: function (data, type, row) {
-                            //     return '<a href="#" class="text-decoration-none">' + data + '</a>';
-                            // }
+                            render: function (data, type, row) {
+                                return '<a href="#" class="text-decoration-none" onclick="bookingApprove('+ row.roomDetailId + ', \'' + bookingId + '\')">' + data + '</a>';
+                            }
                         }
                     ]
 

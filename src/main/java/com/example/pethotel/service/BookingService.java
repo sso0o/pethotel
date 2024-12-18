@@ -30,6 +30,7 @@ public class BookingService {
         return bookingRepository.save(booking);
     }
 
+
     public Booking findById(UUID bookingId) {
         return bookingRepository.findById(bookingId)
                .orElseThrow(() -> new IllegalArgumentException("not found: " + bookingId));
@@ -97,9 +98,11 @@ public class BookingService {
     }
 
 
-
-
-
-
-
+    @Transactional
+    public Booking updateRoomDetailId(UUID bookingId, Long roomDetailId) {
+        Booking booking = bookingRepository.findById(bookingId)
+                .orElseThrow(() -> new IllegalArgumentException("not found: " + bookingId));
+        booking.updateRoomDetailId(roomDetailId);
+        return bookingRepository.save(booking);
+    }
 }
