@@ -29,8 +29,10 @@
 
   <!-- Templatemo style -->
   <link rel="stylesheet" href="/css/templatemo-style.css">
-  <link rel="stylesheet" href="/hotel/makeBooking.css">
-  <script src="/hotel/makeBooking.js"></script>
+
+  <!-- Custom styles for this page -->
+  <link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.css"/>
+  <link rel="stylesheet" href="https://cdn.datatables.net/select/2.1.0/css/select.dataTables.css"/>
 
 
   <style>
@@ -38,21 +40,8 @@
 </head>
 
 <body>
-
-<div id="room"
-     th:data-room-id="${room.roomId}"
-     th:data-room-type="${room.roomType}"
-     th:data-room-price="${room.roomPrice}"
-     th:data-room-limit-guest="${room.limitGuest}"
-     th:data-room-limit-pet="${room.limitPet}">
-</div>
-<div id="hotel"
-     th:data-hotel-id="${hotel.hotelId}"
-     th:data-hotel-name="${hotel.hotelName}">
-</div>
-
 <div id="user"
-      th:data-user-id="${#authentication.principal.id}"
+     th:data-user-id="${#authentication.principal.id}"
      th:data-user-name="${#authentication.principal.username}">
 </div>
 
@@ -80,7 +69,7 @@
           <div id="mainNav" class="collapse navbar-collapse justify-content-end tm-bg-white">
             <ul class="navbar-nav ml-auto">
               <li sec:authorize="!hasAuthority('MANAGER')" class="nav-item">
-                <a class="nav-link active" href="/hotel">Hotel </a>
+                <a class="nav-link" href="/hotel">Hotel </a>
               </li>
               <!-- 로그인하지 않은 사용자가 볼 수 있는 링크 -->
               <li sec:authorize="isAnonymous()" class="nav-item">
@@ -91,7 +80,7 @@
               </li>
               <!-- 회원만 볼 수 있는 링크 -->
               <li sec:authorize="hasAuthority('USER')" class="nav-item">
-                <a class="nav-link" href="/mybooking">My Booking</a>
+                <a class="nav-link active" href="/mybooking">My Booking</a>
               </li>
               <!-- 매니저만 볼 수 있는 링크 -->
               <li sec:authorize="hasAuthority('MANAGER')" class="nav-item">
@@ -114,33 +103,41 @@
       </div> <!-- row -->
     </div> <!-- container -->
   </div> <!-- .tm-top-bar -->
-    <!-- navbar 종료 -->
+  <!-- navbar 종료 -->
 
   <!-- 본문 시작 -->
   <div class="tm-page-wrap mx-auto justify-content-center">
-    <div class="tm-container-outer">
-      <div class="container">
+    <div class="tm-container-outer" style="height: 100vh;">
+      <div class="container pt-3" style="height: 95%">
         <!-- Page Content -->
-        <div class="p-5">
-          <div class="row content-box p-4">
-            <div class=" col-6 content-box-main" id="bookingDetail">
-              <h2 th:text="${hotel.hotelName}"></h2>
-              <h3 th:text="${room.roomType}"></h3>
-              <p text=""></p>
-            </div>
-            <div class=" col-6 content-box-main">
-              <div>
-                여기다가는 객실 정보 넣을거야
-              </div>
-            </div>
-            <hr/>
-            <div class="content-box-bottom">
-              <button type="button" class="btn btn-primary tm-btn tm-btn-search" id="btnPayment" >결제</button>
-            </div>
+        <div class="card shadow mb-4" style="height: 100%">
+          <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">내 예약 목록</h6>
           </div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table table-bordered table-hover" id="tabBooking" width="100%" cellspacing="0">
+                <thead>
+                <tr>
+                  <th>예약 일자</th>
+                  <th>호텔</th>
+                  <th>객실 타입</th>
+                  <th>인원/펫</th>
+                  <th>일자</th>
+                  <th>총 금액</th>
+                  <th>상태</th>
+                </tr>
+                </thead>
+                <tfoot>
+                </tfoot>
+                <tbody>
+                </tbody>
+              </table>
+            </div>
 
-
+          </div>
         </div>
+
       </div>  <!-- .container -->
     </div>     <!-- .tm-container-outer -->
 
@@ -185,8 +182,10 @@
 <!-- https://github.com/flesler/jquery.scrollTo -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-scrollTo/2.1.3/jquery.scrollTo.min.js"></script>
 
-<!-- 결제관련 api -->
-<script src="https://nsp.pay.naver.com/sdk/js/naverpay.min.js"></script>
+<!-- Page level plugins -->
+<script src="https://cdn.datatables.net/2.1.8/js/dataTables.js"></script>
+<script src="https://cdn.datatables.net/select/2.1.0/js/dataTables.select.js"></script>
+<script src="https://cdn.datatables.net/select/2.1.0/js/select.dataTables.js"></script>
 
 
 <script>
@@ -195,63 +194,6 @@
         // Close navbar after clicked
         $('.nav-link').click(function () {
             $('#mainNav').removeClass('show');
-        });
-
-        drawBookingDetail();
-
-        let roomDetail = $('#room');
-        let hotelDetail = $('#hotel');
-        let user = $('#user');
-
-        let searchData = JSON.parse(sessionStorage.getItem('searchData'));
-        let checkInDate = new Date(searchData.checkIn);  // 체크인 날짜
-        let checkOutDate = new Date(searchData.checkOut);  // 체크아웃 날짜
-
-        let timeDiff = checkOutDate.getTime() - checkInDate.getTime();
-        let dayDiff = timeDiff / (1000 * 3600 * 24);  // 밀리초를 일수로 변환
-
-        let oPay = Naver.Pay.create({
-            "mode" : "development", // development or production
-            "clientId": "HN3GGCMDdTgGUfl0kFCo", // clientId
-            "chainId": "Wms3cFptanlpSjR" // chainId
-        });
-
-
-        let btnPayment = $('#btnPayment');
-        btnPayment.click(function () {
-            $.ajax({
-                url: '/booking/saveBookingData',
-                type: 'post',
-                contentType: 'application/json',
-                data: JSON.stringify({
-                    userId: user.data('user-id'),
-                    roomId: roomDetail.data('room-id'),
-                    hotelId: hotelDetail.data('hotel-id'),
-                    checkIn: searchData.checkIn,
-                    checkOut: searchData.checkOut,
-                    guest: searchData.guest,
-                    pet: searchData.pet,
-                    totalPrice: roomDetail.data('room-price')*dayDiff,
-                    totalDate: dayDiff
-                }),
-                success: function (data) {
-                    oPay.open({
-                        "merchantPayKey": "20241207WWKEnn",
-                        "productName": hotelDetail.data('hotel-name')+" - "+roomDetail.data('room-type'),
-                        "productCount": "1",
-                        "totalPayAmount": roomDetail.data('room-price')*dayDiff,
-                        "taxScopeAmount": roomDetail.data('room-price')*dayDiff,
-                        "taxExScopeAmount": "0",
-                        "returnUrl": "http://localhost:8081/booking/complete?bookingId="+data.booking.bookingId.toString(),
-                    });
-                },
-                error: function (request, status, error) {
-                    let result = jQuery.parseJSON(request.responseText)
-                    alert(result.msg);
-                }
-            })
-
-
         });
 
         $('#btnLogout').on('click', function() {

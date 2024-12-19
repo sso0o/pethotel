@@ -27,7 +27,7 @@ function updateRoomList(rooms) {
                 </div>
                 <div class="col-2 room-detail-4">
                   <div style="margin: 10px">
-                  ${Number(room.roomPrice).toLocaleString()} 
+                    ${Number(room.roomPrice).toLocaleString()} <h6 style="color: #999999;">/ 박</h6>
                   </div>
                 </div>
                 <div class="col-1 room-detail-5">

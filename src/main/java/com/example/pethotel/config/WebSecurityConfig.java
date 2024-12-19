@@ -51,6 +51,7 @@ public class WebSecurityConfig  {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/login", "/signup", "/", "/hotel/**", "/main/**").permitAll()
                         .requestMatchers("/booking/**").hasAnyAuthority("USER", "MANAGER")
+                        .requestMatchers("/mybooking", "/mybooking/**").hasAnyAuthority("USER")
                         .requestMatchers("/manager/**").hasAnyAuthority("ADMIN", "MANAGER")
                         .requestMatchers("/admin/**").hasAuthority("ADMIN")
                         .anyRequest().authenticated())
@@ -58,7 +59,11 @@ public class WebSecurityConfig  {
                         .loginPage("/login")
                         .successHandler(successHandler()))
                 .logout(logout -> logout
-                        .logoutSuccessUrl("/")
+                        .logoutUrl("/logout") // 로그아웃 URL 설정
+                        .logoutSuccessUrl("/") // 로그아웃 후 리디렉션할 URL
+                        .invalidateHttpSession(true) // 세션 무효화
+                        .clearAuthentication(true) // 인증 정보 초기화
+                        .deleteCookies("JSESSIONID") // 쿠키 삭제 (세션 ID를 포함한 쿠키 삭제)
                         .invalidateHttpSession(true))
                 .csrf(AbstractHttpConfigurer::disable)
                 .build();

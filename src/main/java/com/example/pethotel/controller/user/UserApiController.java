@@ -35,9 +35,11 @@ public class UserApiController {
     }
 
 
-    @GetMapping("/loguot")
-    public void loguot(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    @GetMapping("/logout")
+    public void logout(HttpServletRequest request, HttpServletResponse response) throws IOException {
         new SecurityContextLogoutHandler().logout(request, response, SecurityContextHolder.getContext().getAuthentication());
+        // 세션 무효화 (검색 조건도 삭제됨)
+        request.getSession().invalidate();
         // 리다이렉트
         response.sendRedirect("/");  // "/" 경로로 리다이렉트
     }

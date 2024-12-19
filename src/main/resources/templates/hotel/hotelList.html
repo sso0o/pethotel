@@ -91,7 +91,7 @@
               </li>
               <!-- 로그인 한 사용자만 볼 수 있는 링크 -->
               <li sec:authorize="isAuthenticated()" class="nav-item">
-                <a class="nav-link" href="/loguot">Logout</a>
+                <a class="nav-link" href="#" data-toggle="modal" data-target="#logoutModal" id="btnLogout">Logout</a>
               </li>
             </ul>
           </div>
@@ -179,7 +179,9 @@
   <!-- 본문 시작 -->
   <div class="tm-page-wrap mx-auto justify-content-center">
     <div class="tm-container-outer">
-      <div class="pt-3 pb-3">ㅍ필터 넣을 자리</div>
+      <div class="pt-3 pb-3">
+        <!-- 필터 자리 -->
+      </div>
     </div>
     <div class="tm-container-outer">
       <div class="container">
@@ -200,6 +202,23 @@
 
 </div>
 <!-- .main-content 종료-->
+
+<!-- Logout Modal-->
+<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="logoutModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="logoutModalLabel">Ready to Leave?</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <a class="btn btn-primary" href="/logout">Logout</a>
+      </div>
+    </div>
+  </div>
+</div>
 
 
 <!-- load JS files -->
@@ -327,6 +346,11 @@
             dots: false,
             autoplay: true,
             autoplaySpeed: 3000,
+        });
+
+        $('#btnLogout').on('click', function() {
+            let myModal = new bootstrap.Modal(document.getElementById('logoutModal'));
+            myModal.show();
         });
 
 

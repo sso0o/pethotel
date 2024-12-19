@@ -109,7 +109,7 @@
               </li>
               <!-- 로그인 한 사용자만 볼 수 있는 링크 -->
               <li sec:authorize="isAuthenticated()" class="nav-item">
-                <a class="nav-link" href="#" data-toggle="modal" data-target="#logoutModal" onclick="logoutModal()" id="btnLogout">Logout</a>
+                <a class="nav-link" href="#" data-toggle="modal" data-target="#logoutModal" id="btnLogout">Logout</a>
               </li>
             </ul>
           </div>
@@ -154,22 +154,21 @@
 <!-- .main-content 종료-->
 
 <!-- Logout Modal-->
-<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="logoutModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+        <h5 class="modal-title" id="logoutModalLabel">Ready to Leave?</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <a class="btn btn-primary" href="/loguot">Logout</a>
+        <a class="btn btn-primary" href="/logout">Logout</a>
       </div>
     </div>
   </div>
 </div>
-
 
 <!-- load JS files -->
 <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
@@ -221,6 +220,12 @@
                 }
             })
         }
+
+        $('#btnLogout').on('click', function() {
+            let myModal = new bootstrap.Modal(document.getElementById('logoutModal'));
+            myModal.show();
+        });
+
 
 
     });

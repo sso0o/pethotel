@@ -46,6 +46,16 @@ public class HotelViewController {
         return "hotel/hotelDetail";
     }
 
+    @GetMapping("/mybooking")
+    public String showMyBookingPage(Model model){
+        return "mybooking/myBooking";
+    }
+
+    @GetMapping("/mypage")
+    public String showMyPage(Model model){
+        return "mypage/myPage";
+    }
+
     @GetMapping("/booking/{roomId}")
     public String makeBookingPage(@PathVariable Long roomId, Model model) {
         Room room = roomService.findById(roomId);
