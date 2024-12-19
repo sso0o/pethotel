@@ -32,6 +32,7 @@ public class ManagerApiController {
     private final FileService fileService;
     private final RoomDetailService roomDetailService;
     private final PaymentService paymentService;
+    private final VwPaidBookingService vwPaidBookingService;
 
     //=============================================================================================
     //================================              get               =============================
@@ -329,16 +330,25 @@ public class ManagerApiController {
     public ResponseEntity bookingApprove(@PathVariable UUID bookingId, @PathVariable Long roomDetailId){
         HashMap<Object, Object> resultMap = new HashMap<>();
 
+        Booking booking = bookingService.findById(bookingId);
         // 중복체크
+        Integer count = vwPaidBookingService.findByRoomDetailIdAndTargetDate(roomDetailId, booking.getStartDate(), booking.getEndDate());
+        if(count>0){
+            resultMap.put("msg", "중복된 일자가 있습니다");
+        }else{
+            booking = bookingService.updateRoomDetailId(bookingId, roomDetailId);
+            Map<String, Object> paymentResult = paymentService.nPayProgress(booking.getPaymentId());
+            if(paymentResult.get("code").equals("Success")){
+                bookingService.updatePaycheck(bookingId, "paid", booking.getPaymentId());
+                resultMap.put("booking", booking);
+                resultMap.put("msg", "요청 성공");
+            }else if (paymentResult.get("code").equals("TimeExpired")){
+                resultMap.put("msg", paymentResult.get("message"));
+            }
 
-        Booking booking = bookingService.updateRoomDetailId(bookingId, roomDetailId);
-        Map<String, Object> paymentResult = paymentService.nPayProgress(booking.getPaymentId());
-        if(paymentResult.get("code").equals("Success")){
-            bookingService.updatePaycheck(bookingId, "paid", booking.getPaymentId());
-            resultMap.put("booking", booking);
+            resultMap.put("paymentResult", paymentResult);
         }
-        resultMap.put("msg", "요청 성공");
-        resultMap.put("paymentResult", paymentResult);
+
         return ResponseEntity.ok().body(resultMap);
     }
 
