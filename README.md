@@ -1,6 +1,6 @@
 반려견 동반 숙소 검색 및 예약페이지
 
-개발 환경
+#### 개발환경
 * 운영체제:  macOS
 * IDE: IntelliJ IDEA
 * 프로젝트 빌드 도구: Gradle
@@ -11,11 +11,7 @@
 * 쿼리 방식: Native Query
 * 프론트엔드: JavaScript, HTML/CSS
 * 버전 관리: Git
-
-
-==================
-
-
+***
 
 테이블
 1. User
@@ -32,7 +28,7 @@
 12. Review
 13. ReviewImg
 
-
-
 뷰
 1. VwPaidBooking
+
+***
