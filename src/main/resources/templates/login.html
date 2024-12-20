@@ -6,6 +6,9 @@
         xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 >
 <head>
+
+  <!-- 미디어쿼리 사용시 설정 해줘야함  -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pet Hotel</title>
     <link rel="icon" type="image/x-icon" href="/img/favicon.png">
     <!-- Bootstrap  CSS -->
@@ -22,7 +25,7 @@
     <link rel="stylesheet" href="font-awesome-4.7.0/css/font-awesome.min.css">
 
     <!-- Templatemo style -->
-    <link rel="stylesheet" href="css/templatemo-style.css">                         <!-- Templatemo style -->
+    <link rel="stylesheet" href="css/templatemo-style.css">
 
 
 
@@ -73,7 +76,7 @@
                         </div>
                         <!-- 로그인 실패 메시지 -->
                         <div class="mb-3" th:if="${param.error}" style="color: red;">
-                            <p th:text="${error}"></p>
+                          <p th:text="${error}"></p>
                         </div>
 
                         <button type="submit" class="btn btn-primary tm-btn text-uppercase" style="border-radius: 0.25rem;">Submit</button>

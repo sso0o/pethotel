@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -18,6 +19,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
@@ -57,6 +59,7 @@ public class WebSecurityConfig  {
                         .anyRequest().authenticated())
                 .formLogin(formLogin -> formLogin
                         .loginPage("/login")
+                        .failureHandler(failureHandler())
                         .successHandler(successHandler()))
                 .logout(logout -> logout
                         .logoutUrl("/logout") // 로그아웃 URL 설정
@@ -103,5 +106,25 @@ public class WebSecurityConfig  {
             }
         };
     }
+
+    @Bean
+    public AuthenticationFailureHandler failureHandler() {
+        return (request, response, exception) -> {
+            String errorMessage = "Invalid username or password"; // 로그인 실패 메시지 설정
+
+            // 예외에 따라 동적으로 에러 메시지 처리
+            if (exception instanceof BadCredentialsException) {
+                errorMessage = "Invalid username or password";
+            } else {
+                errorMessage = "Authentication failed. Please try again.";
+            }
+
+            // 요청에 에러 메시지를 세팅
+            request.setAttribute("error", errorMessage);
+            // 로그인 페이지로 리디렉션하며 오류 파라미터를 전달
+            response.sendRedirect("/login?error=true");
+        };
+    }
+
 
 }
