@@ -4,6 +4,10 @@ function addHotelModal(hotelId) {
     if (hotelId === "add") {
         // 처음 초기화
         document.getElementById('hotelForm').reset();
+        let facilityChips = document.querySelectorAll('.chip');
+        facilityChips.forEach(chip => {
+            chip.classList.remove('active');  // active 클래스 추가
+        });
         // 추가모드
         $("#saveBtn").show();
         $("#modifyBtn").hide();
@@ -28,6 +32,26 @@ function addHotelModal(hotelId) {
                 $('#extraAddress').val(data.hotel.extraAddress);
                 $('#hotelPhone').val(data.hotel.hotelPhone);
                 $('#hotelInfo').val(data.hotel.hotelInfo);
+
+                let hotelFacilities = data.hotel.hotelFacilities;
+                let facilityChips = document.querySelectorAll('.chip');
+
+                let selectedChipsInput = $('#selectedChips');
+                let selectedChips = [];
+
+                facilityChips.forEach(chip => {
+                    chip.classList.remove('active');  // active 클래스 추가
+
+                    // div의 data-code 속성 값
+                    let chipCode = chip.getAttribute('data-code');
+
+                    // 배열에서 해당 code가 있는지 확인
+                    if (hotelFacilities.some(facility => facility.code === chipCode)) {
+                        chip.classList.add('active');  // active 클래스 추가
+                        selectedChips.push(chipCode);
+                    }
+                    selectedChipsInput.val(selectedChips.join(','));
+                });
             },
         })
     }
@@ -51,6 +75,9 @@ function saveHotel(type) {
     let hotelPhone = $('#hotelPhone').val();
     let hotelInfo = $('#hotelInfo').val();
 
+    let selectedChips = $('#selectedChips').val();
+
+
 
     if (type === 'post') {
         url = "/manager/myhotel"
@@ -70,7 +97,8 @@ function saveHotel(type) {
         detailAddress: detailAddress,
         extraAddress: extraAddress,
         hotelPhone: hotelPhone,
-        hotelInfo: hotelInfo
+        hotelInfo: hotelInfo,
+        hotelFacilities: selectedChips
     })
 
     $.ajax({

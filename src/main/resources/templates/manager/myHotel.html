@@ -52,6 +52,27 @@
           content: attr(placeholder);
           color: #6e707e;
       }
+
+      .chip {
+          border: 1px solid;
+          display: inline-block;
+          padding: 0.4rem 0.6rem;
+          font-size: 0.9rem;
+          border-radius: 20px;
+          margin: 5px;
+          cursor: pointer;
+          color: #4e73df;
+          background-color: #fff;
+
+      }
+      .chip.active {
+          background-color: #4e73df;
+          color: #fff;
+      }
+      .chip span {
+          margin-left: 10px;
+          cursor: pointer;
+      }
   </style>
 
 
@@ -76,15 +97,16 @@
     <!-- Divider -->
     <hr class="sidebar-divider my-0">
 
-    <!-- Nav Item - Dashboard -->
-    <li class="nav-item">
-      <a class="nav-link" href="/manager/hotelmainPage">
-        <i class="fas fa-fw fa-tachometer-alt"></i>
-        <span>Dashboard</span></a>
-    </li>
+<!--    &lt;!&ndash; Nav Item - Dashboard &ndash;&gt;-->
+<!--    <li class="nav-item">-->
+<!--      <a class="nav-link" href="/manager/hotelmainPage">-->
+<!--        <i class="fas fa-fw fa-tachometer-alt"></i>-->
+<!--        <span>Dashboard</span></a>-->
+<!--    </li>-->
 
-    <!-- Divider -->
-    <hr class="sidebar-divider">
+<!--    &lt;!&ndash; Divider &ndash;&gt;-->
+<!--    <hr class="sidebar-divider">-->
+
     <!-- Nav Item - Pages Collapse Menu -->
     <li class="nav-item active">
       <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#hotelCollapse"
@@ -200,6 +222,21 @@
                 <h6 class="m-0 font-weight-bold text-primary">호텔 시설 관리</h6>
               </div>
               <div class="card-body">
+                <form id="hotelFacilityForm">
+                  <div class="form-group">
+<!--                    <div id="facilities" class="d-flex flex-wrap">-->
+<!--                      &lt;!&ndash; 시설 목록을 타임리프 반복문으로 칩 형식으로 표시 &ndash;&gt;-->
+<!--                      <div th:each="hfc : ${HFC}"-->
+<!--                           class="chip"-->
+<!--                           th:data-code="${hfc.code}"-->
+<!--                           th:text="${hfc.codeName}">-->
+<!--                      </div>-->
+<!--                      &lt;!&ndash; 선택된 시설들 &ndash;&gt;-->
+<!--                      <input type="hidden" name="selectedChips" id="selectedChips">-->
+
+<!--                    </div>-->
+                  </div>
+                </form>
               </div>
             </div>
           </div>
@@ -371,6 +408,26 @@
                         class="form-control"
                         placeholder=" 호텔설명"
                         id="hotelInfo" name="hotelInfo"></textarea>
+            </div>
+            <div class="input-group input-group-merge">
+              <div class="card shadow mt-2 mb-1">
+                <div class="card-header" style="padding: 10px; color: #6e707e; background-color: #eaecf4;">
+                  <h6 class="m-0">호텔 시설 관리</h6>
+                </div>
+                <div class="card-body" style="padding: 0.5rem">
+                  <div id="facilities" class="d-flex flex-wrap">
+                    <!-- 시설 목록을 타임리프 반복문으로 칩 형식으로 표시 -->
+                    <div th:each="hfc : ${HFC}"
+                         class="chip"
+                         th:data-code="${hfc.code}"
+                         th:text="${hfc.codeName}">
+                    </div>
+                    <!-- 선택된 시설들 -->
+                    <input type="text" name="selectedChips" id="selectedChips">
+
+                  </div>
+                </div>
+              </div>
             </div>
 
             <div class="mt-3" id="errorDiv" style="text-align: center; color: red; display: none;">
@@ -573,6 +630,26 @@
 
             })
         })
+
+        let chips = document.querySelectorAll('.chip');
+
+        let selectedChips = [];
+        let selectedChipsInput = $('#selectedChipsInput');
+
+        chips.forEach(chip => {
+            chip.addEventListener('click', function() {
+                let chipValue = this.getAttribute('data-code');
+                this.classList.toggle('active');
+                if (this.classList.contains('active')) {
+                    selectedChips.push(chipValue);
+                } else {
+                    selectedChips = selectedChips.filter(item => item !== chipValue);
+                }
+
+                // 선택된 칩들의 값을 쉼표로 구분하여 숨겨진 입력 필드에 저장
+                selectedChipsInput.val(selectedChips.join(','));
+            });
+        });
 
     });
 

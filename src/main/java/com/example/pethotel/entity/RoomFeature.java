@@ -5,17 +5,16 @@ import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
-@Table(name = "roomamenities")
+@Table(name = "roomfeature")
 @EntityListeners(AuditingEntityListener.class)
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class RoomAmenities {
-
+public class RoomFeature {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ra_id", updatable = false)
-    private Long raId;
+    @Column(name = "rf_id", updatable = false)
+    private Long rfId;
 
     @Column(name = "room_id")
     private Long roomId;
@@ -29,7 +28,7 @@ public class RoomAmenities {
 
 
     @Builder
-    public RoomAmenities(Long roomId, String code, String content) {
+    public RoomFeature(Long roomId, String code, String content) {
         this.roomId = roomId;
         this.code = code;
         this.content = content;

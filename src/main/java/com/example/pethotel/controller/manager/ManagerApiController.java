@@ -4,6 +4,7 @@ package com.example.pethotel.controller.manager;
 import com.example.pethotel.dto.manager.*;
 import com.example.pethotel.entity.*;
 import com.example.pethotel.service.*;
+import com.example.pethotel.service.admin.CommonCodeService;
 import com.example.pethotel.service.admin.ManagerService;
 import com.example.pethotel.service.payment.PaymentService;
 import lombok.RequiredArgsConstructor;
@@ -33,6 +34,10 @@ public class ManagerApiController {
     private final RoomDetailService roomDetailService;
     private final PaymentService paymentService;
     private final VwPaidBookingService vwPaidBookingService;
+
+
+    private final CommonCodeService commonCodeService;
+    private final HotelFacilityService hotelFacilityService;
 
     //=============================================================================================
     //================================              get               =============================
@@ -174,6 +179,12 @@ public class ManagerApiController {
         HashMap<Object, Object> resultMap = new HashMap<>();
 
         Hotel saveHotel = hotelService.save(request);
+
+        String hotelFacilities = request.getHotelFacilities();
+        List<String> facilities = Arrays.asList(hotelFacilities.split(","));
+        for (String facility : facilities) {
+            HotelFacility hotelFacility = hotelFacilityService.save(saveHotel, facility);
+        }
         resultMap.put("hotel", saveHotel);
         resultMap.put("msg", "요청 성공");
         return ResponseEntity.ok().body(resultMap);
@@ -274,7 +285,7 @@ public class ManagerApiController {
 
     // 매니저가 호텔 수정
     @PutMapping("/manager/myhotel/{hotelId}")
-    public ResponseEntity updateHotel(@PathVariable Long hotelId, @RequestBody UpdateHotelRequest request) throws Exception {
+    public ResponseEntity updateHotel(@PathVariable Long hotelId, @RequestBody UpdateHotelRequest request, @RequestParam String hotelFacilities) throws Exception {
         // 필수 항목들 체크
         commonService.checkRequiredField(request.getHotelName(), "호텔 이름은 필수 입력 항목입니다.");
         commonService.checkRequiredField(request.getLocation(), "호텔 지역은 필수 입력 항목입니다.");

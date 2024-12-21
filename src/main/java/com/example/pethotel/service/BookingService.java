@@ -105,4 +105,8 @@ public class BookingService {
         booking.updateRoomDetailId(roomDetailId);
         return bookingRepository.save(booking);
     }
+
+    public List<Map<String, Object>> findByUserid(Long userid) {
+        return bookingRepository.findByUserid(userid);
+    }
 }

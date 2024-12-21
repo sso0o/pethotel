@@ -84,7 +84,7 @@
               </li>
               <!-- 매니저만 볼 수 있는 링크 -->
               <li sec:authorize="hasAuthority('MANAGER')" class="nav-item">
-                <a class="nav-link" href="/manager/hotelmainPage">My hotel</a>
+                <a class="nav-link" href="/manager/myhotelPage">My hotel</a>
               </li>
               <li sec:authorize="hasAnyAuthority('USER', 'MANAGER')" class="nav-item">
                 <a class="nav-link" href="/mypage">My Page</a>
@@ -107,10 +107,10 @@
 
   <!-- 본문 시작 -->
   <div class="tm-page-wrap mx-auto justify-content-center">
-    <div class="tm-container-outer" style="height: 100vh;">
-      <div class="container pt-3" style="height: 95%">
+    <div class="tm-container-outer" >
+      <div class="container pt-3" >
         <!-- Page Content -->
-        <div class="card shadow mb-4" style="height: 100%">
+        <div class="card shadow mb-4" >
           <div class="card-header py-3">
             <h6 class="m-0 font-weight-bold text-primary">내 예약 목록</h6>
           </div>
@@ -200,6 +200,33 @@
             let myModal = new bootstrap.Modal(document.getElementById('logoutModal'));
             myModal.show();
         });
+
+        let user = $('#user');
+
+        let tabBooking = $('#tabBooking').DataTable({
+            paging: true,
+            scrollY: '50vh',
+            scrollCollapse: false,
+            searching: false,
+            select: {
+                style: 'single'
+            },
+            ajax: {
+                url: '/mybooking/'+user.data('user-id'),
+                type: 'get',
+                dataSrc: 'myBookings'
+            },
+            columns: [
+                {data: "bookingDate"},
+                {data: "hotelName"},
+                {data: "roomType"},
+                {data: "bookingGP"},
+                {data: "startDate"},
+                {data: "totalPrice"},
+                {data: "payChk"}
+            ],
+
+        })
 
 
     });

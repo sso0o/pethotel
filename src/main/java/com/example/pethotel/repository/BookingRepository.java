@@ -1,5 +1,6 @@
 package com.example.pethotel.repository;
 
+import com.example.pethotel.dto.hotel.MyBookingResponse;
 import com.example.pethotel.dto.manager.HotelBookingResponse;
 import com.example.pethotel.dto.manager.HotelRequestResponse;
 import com.example.pethotel.entity.Booking;
@@ -7,6 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 public interface BookingRepository extends JpaRepository<Booking, UUID> {
@@ -77,5 +79,45 @@ public interface BookingRepository extends JpaRepository<Booking, UUID> {
 
 
 
-
+    @Query(value = "SELECT  " +
+            " b.createdAt AS bookingDate, h.hotelName AS hotelName, b.hotelId AS hotelId, r.roomType AS roomType, b.roomId AS roomId, " +
+            " CONCAT(b.bookingGuest,' / ', b.bookingPet) AS bookingGP, b.startDate AS startDate, b.endDate AS endDate, " +
+            " b.totalPrice AS totalPrice, b.payChk AS payChk " +
+            "FROM Booking b " +
+            "left join Hotel h on b.hotelId = h.hotelId " +
+            "left join Room r on b.roomId = r.roomId " +
+            "where b.userId = :userid")
+    List<Map<String, Object>> findByUserid(Long userid);
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

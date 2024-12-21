@@ -21,6 +21,8 @@ public class AddHotelRequest {
     private String hotelInfo;
     private Long userId;
 
+    private String hotelFacilities;
+
 
     public Hotel toEntity() {
         return Hotel.builder()
