@@ -26,6 +26,7 @@ public class HotelService {
     private final RoomRepository roomRepository;
 
     private final RoomService roomService;
+    private final HotelFacilityService hotelFacilityService;
 
     // 호텔 저장 요청
     public Hotel save(AddHotelRequest req) {
@@ -50,7 +51,10 @@ public class HotelService {
         Hotel hotel = hotelRepository.findById(hotelId)
                 .orElseThrow(() ->  new IllegalArgumentException("not found : "+hotelId));
 
-        // 객실관련 삭제부터
+        // 호텔 시설 삭제
+        hotelFacilityService.deleteByHotel(hotel);
+
+        // 객실관련 삭제
         roomService.deleteByHotel(hotel);
 
         hotelImgRepository.deleteAllByHotel(hotel);
