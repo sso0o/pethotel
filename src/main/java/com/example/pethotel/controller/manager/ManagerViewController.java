@@ -45,6 +45,11 @@ public class ManagerViewController {
             model.addAttribute("rooms", rooms);
         }
 
+        List<CommonCode> RAM = commonCodeService.findByCodeHeadAndCodeDetailNotAndCodeUseLike("RAM", "", "Y");
+        List<CommonCode> RFT = commonCodeService.findByCodeHeadAndCodeDetailNotAndCodeUseLike("RFT", "", "Y");
+        model.addAttribute("RAM", RAM);
+        model.addAttribute("RFT", RFT);
+
         return "manager/myHotelRoom";
     }
 

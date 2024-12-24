@@ -37,6 +37,31 @@
   <link rel="stylesheet" href="https://cdn.datatables.net/select/2.1.0/css/select.dataTables.css"/>
   <script src="/manager/myHotelRoom.js"></script>
 
+  <style>
+      .chip {
+          border: 1px solid;
+          display: inline-block;
+          padding: 0.4rem 0.6rem;
+          font-size: 0.9rem;
+          border-radius: 20px;
+          margin: 5px;
+          cursor: pointer;
+          color: #4e73df;
+          background-color: #fff;
+
+      }
+
+      .chip.active {
+          background-color: #4e73df;
+          color: #fff;
+      }
+      .chip span {
+          margin-left: 10px;
+          cursor: pointer;
+      }
+  </style>
+
+
 
 </head>
 
@@ -351,6 +376,45 @@
                      id="checkOut"
                      name="checkOut" />
             </div>
+            <div class="input-group input-group-merge">
+              <div class="card shadow mt-2 mb-1">
+                <div class="card-header" style="padding: 10px; color: #6e707e; background-color: #eaecf4;">
+                  <h6 class="m-0">객실 컨디션</h6>
+                </div>
+                <div class="card-body" style="padding: 0.5rem">
+                  <div id="features" class="d-flex flex-wrap">
+                    <!-- 시설 목록을 타임리프 반복문으로 칩 형식으로 표시 -->
+                    <div th:each="rft : ${RFT}"
+                         class="chip chip-rft"
+                         th:data-code="${rft.code}"
+                         th:text="${rft.codeName}">
+                    </div>
+                    <!-- 선택된 시설들 -->
+                    <input type="hidden" name="selectedRFTs" id="selectedRFTs">
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="input-group input-group-merge">
+              <div class="card shadow mt-2 mb-1">
+                <div class="card-header" style="padding: 10px; color: #6e707e; background-color: #eaecf4;">
+                  <h6 class="m-0">객실 제공 서비스</h6>
+                </div>
+                <div class="card-body" style="padding: 0.5rem">
+                  <div id="amenities" class="d-flex flex-wrap">
+                    <!-- 시설 목록을 타임리프 반복문으로 칩 형식으로 표시 -->
+                    <div th:each="ram : ${RAM}"
+                         class="chip chip-ram"
+                         th:data-code="${ram.code}"
+                         th:text="${ram.codeName}">
+                    </div>
+                    <!-- 선택된 시설들 -->
+                    <input type="hidden" name="selectedRAMs" id="selectedRAMs">
+                  </div>
+                </div>
+              </div>
+            </div>
+
 
             <div class="mt-3" id="errorDiv" style="text-align: center; color: red; display: none;">
               <p id="errorMsg"></p>
@@ -361,7 +425,7 @@
       <div class="modal-footer">
         <button type="button" class="btn btn-primary" id="saveBtn" onclick="saveRoom('post')">Save</button>
         <button type="button" class="btn btn-primary" id="modifyBtn" onclick="saveRoom('put')">Modify</button>
-        <button type="button" class="btn btn-danger" id="deleteBtn" onclick="saveRoom('delete')">Delete</button>
+        <button type="button" class="btn btn-danger" id="deleteBtn" onclick="deleteRoom()">Delete</button>
         <button type="button" class="btn btn-secondary" data-dismiss="modal" data-target="#roomModal">Cancel</button>
       </div>
     </div>

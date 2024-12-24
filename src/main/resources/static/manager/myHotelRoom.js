@@ -87,6 +87,25 @@ function saveRoom(type){
     })
 }
 
+function deleteRoom(){
+    let hotelId = $('#hotelId').val();
+    let roomId = $('#roomId').val();
+    let url = "/manager/myroom/"+BigInt(roomId);
+    $.ajax({
+        url: url,
+        type: 'DELETE',
+        success: function (result){
+            $('#errorDiv').hide();  // 오류 메시지를 표시하는 div를 보이게
+            $('#errorMsg').text('');  // 오류 메시지 텍스트를 p 태그에 삽입
+            alert(result.msg)
+            location.href ='/manager/myhotelroom/'+$('#hotelId').val();
+        },
+        error: function (request, status, error){
+
+        }
+    })
+}
+
 
 // 이미지 테이블에 이미지 렌더링
 function imgRender(data){
