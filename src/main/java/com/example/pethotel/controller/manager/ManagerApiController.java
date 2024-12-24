@@ -285,7 +285,7 @@ public class ManagerApiController {
 
     // 매니저가 호텔 수정
     @PutMapping("/manager/myhotel/{hotelId}")
-    public ResponseEntity updateHotel(@PathVariable Long hotelId, @RequestBody UpdateHotelRequest request, @RequestParam String hotelFacilities) throws Exception {
+    public ResponseEntity updateHotel(@PathVariable Long hotelId, @RequestBody UpdateHotelRequest request) throws Exception {
         // 필수 항목들 체크
         commonService.checkRequiredField(request.getHotelName(), "호텔 이름은 필수 입력 항목입니다.");
         commonService.checkRequiredField(request.getLocation(), "호텔 지역은 필수 입력 항목입니다.");
@@ -296,6 +296,16 @@ public class ManagerApiController {
         HashMap<Object, Object> resultMap = new HashMap<>();
 
         Hotel updateHotel = hotelService.update(hotelId, request);
+
+        hotelFacilityService.deleteByHotel(updateHotel);
+
+        String hotelFacilities = request.getHotelFacilities();
+        List<String> facilities = Arrays.asList(hotelFacilities.split(","));
+        for (String facility : facilities) {
+            HotelFacility hotelFacility = hotelFacilityService.save(updateHotel, facility);
+        }
+
+
         resultMap.put("msg", "요청 성공");
         resultMap.put("hotel", updateHotel);
 

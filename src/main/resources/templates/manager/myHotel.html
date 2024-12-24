@@ -426,7 +426,7 @@
                          th:text="${hfc.codeName}">
                     </div>
                     <!-- 선택된 시설들 -->
-                    <input type="text" name="selectedChips" id="selectedChips">
+                    <input type="hidden" name="selectedChips" id="selectedChips">
 
                   </div>
                 </div>
@@ -442,7 +442,7 @@
       <div class="modal-footer">
         <button type="button" class="btn btn-primary" id="saveBtn" onclick="saveHotel('post')">Save</button>
         <button type="button" class="btn btn-primary" id="modifyBtn" onclick="saveHotel('put')">Modify</button>
-        <button type="button" class="btn btn-danger" id="deleteBtn" onclick="saveHotel('delete')">Delete</button>
+        <button type="button" class="btn btn-danger" id="deleteBtn" onclick="deleteHotel()">Delete</button>
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
       </div>
     </div>
@@ -453,7 +453,8 @@
 
 <!-- Bootstrap core JavaScript-->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"></script>
 
 <!-- Core plugin JavaScript-->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"
@@ -546,7 +547,8 @@
                 {data: "location"},
                 {
                     render: function (data, type, row) {
-                        return '<button type="button" class="btn btn-outline-secondary" onclick="addHotelModal(' + row.hotelId + ')"><i class="fas fa-pen"></i></button>'
+                        return '<button type="button" class="btn btn-outline-secondary" ' +
+                            'onclick="addHotelModal(' + row.hotelId + ')"><i class="fas fa-pen"></i></button>'
                     }
                 }
             ],
@@ -637,20 +639,33 @@
         let chips = document.querySelectorAll('.chip');
 
         let selectedChips = [];
-        let selectedChipsInput = $('#selectedChipsInput');
+        let selectedChipsInput = $('#selectedChips');
+        let chipForCheck;
 
         chips.forEach(chip => {
             chip.addEventListener('click', function() {
                 let chipValue = this.getAttribute('data-code');
                 this.classList.toggle('active');
+
                 if (this.classList.contains('active')) {
                     selectedChips.push(chipValue);
+                    chipForCheck = "";
                 } else {
                     selectedChips = selectedChips.filter(item => item !== chipValue);
+                    chipForCheck = chipValue
                 }
 
+                // 숨겨진 입력 필드에서 기존 값을 가져와서 처리
+                let currentValue = selectedChipsInput.val(); // jQuery로 가져온 값은 문자열입니다
+                let allSelectedChips = currentValue ? currentValue.split(',') : []; // 기존 값과 선택된 값 합침
+                allSelectedChips = [...new Set([...allSelectedChips, ...selectedChips])];
+                if (chipForCheck !== "") {
+                    allSelectedChips = allSelectedChips.filter(item => item!== chipForCheck);
+                }
+
+
                 // 선택된 칩들의 값을 쉼표로 구분하여 숨겨진 입력 필드에 저장
-                selectedChipsInput.val(selectedChips.join(','));
+                selectedChipsInput.val(allSelectedChips.join(','));
             });
         });
 

@@ -34,21 +34,20 @@ function addHotelModal(hotelId) {
                 $('#hotelInfo').val(data.hotel.hotelInfo);
 
                 let hotelFacilities = data.hotel.hotelFacilities;
+
                 let facilityChips = document.querySelectorAll('.chip');
 
                 let selectedChipsInput = $('#selectedChips');
                 let selectedChips = [];
 
                 facilityChips.forEach(chip => {
-                    chip.classList.remove('active');  // active 클래스 추가
-
-                    // div의 data-code 속성 값
-                    let chipCode = chip.getAttribute('data-code');
+                    chip.classList.remove('active');
+                    let chipValue = chip.getAttribute('data-code');
 
                     // 배열에서 해당 code가 있는지 확인
-                    if (hotelFacilities.some(facility => facility.code === chipCode)) {
+                    if (hotelFacilities.some(facility => facility.code === chipValue)) {
                         chip.classList.add('active');  // active 클래스 추가
-                        selectedChips.push(chipCode);
+                        selectedChips.push(chipValue);
                     }
                     selectedChipsInput.val(selectedChips.join(','));
                 });
@@ -60,7 +59,6 @@ function addHotelModal(hotelId) {
 }
 
 function saveHotel(type) {
-
     let url;
     let data;
     let userId = $('#userId').val();
@@ -98,7 +96,7 @@ function saveHotel(type) {
         extraAddress: extraAddress,
         hotelPhone: hotelPhone,
         hotelInfo: hotelInfo,
-        hotelFacilities: selectedChips
+        hotelFacilities: selectedChips.toString()
     })
 
     $.ajax({
@@ -120,6 +118,30 @@ function saveHotel(type) {
             $('#errorMsg').text(result.msg);  // 오류 메시지에 삽입
         }
     })
+}
+
+function deleteHotel() {
+    let hotelId = $('#hotelId').val();
+    let url = "/manager/myhotel/" + BigInt(hotelId);
+
+    if (confirm("Are you sure?")) {
+        $.ajax({
+            url: url,
+            type: 'DELETE',
+            success: function (result) {
+                $('#errorDiv').hide();
+                $('#errorMsg').text('');
+                alert(result.msg)
+                window.location.reload();
+            },
+            error: function (request, status, error) {
+                let result = jQuery.parseJSON(request.responseText)
+                $('#errorDiv').show();  // 오류 메시지를 표시하는 div를 보이게
+                $('#errorMsg').text('');
+                $('#errorMsg').text(result.msg);  // 오류 메시지에 삽입
+            }
+        })
+    }
 }
 
 
