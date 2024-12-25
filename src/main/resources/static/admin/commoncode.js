@@ -1,6 +1,7 @@
-
 // 코드 헤더 등록 및 수정 모달 오픈
 function addHeadModal(codeId){
+    $('#errorDiv').hide();  // 오류 메시지를 표시하는 div를 보이게
+    $('#errorMsg').text('');  // 오류 메시지 텍스트를 p 태그에 삽입
 
     if(codeId === "add") {
         // 처음 초기화
@@ -75,8 +76,7 @@ function saveHead(type){
             $('#errorDiv').hide();  // 오류 메시지를 표시하는 div를 보이게
             $('#errorMsg').text('');  // 오류 메시지 텍스트를 p 태그에 삽입
             alert(result.msg)
-            //location.reload();
-
+            location.reload();
         },
         error: function (request, status, error){
             let result = jQuery.parseJSON(request.responseText)

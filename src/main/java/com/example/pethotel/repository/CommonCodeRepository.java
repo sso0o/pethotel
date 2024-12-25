@@ -23,4 +23,6 @@ public interface CommonCodeRepository extends JpaRepository<CommonCode, Long> {
     // id값으로 코드 조회
     Optional<CommonCode> findById(Long codeId);
 
+    Optional<CommonCode> findByCodeHeadAndCodeDetailAndCodeUse(String codeHead, String codeDetail, String codeUse);
+
 }

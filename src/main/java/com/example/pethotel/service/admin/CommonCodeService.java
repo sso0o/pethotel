@@ -65,6 +65,10 @@ public class CommonCodeService {
         return commonCodeRepository.findById(codeId);
     }
 
+    public Optional<CommonCode> findByCodeHeadAndCodeDetail(String codeHead, String codeDetail, String codeUse) {
+        return commonCodeRepository.findByCodeHeadAndCodeDetailAndCodeUse(codeHead, codeDetail, codeUse);
+    }
+
     // 셀렉트박스용
 
 }

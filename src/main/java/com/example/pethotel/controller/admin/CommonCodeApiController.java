@@ -57,10 +57,19 @@ public class CommonCodeApiController {
     public ResponseEntity saveCode(@RequestBody AddCodeRequest req) {
         HashMap<Object, Object> resultMap = new HashMap<>();
 
-        //코드헤더 중복확인
-        Optional<CommonCode> codeChk = commonCodeService.findByCode(req.getCodeHead()+req.getCodeDetail());
+        Optional<CommonCode> codeChk;
+
+        // 헤더 등록시
+        if(req.getCodeDetail().equals("")) {
+            //코드 중복확인
+            codeChk = commonCodeService.findByCodeHeadAndCodeDetail(req.getCodeHead(),"", "Y");
+        }else{// 디테일 등록시
+            //코드 중복확인
+            codeChk = commonCodeService.findByCode(req.getCodeHead()+req.getCodeDetail());
+        }
+
         if (codeChk.isPresent()) { //중복값이 있을경우
-            resultMap.put("msg", "중복된 코드 헤더가 존재합니다");
+            resultMap.put("msg", "중복된 코드가 존재합니다");
             return ResponseEntity.badRequest().body(resultMap);
         }else { // 중복값이 없으면 바로 저장
             CommonCode saveCode = commonCodeService.save(req);
@@ -68,6 +77,9 @@ public class CommonCodeApiController {
             resultMap.put("val", saveCode);
             return ResponseEntity.ok().body(resultMap);
         }
+
+
+
     }
 
 
