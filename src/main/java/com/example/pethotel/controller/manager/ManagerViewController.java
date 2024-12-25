@@ -5,6 +5,7 @@ import com.example.pethotel.entity.Room;
 import com.example.pethotel.service.BookingService;
 import com.example.pethotel.service.RoomService;
 import com.example.pethotel.service.admin.CommonCodeService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -47,8 +48,22 @@ public class ManagerViewController {
 
         List<CommonCode> RAM = commonCodeService.findByCodeHeadAndCodeDetailNotAndCodeUseLike("RAM", "", "Y");
         List<CommonCode> RFT = commonCodeService.findByCodeHeadAndCodeDetailNotAndCodeUseLike("RFT", "", "Y");
+        List<CommonCode> RFT01 = commonCodeService.findByCodeHeadAndCodeDetailNotAndCodeUseLike("RFT01", "", "Y");
+        List<CommonCode> RFT02 = commonCodeService.findByCodeHeadAndCodeDetailNotAndCodeUseLike("RFT02", "", "Y");
         model.addAttribute("RAM", RAM);
         model.addAttribute("RFT", RFT);
+        model.addAttribute("RFT01", RFT01);
+        model.addAttribute("RFT02", RFT02);
+
+        try {
+            // CommonCode 리스트를 JSON 문자열로 변환
+            ObjectMapper objectMapper = new ObjectMapper();
+            String RFTJson = objectMapper.writeValueAsString(RFT);
+
+            model.addAttribute("RFTJson", RFTJson);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         return "manager/myHotelRoom";
     }

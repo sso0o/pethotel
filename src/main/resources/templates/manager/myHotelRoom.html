@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<!DOCTYPE html>
 <html
         lang="ko"
         dir="ltr"
@@ -66,6 +65,10 @@
 </head>
 
 <body id="page-top">
+<div id="RFT"
+     th:if="${RFTJson != null}"
+     th:data-RFT="${RFTJson}">
+</div>
 
 <!-- Page Wrapper -->
 <div id="wrapper">
@@ -218,7 +221,20 @@
                 <h6 class="m-0 font-weight-bold text-primary">객실 컨디션</h6>
               </div>
               <div class="card-body">
-
+                <label class="form-label" for="bedType"></label>
+                <div class="input-group input-group-merge">
+                  <span id="bedType2" class="input-group-text" style="width: 25%">베드 타입</span>
+                  <select class="form-select" id="bedType" name="bedType">
+                    <option th:each="RFT01 : ${RFT01}" th:value="${RFT01.codeName}" th:text="${RFT01.codeName}"></option>
+                  </select>
+                </div>
+                <label class="form-label" for="viewType"></label>
+                <div class="input-group input-group-merge">
+                  <span id="viewType2" class="input-group-text" style="width: 25%">전망 타입</span>
+                  <select class="form-select" id="viewType" name="viewType">
+                    <option th:each="RFT02 : ${RFT02}" th:value="${RFT02.codeName}" th:text="${RFT02.codeName}"></option>
+                  </select>
+                </div>
               </div>
             </div>
           </div>
