@@ -19,6 +19,8 @@ public class AddRoomRequest {
     private String checkOut;
     private Long hotelId;
 
+    private String roomAmenities;
+
     public Room toEntity(Hotel hotel) {
         return Room.builder()
                 .roomType(roomType)

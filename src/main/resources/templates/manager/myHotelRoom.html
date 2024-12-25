@@ -212,7 +212,7 @@
           </div>
         </div>
         <div class="row" style="height: 50vh;">
-          <div class="col-4" style="height: 100%;">
+          <div class="col-6" style="height: 100%;">
             <div class="card shadow mb-4" style="height: 100%;">
               <div class="card-header py-3">
                 <h6 class="m-0 font-weight-bold text-primary">객실 컨디션</h6>
@@ -222,17 +222,7 @@
               </div>
             </div>
           </div>
-          <div class="col-4" style="height: 100%;">
-            <div class="card shadow mb-4" style="height: 100%;">
-              <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">객실 제공서비스</h6>
-              </div>
-              <div class="card-body">
-
-              </div>
-            </div>
-          </div>
-          <div class="col-4" style="height: 100%;">
+          <div class="col-6" style="height: 100%;">
             <div class="card shadow mb-4" style="height: 100%;">
               <div class="card-header py-3">
                 <h6 class="m-0 font-weight-bold text-primary">객실 사진</h6>
@@ -379,32 +369,13 @@
             <div class="input-group input-group-merge">
               <div class="card shadow mt-2 mb-1">
                 <div class="card-header" style="padding: 10px; color: #6e707e; background-color: #eaecf4;">
-                  <h6 class="m-0">객실 컨디션</h6>
-                </div>
-                <div class="card-body" style="padding: 0.5rem">
-                  <div id="features" class="d-flex flex-wrap">
-                    <!-- 시설 목록을 타임리프 반복문으로 칩 형식으로 표시 -->
-                    <div th:each="rft : ${RFT}"
-                         class="chip chip-rft"
-                         th:data-code="${rft.code}"
-                         th:text="${rft.codeName}">
-                    </div>
-                    <!-- 선택된 시설들 -->
-                    <input type="hidden" name="selectedRFTs" id="selectedRFTs">
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="input-group input-group-merge">
-              <div class="card shadow mt-2 mb-1">
-                <div class="card-header" style="padding: 10px; color: #6e707e; background-color: #eaecf4;">
                   <h6 class="m-0">객실 제공 서비스</h6>
                 </div>
                 <div class="card-body" style="padding: 0.5rem">
                   <div id="amenities" class="d-flex flex-wrap">
                     <!-- 시설 목록을 타임리프 반복문으로 칩 형식으로 표시 -->
                     <div th:each="ram : ${RAM}"
-                         class="chip chip-ram"
+                         class="chip"
                          th:data-code="${ram.code}"
                          th:text="${ram.codeName}">
                     </div>
@@ -465,9 +436,9 @@
       <div class="modal-footer">
         <input type="hidden" id="roomDetailId">
         <input type="text" class="form-control" id="roomName">
-        <button type="button" class="btn btn-primary" id="addRoomDetailBtn" >add</button>
-        <button type="button" class="btn btn-primary" id="modifyRoomDetailBtn" >Modify</button>
-        <button type="button" class="btn btn-danger" id="delRoomDetailBtn" >Delete</button>
+        <button type="button" class="btn btn-primary" id="addRoomDetailBtn" onclick="addRoomDetail('post')" >add</button>
+        <button type="button" class="btn btn-primary" id="modifyRoomDetailBtn" onclick="addRoomDetail('put')" >Modify</button>
+        <button type="button" class="btn btn-danger" id="delRoomDetailBtn" onclick="addRoomDetail('delete')" >Delete</button>
         <button type="button" class="btn btn-secondary" data-dismiss="modal" data-target="#roomDetailModal">Close</button>
       </div>
     </div>
@@ -577,29 +548,55 @@ $(function(){
     // 클릭시 객실 데이터 세팅 및 이미지 렌더링
     $('#tabMyRoom tbody').on('click','tr', function (){
         let checkedVal = $('#tabMyRoom').DataTable().row(this).data();
-        let preroomId = $('#roomId').val();
-
-        if (preroomId == checkedVal.roomId) { // 같은거 클릭시 선택 해제
-            tabRoomImg.clear().draw();
-            $('#roomId').val('');
-        } else {
-            // 이미지 로드
-            $.ajax({
-                url:'/manager/myroom/'+checkedVal.roomId,
-                type: 'get',
-                success:function (data){
-                    tabRoomImg.clear().rows.add(data.room.roomPhotos).draw();
-                }
-            })
-            $('#roomId').val(checkedVal.roomId);
-        }
-
+        // let preroomId = $('#roomId').val();
+        //
+        // if (preroomId == checkedVal.roomId) { // 같은거 클릭시 선택 해제
+        //     tabRoomImg.clear().draw();
+        //     $('#roomId').val('');
+        // } else {
+        //     // 이미지 로드
+        //     $.ajax({
+        //         url:'/manager/myroom/'+checkedVal.roomId,
+        //         type: 'get',
+        //         success:function (data){
+        //             tabRoomImg.clear().rows.add(data.room.roomPhotos).draw();
+        //         }
+        //     })
+        //     $('#roomId').val(checkedVal.roomId);
+        // }
+        $.ajax({
+            url:'/manager/myroom/'+checkedVal.roomId,
+            type: 'get',
+            success:function (data){
+                tabRoomImg.clear().rows.add(data.room.roomPhotos).draw();
+            }
+        })
+        $('#roomId').val(checkedVal.roomId);
         $('#roomType').val(checkedVal.roomType);
         $('#roomPrice').val(checkedVal.roomPrice);
         $('#limitGuest').val(checkedVal.limitGuest);
         $('#limitPet').val(checkedVal.limitPet);
         $('#checkIn').val(checkedVal.checkIn);
         $('#checkOut').val(checkedVal.checkOut);
+
+        let roomAmenities = checkedVal.roomAmenities;
+
+        let amenityChips = document.querySelectorAll('.chip');
+
+        let selectedChipsInput = $('#selectedRAMs');
+        let selectedChips = [];
+
+        amenityChips.forEach(chip => {
+            chip.classList.remove('active');
+            let chipValue = chip.getAttribute('data-code');
+
+            // 배열에서 해당 code가 있는지 확인
+            if (roomAmenities.some(facility => facility.code === chipValue)) {
+                chip.classList.add('active');  // active 클래스 추가
+                selectedChips.push(chipValue);
+            }
+            selectedChipsInput.val(selectedChips.join(','));
+        });
 
     });
 
@@ -669,18 +666,51 @@ $(function(){
         })
     })
 
+    let chips = document.querySelectorAll('.chip');
 
-    $('#addRoomDetailBtn').on('click', function(){
-        addRoomDetail('post');
-    })
+    let selectedChips = [];
+    let selectedChipsInput = $('#selectedRAMs');
+    let chipForCheck;
 
-    $('#modifyRoomDetailBtn').on('click', function(){
-        addRoomDetail('put');
-    })
+    chips.forEach(chip => {
+        chip.addEventListener('click', function() {
+            let chipValue = this.getAttribute('data-code');
+            this.classList.toggle('active');
 
-    $('#delRoomDetailBtn').on('click', function(){
-        addRoomDetail('delete')
-    })
+            if (this.classList.contains('active')) {
+                selectedChips.push(chipValue);
+                chipForCheck = "";
+            } else {
+                selectedChips = selectedChips.filter(item => item !== chipValue);
+                chipForCheck = chipValue
+            }
+
+            // 숨겨진 입력 필드에서 기존 값을 가져와서 처리
+            let currentValue = selectedChipsInput.val(); // jQuery로 가져온 값은 문자열입니다
+            let allSelectedChips = currentValue ? currentValue.split(',') : []; // 기존 값과 선택된 값 합침
+            allSelectedChips = [...new Set([...allSelectedChips, ...selectedChips])];
+            if (chipForCheck !== "") {
+                allSelectedChips = allSelectedChips.filter(item => item!== chipForCheck);
+            }
+
+
+            // 선택된 칩들의 값을 쉼표로 구분하여 숨겨진 입력 필드에 저장
+            selectedChipsInput.val(allSelectedChips.join(','));
+        });
+    });
+
+
+    // $('#addRoomDetailBtn').on('click', function(){
+    //     addRoomDetail('post');
+    // })
+    //
+    // $('#modifyRoomDetailBtn').on('click', function(){
+    //     addRoomDetail('put');
+    // })
+    //
+    // $('#delRoomDetailBtn').on('click', function(){
+    //     addRoomDetail('delete')
+    // })
 });
 </script>
 </body>

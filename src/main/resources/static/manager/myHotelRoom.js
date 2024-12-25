@@ -41,6 +41,7 @@ function saveRoom(type){
     let limitPet = $('#limitPet').val();
     let checkIn = $('#checkIn').val();
     let checkOut = $('#checkOut').val();
+    let roomAmenities = $('#selectedRAMs').val();
 
     if(type === "post"){
         url = "/manager/myroom";
@@ -51,7 +52,8 @@ function saveRoom(type){
             limitGuest : limitGuest,
             limitPet : limitPet,
             checkIn : checkIn,
-            checkOut : checkOut
+            checkOut : checkOut,
+            roomAmenities : roomAmenities
         })
     }else if (type === "put"){
         url = "/manager/myroom/"+BigInt(roomId);
@@ -61,16 +63,17 @@ function saveRoom(type){
             limitGuest : limitGuest,
             limitPet : limitPet,
             checkIn : checkIn,
-            checkOut : checkOut
+            checkOut : checkOut,
+            roomAmenities : roomAmenities
         })
     }else if (type === "delete"){
-        url = "/manager/myroom/"+BigInt(roomId);
+       // url = "/manager/myroom/"+BigInt(roomId);
     }
 
     $.ajax({
         url: url,
         type: type,
-        async: true,
+        async: false,
         contentType: 'application/json',
         data: data,
         success: function (result){

@@ -38,6 +38,7 @@ public class ManagerApiController {
 
     private final CommonCodeService commonCodeService;
     private final HotelFacilityService hotelFacilityService;
+    private final RoomAmenityService roomAmenityService;
 
     //=============================================================================================
     //================================              get               =============================
@@ -204,10 +205,14 @@ public class ManagerApiController {
         HashMap<Object, Object> resultMap = new HashMap<>();
 
         Room saveRoom = roomService.save(request);
+        String roomAmenities = request.getRoomAmenities();
+        List<String> amenities = Arrays.asList(roomAmenities.split(","));
+        for (String amenity : amenities) {
+            RoomAmenity roomAmenity = roomAmenityService.save(saveRoom, amenity);
+        }
 
-        resultMap.put("msg", "요청 성공");
         resultMap.put("room", saveRoom);
-
+        resultMap.put("msg", "요청 성공");
         return ResponseEntity.ok().body(resultMap);
 
     }
@@ -326,6 +331,13 @@ public class ManagerApiController {
         HashMap<Object, Object> resultMap = new HashMap<>();
 
         Room updateRoom = roomService.update(roomId, request);
+
+        roomAmenityService.deleteByRoom(updateRoom);
+        List<String> amenities = Arrays.asList(request.getRoomAmenities().split(","));
+        for (String amenity : amenities) {
+            RoomAmenity roomAmenity = roomAmenityService.save(updateRoom, amenity);
+        }
+
         resultMap.put("msg", "요청 성공");
         resultMap.put("room", updateRoom);
         return ResponseEntity.ok().body(resultMap);

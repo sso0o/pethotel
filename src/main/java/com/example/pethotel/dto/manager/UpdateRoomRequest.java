@@ -14,4 +14,6 @@ public class UpdateRoomRequest {
     private int limitPet;
     private String checkIn;
     private String checkOut;
+
+    private String roomAmenities;
 }

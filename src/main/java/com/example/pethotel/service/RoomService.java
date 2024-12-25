@@ -5,10 +5,7 @@ import com.example.pethotel.dto.manager.AddRoomRequest;
 import com.example.pethotel.dto.manager.UpdateRoomRequest;
 import com.example.pethotel.entity.Hotel;
 import com.example.pethotel.entity.Room;
-import com.example.pethotel.repository.HotelRepository;
-import com.example.pethotel.repository.RoomDetailRepository;
-import com.example.pethotel.repository.RoomImgRepository;
-import com.example.pethotel.repository.RoomRepository;
+import com.example.pethotel.repository.*;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
@@ -26,6 +23,7 @@ public class RoomService {
     private final RoomRepository roomRepository;
     private final RoomImgRepository roomImgRepository;
     private final RoomDetailRepository roomDetailRepository;
+    private final RoomAmenityRepository roomAmenityRepository;
     private final HotelRepository hotelRepository;
 
     @PersistenceContext
@@ -81,6 +79,8 @@ public class RoomService {
                .orElseThrow(() -> new IllegalArgumentException("not found : " + roomId));
         roomDetailRepository.deleteAllByRoom(room);
         roomImgRepository.deleteAllByRoom(room);
+        roomAmenityRepository.deleteAllByRoom(room);
+
         roomRepository.delete(room);
     }
 
