@@ -65,9 +65,9 @@
 </head>
 
 <body id="page-top">
-<div id="RFT"
-     th:if="${RFTJson != null}"
-     th:data-RFT="${RFTJson}">
+<div id="user"
+     th:data-user-id="${#authentication.principal.id}"
+     th:data-user-name="${#authentication.principal.username}">
 </div>
 
 <!-- Page Wrapper -->
@@ -186,7 +186,8 @@
                   <select class="form-select" id="myHotles" name="myHotles" style="width: fit-content;">
                     <option></option>
                   </select>
-                  <button type="button" class="btn btn-primary ml-3" onclick="addRoomModal('add')">add</button>
+<!--                  <button type="button" class="btn btn-primary ml-3" onclick="addRoomModal('add')">add</button>-->
+                  <button type="button" class="btn btn-primary ml-3" id="addNewRoomBtn">add</button>
                 </div>
 
                 <div class="table-responsive" style="height: 90%">
@@ -220,7 +221,7 @@
               <div class="card-header py-3">
                 <h6 class="m-0 font-weight-bold text-primary">객실 컨디션</h6>
               </div>
-              <div class="card-body">
+              <div class="card-body" id="RFTcard-body">
                 <label class="form-label" for="bedType"></label>
                 <div class="input-group input-group-merge">
                   <span id="bedType2" class="input-group-text" style="width: 25%">베드 타입</span>
@@ -238,6 +239,7 @@
               </div>
             </div>
           </div>
+          <!-- 객실 사진 -->
           <div class="col-6" style="height: 100%;">
             <div class="card shadow mb-4" style="height: 100%;">
               <div class="card-header py-3">
@@ -267,6 +269,7 @@
               </div>
             </div>
           </div>
+          <!-- /. 객실 사진 -->
         </div>
       </div>
       <!-- /.container-fluid -->
@@ -555,7 +558,7 @@ $(function(){
             {
                 render: function (data, type, row) {
                     return '<button type="button" class="btn btn-outline-secondary" ' +
-                        'onclick="addRoomModal(' + row.roomId + ')"><i class="fas fa-pen"></i></button>'
+                        'onclick="modifyRoom(' + row.roomId + ')"><i class="fas fa-pen"></i></button>'
                 }
             },
         ],
@@ -714,6 +717,20 @@ $(function(){
             selectedChipsInput.val(allSelectedChips.join(','));
         });
     });
+
+    $('#addNewRoomBtn').on('click', function() {
+        let hotelId = $('#myHotles').val() ? $('#myHotles').val() : 0;
+        let roomId = 0;
+
+        window.location.href = '/manager/myhotelroomdetail/' + userId + '/' + hotelId + '/' + roomId;
+    })
+
+    $('#addNewRoomBtn').on('click', function() {
+        let hotelId = $('#myHotles').val() ? $('#myHotles').val() : 0;
+        let roomId = 0;
+
+        window.location.href = '/manager/myhotelroomdetail/' + userId + '/' + hotelId + '/' + roomId;
+    })
 
 
     // $('#addRoomDetailBtn').on('click', function(){

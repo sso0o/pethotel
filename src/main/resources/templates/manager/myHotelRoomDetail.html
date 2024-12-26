@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html
+    lang="ko"
+    dir="ltr"
+    xmlns:th="http://www.thymeleaf.org"
+    xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+>
+<head>
+
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>MANAGER</title>
+  <link rel="icon" type="image/x-icon" href="/img/favicon.png">
+
+  <!-- Bootstrap  CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <!-- jQuery UI CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css"
+        integrity="sha512-aOG0c6nPNzGk+5zjwyJaoRUgCdOrfSDhmMID2u4+OIslr0GjpLKo7Xm0Ao3xmpM4T8AmIouRkqwj1nrdVsLKEQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <!-- Custom fonts for this template-->
+  <link href="/tem2/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
+
+  <!-- Custom styles for this template-->
+  <link href="/tem2/css/sb-admin-2.min.css" rel="stylesheet">
+
+  <!-- Custom styles for this page -->
+  <link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.css"/>
+  <link rel="stylesheet" href="https://cdn.datatables.net/select/2.1.0/css/select.dataTables.css"/>
+  <script src="/manager/myHotelRoomDetail.js"></script>
+  <style>
+      .chip {
+          border: 1px solid;
+          display: inline-block;
+          padding: 0.4rem 0.6rem;
+          font-size: 0.9rem;
+          border-radius: 20px;
+          margin: 5px;
+          cursor: pointer;
+          color: #4e73df;
+          background-color: #fff;
+
+      }
+
+      .chip.active {
+          background-color: #4e73df;
+          color: #fff;
+      }
+      .chip span {
+          margin-left: 10px;
+          cursor: pointer;
+      }
+  </style>
+
+</head>
+
+<body id="page-top">
+<div id="hotel"
+     th:if="${hotel != null}"
+     th:data-hotel-id="${hotel.hotelId}">
+</div>
+<div id="room"
+     th:if="${room != null}"
+     th:data-room-id="${room.roomId}">
+</div>
+<div id="user"
+     th:data-user-id="${#authentication.principal.id}"
+     th:data-user-name="${#authentication.principal.username}">
+</div>
+<!-- Page Wrapper -->
+<div id="wrapper">
+
+  <!-- Sidebar -->
+  <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+
+    <!-- Sidebar - Brand -->
+    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/">
+      <div class="sidebar-brand-icon rotate-n-15">
+        <i class="fas fa-paw"></i>
+      </div>
+      <div class="sidebar-brand-text mx-3">Pet Hotel </div>
+    </a>
+
+    <!-- Divider -->
+    <hr class="sidebar-divider my-0">
+
+    <!--    &lt;!&ndash; Nav Item - Dashboard &ndash;&gt;-->
+    <!--    <li class="nav-item">-->
+    <!--      <a class="nav-link" href="/manager/hotelmainPage">-->
+    <!--        <i class="fas fa-fw fa-tachometer-alt"></i>-->
+    <!--        <span>Dashboard</span></a>-->
+    <!--    </li>-->
+
+    <!--    &lt;!&ndash; Divider &ndash;&gt;-->
+    <!--    <hr class="sidebar-divider">-->
+
+    <!-- Nav Item - Pages Collapse Menu -->
+    <li class="nav-item active">
+      <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#hotelCollapse"
+         aria-expanded="true" aria-controls="hotelCollapse">
+        <i class="fas fa-fw fa-home"></i>
+        <span>My Hotel</span>
+      </a>
+      <div id="hotelCollapse" class="collapse show" aria-labelledby="hotelCollapse" data-parent="#accordionSidebar">
+        <div class="bg-white py-2 collapse-inner rounded">
+          <a class="collapse-item" href="/manager/myhotelPage">호텔 관리</a>
+          <a class="collapse-item active" href="/manager/myhotelroom/0">객실 관리</a>
+          <a class="collapse-item" href="/manager/myhotelbooking/0">예약 관리</a>
+          <a class="collapse-item" href="/manager/myhotelrequest/0">예약 요청 관리</a>
+        </div>
+      </div>
+    </li>
+
+    <hr class="sidebar-divider d-none d-md-block">
+
+    <!-- Sidebar Toggler (Sidebar) -->
+    <div class="text-center d-none d-md-inline">
+      <button class="rounded-circle border-0" id="sidebarToggle"></button>
+    </div>
+
+  </ul>
+  <!-- End of Sidebar -->
+
+  <!-- Content Wrapper -->
+  <div id="content-wrapper" class="d-flex flex-column">
+
+    <!-- Main Content -->
+    <div id="content">
+      <!-- Topbar -->
+      <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+        <!-- Sidebar Toggle (Topbar) -->
+        <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+          <i class="fa fa-bars"></i>
+        </button>
+        <!-- Topbar Navbar -->
+        <ul class="navbar-nav ml-auto">
+          <!-- Nav Item - User Information -->
+          <li class="nav-item dropdown no-arrow">
+            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <span class="mr-2 d-none d-lg-inline text-gray-600 small" th:text="${#authentication.name}"></span>
+              <img class="img-profile rounded-circle" src="/tem2/img/undraw_profile.svg">
+            </a>
+            <!-- Dropdown - User Information -->
+            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+              <a class="dropdown-item" href="#">
+                <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                Profile
+              </a>
+              <a class="dropdown-item" href="#">
+                <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
+                Settings
+              </a>
+              <a class="dropdown-item" href="#">
+                <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
+                Activity Log
+              </a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                Logout
+              </a>
+            </div>
+          </li>
+
+        </ul>
+      </nav>
+      <!-- End of Topbar -->
+
+      <!-- Begin Page Content -->
+      <div class="container-fluid" style="height: 100vh;">
+        <div class="row justify-content-center">
+          <div class="col-8">
+            <div class="card shadow mb-4">
+              <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary"
+                    th:text="${room == null ? '객실 추가' : '객실 수정'}"></h6>
+              </div>
+              <div class="card-body">
+                <div style="display: flex; justify-content: flex-end; width: 100%;">
+                  <select class="form-select" id="myHotles" name="myHotles" style="width: fit-content;">
+                    <option></option>
+                  </select>
+                </div>
+
+                <form id="roomForm" enctype="multipart/form-data">
+                  <input type="hidden" id="roomId" name="roomId">
+                  <input type="hidden" id="hotelId" name="hotelId">
+                  <div class="mb-3 mt-3">
+                    <label for="roomType" class="form-label">객실 타입</label>
+                    <input type="text"
+                           class="form-control"
+                           placeholder=" 타입"
+                           id="roomType"
+                           name="roomType" />
+                  </div>
+                  <div class="mb-3">
+                    <label for="roomPrice" class="form-label">객실 가격</label>
+                    <input type="text"
+                           class="form-control"
+                           placeholder=" 가격"
+                           id="roomPrice"
+                           name="roomPrice" />
+                  </div>
+                  <div class="mb-3">
+                    <label for="limitGuest" class="form-label">최대인원</label>
+                    <input type="text"
+                           class="form-control"
+                           placeholder=" 최대인원"
+                           id="limitGuest"
+                           name="limitGuest" />
+                  </div>
+                  <div class="mb-3">
+                    <label for="limitPet" class="form-label">최대펫수</label>
+                    <input type="text"
+                           class="form-control"
+                           placeholder=" 최대펫수"
+                           id="limitPet"
+                           name="limitPet" />
+                  </div>
+                  <div class="mb-3">
+                    <label for="checkIn" class="form-label">체크인</label>
+                    <input type="time"
+                           class="form-control"
+                           placeholder=" 체크인"
+                           id="checkIn"
+                           name="checkIn" />
+                  </div>
+                  <div class="mb-3">
+                    <label for="checkOut" class="form-label">체크아웃</label>
+                    <input type="time"
+                           class="form-control"
+                           placeholder=" 체크아웃"
+                           id="checkOut"
+                           name="checkOut" />
+                  </div>
+
+                  <div class="mb-3">
+                    <div class="row">
+                      <div class="col">
+                        <label for="bedType" class="form-label">침대 타입</label>
+                        <select class="form-select" id="bedType" name="bedType">
+                          <option th:each="RFT01 : ${RFT01}" th:value="${RFT01.code}" th:text="${RFT01.codeName}"></option>
+                        </select>
+                      </div>
+                      <div class="col">
+                        <label for="viewType" class="form-label">전망 타입</label>
+                        <select class="form-select" id="viewType" name="viewType">
+                          <option th:each="RFT02 : ${RFT02}" th:value="${RFT02.code}" th:text="${RFT02.codeName}"></option>
+                        </select>
+                      </div>
+                      <div class="col">
+                        <label for="pool" class="form-label">전용수영장</label>
+                        <select class="form-select" id="pool" name="pool">
+                          <option th:each="RFT03 : ${RFT03}" th:value="${RFT03.code}" th:text="${RFT03.codeName}"></option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="mb-3">
+                    <div class="row">
+                      <div class="col">
+                        <label for="roomCount" class="form-label">룸 개수</label>
+                        <select class="form-select" id="roomCount" name="roomCount">
+                          <option th:each="RFT04 : ${RFT04}" th:value="${RFT04.code}" th:text="${RFT04.codeName}"></option>
+                        </select>
+                      </div>
+                      <div class="col">
+                        <label for="bathCount" class="form-label">욕실 개수</label>
+                        <select class="form-select" id="bathCount" name="bathCount">
+                          <option th:each="RFT05 : ${RFT05}" th:value="${RFT05.code}" th:text="${RFT05.codeName}"></option>
+                        </select>
+                      </div>
+                      <div class="col">
+                        <label for="balcony" class="form-label">발코니</label>
+                        <select class="form-select" id="balcony" name="balcony">
+                          <option th:each="RFT06 : ${RFT06}" th:value="${RFT06.code}" th:text="${RFT06.codeName}"></option>
+                        </select>
+                      </div>
+                      <div class="col">
+                        <label for="kitchen" class="form-label">주방</label>
+                        <select class="form-select" id="kitchen" name="kitchen">
+                          <option th:each="RFT07 : ${RFT07}" th:value="${RFT07.code}" th:text="${RFT07.codeName}"></option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="amenities" class="form-label">객실 제공 서비스</label>
+                    <div id="amenities" class="d-flex flex-wrap" style="border: 1px solid #d1d3e2; border-radius: 0.35rem; padding: .375rem .75rem;">
+                      <div th:each="ram : ${RAM}"
+                           class="chip"
+                           th:data-code="${ram.code}"
+                           th:text="${ram.codeName}">
+                      </div>
+                      <!-- 선택된 시설들 -->
+                      <input type="hidden" name="selectedRAMs" id="selectedRAMs">
+                    </div>
+                  </div>
+
+                  <div class="mb-3">
+                    <label class="form-label"  for="roomPhotos">객실 사진</label>
+                    <input type="file" class="form-control" id="roomPhotos" name="roomPhotos" multiple >
+                  </div>
+
+
+                  <div class="mt-3" id="errorDiv" style="text-align: center; color: red; display: none;">
+                    <p id="errorMsg"></p>
+                  </div>
+
+                  <div class="mb-3" style="text-align: center;">
+                    <button type="button" class="btn btn-primary" id="btnSubmit"> 등록 </button>
+                    <button type="button" class="btn btn-primary" id="btnModify"> 수정 </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- /.container-fluid -->
+    </div>
+    <!-- End of Main Content -->
+  </div>
+  <!-- End of Content Wrapper -->
+
+</div>
+<!-- End of Page Wrapper -->
+
+
+<!-- Footer -->
+<footer class="sticky-footer bg-white">
+  <div class="container my-auto">
+    <div class="copyright text-center my-auto">
+      <span>Copyright &copy; Your Website 2021</span>
+    </div>
+  </div>
+</footer>
+<!-- End of Page Wrapper -->
+
+<!-- Scroll to Top Button-->
+<a class="scroll-to-top rounded" href="#page-top">
+  <i class="fas fa-angle-up"></i>
+</a>
+
+<!-- Logout Modal-->
+<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="logoutModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="logoutModalLabel">Ready to Leave?</h5>
+        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+        <a class="btn btn-primary" href="/logout">Logout</a>
+      </div>
+    </div>
+  </div>
+</div>
+<!--/ Logout -->
+
+<!-- Bootstrap core JavaScript-->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"></script>
+
+
+<!-- Core plugin JavaScript-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"
+        integrity="sha512-ahmSZKApTDNd3gVuqL5TQ3MBTj8tL5p2tYV05Xxzcfu6/ecvt1A0j6tfudSGBVuteSoTRMqMljbfdU0g2eDNUA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<!--<script src="tem2/vendor/jquery-easing/jquery.easing.min.js"></script>-->
+
+<!-- Custom scripts for all pages-->
+<script src="/tem2/js/sb-admin-2.min.js"></script>
+
+<!-- Page level plugins -->
+<script src="https://cdn.datatables.net/2.1.8/js/dataTables.js"></script>
+<script src="https://cdn.datatables.net/select/2.1.0/js/dataTables.select.js"></script>
+<script src="https://cdn.datatables.net/select/2.1.0/js/select.dataTables.js"></script>
+
+<!-- Page level custom scripts -->
+
+<script>
+    $(function(){
+        let room = $('#room')
+        if(room.length>0){
+            loadRoomDetail(room.data('room-id'));
+        }
+
+        let selectMyHotles = $('#myHotles');
+
+        selectMyHotles.on("change", function (){
+            $('#hotelId').val(this.value);
+            $.ajax({
+                url:'/manager/myrooms/'+this.value,
+                type: 'get',
+                success:function (data){
+                }
+            })
+        })
+        $.ajax({
+            url: '/manager/myhotels/'+BigInt($('#user').data('user-id')),
+            type: 'get',
+            success: function (data){
+                selectMyHotles.empty();
+                $.each(data.hotels, function (i, hotel){
+                    let option = $('<option></option>')
+                        .val(hotel.hotelId)  // 호텔의 id를 value로 설정
+                        .text(hotel.hotelName);  // 호텔의 이름을 텍스트로 설정
+                    selectMyHotles.append(option);  // select에 option 추가
+                });
+                // URL에서 가져온 호텔 ID가 목록에 있다면, 그 호텔을 자동으로 선택
+                if ($('#hotel').data('hotel-id')) {
+                    let hotelId = $('#hotel').data('hotel-id');
+                    selectMyHotles.val(hotelId);  // 호텔 ID로 옵션을 선택
+                    $('#hotelId').val(hotelId)
+                }
+            },
+            error: function (e){
+            }
+        })
+
+        let chips = document.querySelectorAll('.chip');
+
+        let selectedChips = [];
+        let selectedChipsInput = $('#selectedRAMs');
+        let chipForCheck;
+
+        chips.forEach(chip => {
+            chip.addEventListener('click', function() {
+                let chipValue = this.getAttribute('data-code');
+                this.classList.toggle('active');
+
+                if (this.classList.contains('active')) {
+                    selectedChips.push(chipValue);
+                    chipForCheck = "";
+                } else {
+                    selectedChips = selectedChips.filter(item => item !== chipValue);
+                    chipForCheck = chipValue
+                }
+
+                // 숨겨진 입력 필드에서 기존 값을 가져와서 처리
+                let currentValue = selectedChipsInput.val(); // jQuery로 가져온 값은 문자열입니다
+                let allSelectedChips = currentValue ? currentValue.split(',') : []; // 기존 값과 선택된 값 합침
+                allSelectedChips = [...new Set([...allSelectedChips, ...selectedChips])];
+                if (chipForCheck !== "") {
+                    allSelectedChips = allSelectedChips.filter(item => item!== chipForCheck);
+                }
+
+
+                // 선택된 칩들의 값을 쉼표로 구분하여 숨겨진 입력 필드에 저장
+                selectedChipsInput.val(allSelectedChips.join(','));
+            });
+        });
+
+        $('#btnSubmit').on('click', function() {
+            addNewRoom();
+        })
+        $('#btnModify').on('click', function() {
+            let roomId = $('#room').data('room-id');
+            modifyRoom(roomId);
+        })
+
+    });
+</script>
+</body>
+</html>

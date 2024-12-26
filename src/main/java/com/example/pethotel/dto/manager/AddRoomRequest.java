@@ -20,6 +20,15 @@ public class AddRoomRequest {
     private Long hotelId;
 
     private String roomAmenities;
+//    private String roomFeatures;
+
+    private String bedType;
+    private String viewType;
+    private String pool;
+    private String roomCount;
+    private String bathCount;
+    private String balcony;
+    private String kitchen;
 
     public Room toEntity(Hotel hotel) {
         return Room.builder()

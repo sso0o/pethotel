@@ -38,6 +38,7 @@ public class CommonCode {
     @Column(name = "remark")
     private String remark;
 
+
     @Builder
     public CommonCode(String codeHead, String codeDetail, String codeName, String codeUse, int codeSeq, String code, String remark) {
         this.codeHead = codeHead;
@@ -69,5 +70,4 @@ public class CommonCode {
         this.codeUse = codeUse;
         this.code = codeHead.trim()+codeDetail.trim();
     }
-
 }

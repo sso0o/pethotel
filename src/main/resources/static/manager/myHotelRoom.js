@@ -215,3 +215,10 @@ function getRoomDetail(roomId){
         }
     });
 }
+
+
+function modifyRoom(roomId){
+    let userId = $('#user').data('user-id');
+    let hotelId = $('#hotelId').val();
+    window.location.href = '/manager/myhotelroomdetail/' + userId + '/' + hotelId + '/' + roomId;
+}

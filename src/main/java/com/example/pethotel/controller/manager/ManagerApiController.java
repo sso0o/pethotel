@@ -39,6 +39,7 @@ public class ManagerApiController {
     private final CommonCodeService commonCodeService;
     private final HotelFacilityService hotelFacilityService;
     private final RoomAmenityService roomAmenityService;
+    private final RoomFeatureService roomFeatureService;
 
     //=============================================================================================
     //================================              get               =============================
@@ -86,6 +87,7 @@ public class ManagerApiController {
     public ResponseEntity getMyRoom(@PathVariable Long roomId) {
         HashMap<Object, Object> resultMap = new HashMap<>();
         Room room = roomService.findById(roomId);
+
         resultMap.put("room", room);
         return ResponseEntity.ok().body(resultMap);
     }
@@ -205,11 +207,24 @@ public class ManagerApiController {
         HashMap<Object, Object> resultMap = new HashMap<>();
 
         Room saveRoom = roomService.save(request);
+
+        // Create RoomAmenity
         String roomAmenities = request.getRoomAmenities();
         List<String> amenities = Arrays.asList(roomAmenities.split(","));
         for (String amenity : amenities) {
             RoomAmenity roomAmenity = roomAmenityService.save(saveRoom, amenity);
         }
+
+        AddRoomFeatureRequest addRequest = new AddRoomFeatureRequest(saveRoom, request.getBedType(), request.getViewType(),
+                request.getPool(), request.getRoomCount(), request.getBathCount(), request.getBalcony(), request.getKitchen());
+        roomFeatureService.save(addRequest);
+
+//        // Create RoomFeature
+//        String roomFeatures = request.getRoomFeatures();
+//        List<String> features = Arrays.asList(roomFeatures.split(","));
+//        for (String feature : features) {
+//            RoomFeature roomFeature = roomFeatureService.save(saveRoom, feature);
+//        }
 
         resultMap.put("room", saveRoom);
         resultMap.put("msg", "요청 성공");
