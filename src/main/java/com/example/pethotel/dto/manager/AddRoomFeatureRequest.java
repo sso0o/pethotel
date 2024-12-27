@@ -19,7 +19,7 @@ public class AddRoomFeatureRequest {
     private String balcony;
     private String kitchen;
 
-    public RoomFeature toEntity(Room room) {
+    public RoomFeature toEntity() {
         return RoomFeature.builder()
                 .room(room)
                 .bedType(bedType)
