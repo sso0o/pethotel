@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<!DOCTYPE html>
 <html
     lang="ko"
     dir="ltr"
@@ -325,8 +324,13 @@
                     selectMyHotels.append(option);  // select에 option 추가
                 });
                 // URL에서 가져온 호텔 ID가 목록에 있다면, 그 호텔을 자동으로 선택
-                if (hotelId) {
-                    selectMyHotels.val(hotelId);  // 호텔 ID로 옵션을 선택
+                if (hotelIdFromUrl != 0) {
+                    selectMyHotels.val(hotelIdFromUrl);  // 호텔 ID로 옵션을 선택
+                    $('#hotelId').val(hotelIdFromUrl)
+                } else {
+                    selectMyHotels.val(data.hotels[0].hotelId);  // 호텔 ID로 옵션을 선택
+                    $('#hotelId').val(data.hotels[0].hotelId);
+                    selectMyHotels.trigger('change');
                 }
             },
             error: function (e){
