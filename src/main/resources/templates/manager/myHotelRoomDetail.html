@@ -57,6 +57,15 @@
           margin-left: 10px;
           cursor: pointer;
       }
+
+      .room-image.deleted {
+          opacity: 0.5;
+          transform: scale(0.9);
+          transition: transform 0.3s, opacity 0.3s;
+      }
+      .btn-trash.deleted {
+          background-color: grey;
+      }
   </style>
 
 </head>
@@ -185,14 +194,15 @@
               </div>
               <div class="card-body">
                 <div style="display: flex; justify-content: flex-end; width: 100%;">
-                  <select class="form-select" id="myHotles" name="myHotles" style="width: fit-content;">
+                  <select class="form-select" id="myHotels" name="myHotels" style="width: fit-content;"
+                          th:disabled="${room != null}">
                     <option></option>
                   </select>
                 </div>
 
                 <form id="roomForm" enctype="multipart/form-data">
-                  <input type="hidden" id="roomId" name="roomId">
                   <input type="hidden" id="hotelId" name="hotelId">
+                  <input type="hidden" id="roomId" name="roomId">
                   <div class="mb-3 mt-3">
                     <label for="roomType" class="form-label">객실 타입</label>
                     <input type="text"
@@ -311,14 +321,24 @@
                     <input type="file" class="form-control" id="roomPhotos" name="roomPhotos" multiple >
                   </div>
 
+                  <div class="mb-3">
+                    <label class="form-label"  for="divRoomPhotos">사진 미리보기</label>
+                    <div id="divRoomPhotos" name="divRoomPhotos"
+                         style="border: 1px solid #d1d3e2; border-radius: 0.35rem; padding: .375rem .75rem; display: flex; flex-wrap: wrap;">
+                    </div>
+<!--                    <input type="hidden" name="deleteRoomPhotos" id="deleteRoomPhotos">-->
+                  </div>
+
 
                   <div class="mt-3" id="errorDiv" style="text-align: center; color: red; display: none;">
                     <p id="errorMsg"></p>
                   </div>
 
                   <div class="mb-3" style="text-align: center;">
-                    <button type="button" class="btn btn-primary" id="btnSubmit"> 등록 </button>
-                    <button type="button" class="btn btn-primary" id="btnModify"> 수정 </button>
+                    <button type="button" class="btn btn-primary" th:if="${room == null}" id="btnSubmit"> 등록 </button>
+                    <button type="button" class="btn btn-primary" th:if="${room != null}" id="btnModify"> 수정 </button>
+                    <button type="button" class="btn btn-secondary" th:if="${room != null}" id="btnCancel"> 취소 </button>
+
                   </div>
                 </form>
               </div>
@@ -401,9 +421,9 @@
             loadRoomDetail(room.data('room-id'));
         }
 
-        let selectMyHotles = $('#myHotles');
+        let selectMyHotels = $('#myHotels');
 
-        selectMyHotles.on("change", function (){
+        selectMyHotels.on("change", function (){
             $('#hotelId').val(this.value);
             $.ajax({
                 url:'/manager/myrooms/'+this.value,
@@ -416,17 +436,18 @@
             url: '/manager/myhotels/'+BigInt($('#user').data('user-id')),
             type: 'get',
             success: function (data){
-                selectMyHotles.empty();
+                selectMyHotels.empty();
+                selectMyHotels.append($('<option></option>'));
                 $.each(data.hotels, function (i, hotel){
                     let option = $('<option></option>')
                         .val(hotel.hotelId)  // 호텔의 id를 value로 설정
                         .text(hotel.hotelName);  // 호텔의 이름을 텍스트로 설정
-                    selectMyHotles.append(option);  // select에 option 추가
+                    selectMyHotels.append(option);  // select에 option 추가
                 });
                 // URL에서 가져온 호텔 ID가 목록에 있다면, 그 호텔을 자동으로 선택
                 if ($('#hotel').data('hotel-id')) {
                     let hotelId = $('#hotel').data('hotel-id');
-                    selectMyHotles.val(hotelId);  // 호텔 ID로 옵션을 선택
+                    selectMyHotels.val(hotelId);  // 호텔 ID로 옵션을 선택
                     $('#hotelId').val(hotelId)
                 }
             },
@@ -472,7 +493,12 @@
         })
         $('#btnModify').on('click', function() {
             let roomId = $('#room').data('room-id');
+            $('#roomId').val(roomId);
             modifyRoom(roomId);
+        })
+        $('#btnCancel').on('click', function() {
+            let hotelId = $('#hotel').data('hotel-id');
+            location.href ='/manager/myhotelroom/'+hotelId;
         })
 
     });

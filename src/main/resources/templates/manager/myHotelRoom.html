@@ -183,7 +183,7 @@
               </div>
               <div class="card-body">
                 <div style="display: flex;">
-                  <select class="form-select" id="myHotles" name="myHotles" style="width: fit-content;">
+                  <select class="form-select" id="myHotels" name="myHotels" style="width: fit-content;">
                     <option></option>
                   </select>
 <!--                  <button type="button" class="btn btn-primary ml-3" onclick="addRoomModal('add')">add</button>-->
@@ -219,23 +219,9 @@
           <div class="col-6" style="height: 100%;">
             <div class="card shadow mb-4" style="height: 100%;">
               <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">객실 컨디션</h6>
+                <h6 class="m-0 font-weight-bold text-primary">예약율</h6>
               </div>
-              <div class="card-body" id="RFTcard-body">
-                <label class="form-label" for="bedType"></label>
-                <div class="input-group input-group-merge">
-                  <span id="bedType2" class="input-group-text" style="width: 25%">베드 타입</span>
-                  <select class="form-select" id="bedType" name="bedType">
-                    <option th:each="RFT01 : ${RFT01}" th:value="${RFT01.codeName}" th:text="${RFT01.codeName}"></option>
-                  </select>
-                </div>
-                <label class="form-label" for="viewType"></label>
-                <div class="input-group input-group-merge">
-                  <span id="viewType2" class="input-group-text" style="width: 25%">전망 타입</span>
-                  <select class="form-select" id="viewType" name="viewType">
-                    <option th:each="RFT02 : ${RFT02}" th:value="${RFT02.codeName}" th:text="${RFT02.codeName}"></option>
-                  </select>
-                </div>
+              <div class="card-body">
               </div>
             </div>
           </div>
@@ -495,9 +481,9 @@ $(function(){
     let currentUrl = window.location.href;
     let hotelIdFromUrl = currentUrl.split('/').pop();  // URL의 마지막 부분 ("/" 이후 값) 추출
 
-    let selectMyHotles = $('#myHotles');
+    let selectMyHotels = $('#myHotels');
 
-    selectMyHotles.on("change", function (){
+    selectMyHotels.on("change", function (){
         $('#hotelId').val(this.value);
         $.ajax({
             url:'/manager/myrooms/'+this.value,
@@ -512,17 +498,21 @@ $(function(){
         url: '/manager/myhotels/'+BigInt(userId),
         type: 'get',
         success: function (data){
-            selectMyHotles.empty();
+            selectMyHotels.empty();
             $.each(data.hotels, function (i, hotel){
               let option = $('<option></option>')
                       .val(hotel.hotelId)  // 호텔의 id를 value로 설정
                       .text(hotel.hotelName);  // 호텔의 이름을 텍스트로 설정
-              selectMyHotles.append(option);  // select에 option 추가
+                selectMyHotels.append(option);  // select에 option 추가
             });
             // URL에서 가져온 호텔 ID가 목록에 있다면, 그 호텔을 자동으로 선택
-            if (hotelIdFromUrl) {
-              selectMyHotles.val(hotelIdFromUrl);  // 호텔 ID로 옵션을 선택
+            if (hotelIdFromUrl != 0) {
+                selectMyHotels.val(hotelIdFromUrl);  // 호텔 ID로 옵션을 선택
               $('#hotelId').val(hotelIdFromUrl)
+            } else {
+                selectMyHotels.val(data.hotels[0].hotelId);  // 호텔 ID로 옵션을 선택
+                $('#hotelId').val(data.hotels[0].hotelId);
+                selectMyHotels.trigger('change');
             }
         },
         error: function (e){
@@ -719,31 +709,19 @@ $(function(){
     });
 
     $('#addNewRoomBtn').on('click', function() {
-        let hotelId = $('#myHotles').val() ? $('#myHotles').val() : 0;
+        let hotelId = $('#myHotels').val() ? $('#myHotels').val() : 0;
         let roomId = 0;
 
         window.location.href = '/manager/myhotelroomdetail/' + userId + '/' + hotelId + '/' + roomId;
     })
 
     $('#addNewRoomBtn').on('click', function() {
-        let hotelId = $('#myHotles').val() ? $('#myHotles').val() : 0;
+        let hotelId = $('#myHotels').val() ? $('#myHotels').val() : 0;
         let roomId = 0;
 
         window.location.href = '/manager/myhotelroomdetail/' + userId + '/' + hotelId + '/' + roomId;
     })
 
-
-    // $('#addRoomDetailBtn').on('click', function(){
-    //     addRoomDetail('post');
-    // })
-    //
-    // $('#modifyRoomDetailBtn').on('click', function(){
-    //     addRoomDetail('put');
-    // })
-    //
-    // $('#delRoomDetailBtn').on('click', function(){
-    //     addRoomDetail('delete')
-    // })
 });
 </script>
 </body>

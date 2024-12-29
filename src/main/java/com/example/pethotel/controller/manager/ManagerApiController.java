@@ -87,8 +87,10 @@ public class ManagerApiController {
     public ResponseEntity getMyRoom(@PathVariable Long roomId) {
         HashMap<Object, Object> resultMap = new HashMap<>();
         Room room = roomService.findById(roomId);
+        RoomFeature roomFeature = roomFeatureService.findByRoom(room);
 
         resultMap.put("room", room);
+        resultMap.put("roomFeature", roomFeature);
         return ResponseEntity.ok().body(resultMap);
     }
 
@@ -219,13 +221,6 @@ public class ManagerApiController {
                 request.getPool(), request.getRoomCount(), request.getBathCount(), request.getBalcony(), request.getKitchen());
         roomFeatureService.save(addRequest);
 
-//        // Create RoomFeature
-//        String roomFeatures = request.getRoomFeatures();
-//        List<String> features = Arrays.asList(roomFeatures.split(","));
-//        for (String feature : features) {
-//            RoomFeature roomFeature = roomFeatureService.save(saveRoom, feature);
-//        }
-
         resultMap.put("room", saveRoom);
         resultMap.put("msg", "요청 성공");
         return ResponseEntity.ok().body(resultMap);
@@ -353,8 +348,15 @@ public class ManagerApiController {
             RoomAmenity roomAmenity = roomAmenityService.save(updateRoom, amenity);
         }
 
+        roomFeatureService.deleteByRoom(updateRoom);
+        AddRoomFeatureRequest addRequest = new AddRoomFeatureRequest(updateRoom, request.getBedType(), request.getViewType(),
+                request.getPool(), request.getRoomCount(), request.getBathCount(), request.getBalcony(), request.getKitchen());
+        RoomFeature roomFeature = roomFeatureService.save(addRequest);
+
+
         resultMap.put("msg", "요청 성공");
         resultMap.put("room", updateRoom);
+        resultMap.put("roomFeature", roomFeature);
         return ResponseEntity.ok().body(resultMap);
     }
 
@@ -435,8 +437,12 @@ public class ManagerApiController {
         HashMap<Object, Object> resultMap = new HashMap<>();
 
         String imgid = params.get("rimgId");
-        Long rimgId = Long.parseLong(imgid);
-        roomImgService.delete(rimgId);
+        List<String> imgids = Arrays.asList(imgid.split(","));
+        for (String rimgId : imgids) {
+            roomImgService.delete(Long.parseLong(rimgId));
+        }
+//        Long rimgId = Long.parseLong(imgid);
+
 
         resultMap.put("msg", "요청 성공");
         return ResponseEntity.ok().body(resultMap);

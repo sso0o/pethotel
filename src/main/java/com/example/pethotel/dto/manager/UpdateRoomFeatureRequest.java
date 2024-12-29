@@ -7,16 +7,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-public class UpdateRoomRequest {
-    private String roomType;
-    private int roomPrice;
-    private int limitGuest;
-    private int limitPet;
-    private String checkIn;
-    private String checkOut;
-
-    private String roomAmenities;
-
+public class UpdateRoomFeatureRequest {
     private String bedType;
     private String viewType;
     private String pool;

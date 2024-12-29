@@ -57,4 +57,15 @@ public class RoomFeature {
         this.balcony = balcony;
         this.kitchen = kitchen;
     }
+
+    public void update(String bedType, String viewType, String pool,
+                       String roomCount,String bathCount, String balcony, String kitchen) {
+        this.bedType = bedType;
+        this.viewType = viewType;
+        this.pool = pool;
+        this.roomCount = roomCount;
+        this.bathCount = bathCount;
+        this.balcony = balcony;
+        this.kitchen = kitchen;
+    }
 }
