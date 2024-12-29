@@ -321,7 +321,7 @@
                     <input type="file" class="form-control" id="roomPhotos" name="roomPhotos" multiple >
                   </div>
 
-                  <div class="mb-3">
+                  <div class="mb-3" th:if="${room.roomPhotos != null}">
                     <label class="form-label"  for="divRoomPhotos">사진 미리보기</label>
                     <div id="divRoomPhotos" name="divRoomPhotos"
                          style="border: 1px solid #d1d3e2; border-radius: 0.35rem; padding: .375rem .75rem; display: flex; flex-wrap: wrap;">
