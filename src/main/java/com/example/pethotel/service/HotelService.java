@@ -5,6 +5,7 @@ import com.example.pethotel.dto.hotel.SearchHotelResponse;
 import com.example.pethotel.dto.manager.AddHotelRequest;
 import com.example.pethotel.dto.manager.UpdateHotelRequest;
 import com.example.pethotel.entity.Hotel;
+import com.example.pethotel.mapper.HotelMapper;
 import com.example.pethotel.repository.HotelImgRepository;
 import com.example.pethotel.repository.HotelRepository;
 import com.example.pethotel.repository.RoomRepository;
@@ -27,6 +28,8 @@ public class HotelService {
 
     private final RoomService roomService;
     private final HotelFacilityService hotelFacilityService;
+
+    private final HotelMapper hotelMapper;
 
     // 호텔 저장 요청
     public Hotel save(AddHotelRequest req) {
@@ -73,7 +76,12 @@ public class HotelService {
 
     public Page<SearchHotelResponse> findBySearchOption(SearchHotelRequest request, int page, int size){
         Pageable pageable = PageRequest.of(page - 1, size);  // 페이지는 0부터 시작하므로, 1을 빼서 전달
-        return hotelRepository.findBySearchOption(pageable, request.getLocation(), request.getGuest(), request.getPet(), request.getCheckIn(), request.getCheckOut(), request.getRoom());
+        return hotelRepository.findBySearchOption(pageable, request.getLocation(), request.getHotelType(), request.getGuest(), request.getPet(), request.getCheckIn(), request.getCheckOut(), request.getRoom());
+    }
+
+    public List<Hotel> findAll(){
+        List<Hotel> list = hotelMapper.findAll();
+        return list;
     }
 
 

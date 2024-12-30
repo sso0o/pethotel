@@ -106,23 +106,39 @@
         <div class="row">
           <nav class="navbar navbar-expand-lg navbar-dark justify-content-center">
             <form style="display: flex;" id="searchForm">
+              <!-- selectCity  -->
               <div class="form-group tm-form-group m-1">
                 <label for="selectCity">목적지</label>
                 <select class="form-control tm-select" style="min-width: 100px;" name="" id="selectCity">
-                  <option></option>
+                  <option th:each="REG : ${REG}" th:value="${REG.codeName}" th:text="${REG.codeName}"></option>
                 </select>
               </div>
+              <!-- ./ selectCity  -->
 
+              <!-- selectType  -->
+              <div class="form-group tm-form-group m-1">
+                <label for="selectType">숙소</label>
+                <select class="form-control tm-select" style="min-width: 100px;" name="" id="selectType">
+                  <option th:each="HTP : ${HTP}" th:value="${HTP.codeName}" th:text="${HTP.codeName}"></option>
+                </select>
+              </div>
+              <!-- ./ selectType  -->
+
+              <!-- checkIn  -->
               <div class="form-group tm-form-group m-1">
                 <label for="startDate">체크인</label>
                 <input type="text" class="form-control" style="min-width: 150px;" id="startDate" name="startDate" placeholder="Check In">
               </div>
+              <!-- ./ checkIn  -->
 
+              <!-- checkOut  -->
               <div class="form-group tm-form-group m-1">
                 <label for="endDate">체크아웃</label>
                 <input type="text" class="form-control" style="min-width: 150px;" id="endDate" name="endDate" placeholder="Check Out">
               </div>
+              <!-- ./ checkOut  -->
 
+              <!-- room  -->
               <div class="form-group tm-form-group m-1">
                 <label for="inputRoom">방</label>
                 <select name="room" class="form-control tm-select" style="min-width: 100px;" id="inputRoom">
@@ -138,7 +154,9 @@
                   <option value="10">10 Rooms</option>
                 </select>
               </div>
+              <!-- ./ room  -->
 
+              <!-- guest  -->
               <div class="form-group tm-form-group m-1">
                 <label for="guest">인원</label>
                 <select class="form-control tm-select" style="min-width: 100px;" id="guest" name="guest">
@@ -154,7 +172,9 @@
                   <option value="10">10</option>
                 </select>
               </div>
+              <!-- ./ guest  -->
 
+              <!-- pet  -->
               <div class="form-group tm-form-group m-1">
                 <label for="pet">펫</label>
                 <select class="form-control tm-select" style="min-width: 100px;" id="pet" name="pet">
@@ -164,6 +184,8 @@
                   <option value="4">4</option>
                 </select>
               </div>
+              <!-- ./ pet  -->
+
               <button type="submit" class="btn tm-btn tm-btn-white-primary text-uppercase m-1" id="btnSubmit" style="max-width: fit-content; color: white; border: 1px solid;">
                 Search
               </button>
@@ -182,10 +204,6 @@
       <div class="container pt-3 pb-3">
         <div class="hotel-filter-container">
           <div></div>
-          <select class="form-select" id="selectHotelType" name="selectHotelType">
-            <option th:each="HTP : ${HTP}" th:value="${HTP.codeName}" th:text="${HTP.codeName}"></option>
-          </select>
-
         </div>
       </div>
     </div>
@@ -193,8 +211,6 @@
       <div class="container">
         <div class="hotel-list-container">
           <div class="tm-recommended-place-wrap pb-5" id="hotelListContainer"></div>
-<!--          <ol class="hotel-detail-ol" id="hotelListContainer">-->
-<!--          </ol>-->
         </div>
       </div>  <!-- .container -->
     </div>     <!-- .tm-container-outer -->
@@ -271,43 +287,31 @@
         // Date Picker in Search form
         $('#startDate, #endDate').datepicker({
             format: 'yyyy-mm-dd',  // 원하는 날짜 형식으로 설정
+            autoclose : true,
+            startDate: 'today',
+            todayHighlight : true ,
         })
 
-        $('#startDate').val(searchData.checkIn);
-        $('#endDate').val(searchData.checkOut);
+        // $('#startDate').val(searchData.checkIn);
+        // $('#endDate').val(searchData.checkOut);
+        $('#startDate').datepicker('setDate', searchData.checkIn); // (-1D:하루전, -1M:한달전, -1Y:일년전), (+1D:하루후, -1M:한달후, -1Y:일년후)
+        $('#endDate').datepicker('setDate', searchData.checkOut); // (-1D:하루전, -1M:한달전, -1Y:일년전), (+1D:하루후, -1M:한달후, -1Y:일년후)
         $('#inputRoom').val(searchData.room);
         $('#guest').val(searchData.guest);
         $('#pet').val(searchData.pet);
 
         let selectCity = $('#selectCity');
+        let selectType = $('#selectType');
+        selectCity.val(searchData.location);
+        selectType.val(searchData.hotelType);
 
-        $.ajax({
-            url: '/main/commoncode/REG',
-            type: 'get',
-            success: function (data) {
-                selectCity.empty();
-                $.each(data.codes, function (i, code) {
-                    let option = $('<option></option>')
-                        .val(code.codeName)  // 호텔의 id를 value로 설정
-                        .text(code.codeName);  // 호텔의 이름을 텍스트로 설정
-
-                    if (code.codeName === searchData.location) {
-                        option.attr('selected', 'selected');
-                    }
-                    selectCity.append(option);  // select에 option 추가
-                });
-            },
-            error: function (request, status, error) {
-                let result = jQuery.parseJSON(request.responseText)
-                alert(result.msg);
-            }
-        })
 
         $('#searchForm').on('submit', function (e) {
             e.preventDefault();
 
             // 검색 조건을 sessionStorage에 저장
             let location = $('#selectCity').val();
+            let hotelType = $('#selectType').val();
             let checkIn = $('#startDate').val();
             let checkOut = $('#endDate').val();
             let room = $('#inputRoom').val();
@@ -315,7 +319,7 @@
             let pet = $('#pet').val();
 
             // 조건이 모두 채워져 있는지 체크
-            if (!location || !checkIn || !checkOut || !room || !guest || !pet) {
+            if (!location || !hotelType || !checkIn || !checkOut || !room || !guest || !pet) {
                 // 조건이 비어 있는 경우
                 alert('모든 검색 조건을 입력해주세요.');
             } else {
@@ -326,6 +330,7 @@
                     contentType: 'application/json',
                     data: JSON.stringify({
                         location: location,
+                        hotelType: hotelType,
                         checkIn: checkIn,
                         checkOut: checkOut,
                         room: room,

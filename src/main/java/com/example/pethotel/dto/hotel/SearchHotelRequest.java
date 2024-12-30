@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @Getter
 public class SearchHotelRequest {
     private String location;
+    private String hotelType;
     private String checkIn;
     private String checkOut;
     private int room;

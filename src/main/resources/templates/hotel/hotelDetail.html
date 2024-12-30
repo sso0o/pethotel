@@ -113,23 +113,39 @@
         <div class="row">
           <nav class="navbar navbar-expand-lg navbar-dark justify-content-center">
             <form style="display: flex;" id="searchForm">
+              <!-- selectCity  -->
               <div class="form-group tm-form-group m-1">
                 <label for="selectCity">목적지</label>
                 <select class="form-control tm-select" style="min-width: 100px;" name="" id="selectCity">
-                  <option></option>
+                  <option th:each="REG : ${REG}" th:value="${REG.codeName}" th:text="${REG.codeName}"></option>
                 </select>
               </div>
+              <!-- ./ selectCity  -->
 
+              <!-- selectType  -->
+              <div class="form-group tm-form-group m-1">
+                <label for="selectType">숙소</label>
+                <select class="form-control tm-select" style="min-width: 100px;" name="" id="selectType">
+                  <option th:each="HTP : ${HTP}" th:value="${HTP.codeName}" th:text="${HTP.codeName}"></option>
+                </select>
+              </div>
+              <!-- ./ selectType  -->
+
+              <!-- checkIn  -->
               <div class="form-group tm-form-group m-1">
                 <label for="startDate">체크인</label>
                 <input type="text" class="form-control" style="min-width: 150px;" id="startDate" name="startDate" placeholder="Check In">
               </div>
+              <!-- ./ checkIn  -->
 
+              <!-- checkOut  -->
               <div class="form-group tm-form-group m-1">
                 <label for="endDate">체크아웃</label>
                 <input type="text" class="form-control" style="min-width: 150px;" id="endDate" name="endDate" placeholder="Check Out">
               </div>
+              <!-- ./ checkOut  -->
 
+              <!-- room  -->
               <div class="form-group tm-form-group m-1">
                 <label for="inputRoom">방</label>
                 <select name="room" class="form-control tm-select" style="min-width: 100px;" id="inputRoom">
@@ -145,7 +161,9 @@
                   <option value="10">10 Rooms</option>
                 </select>
               </div>
+              <!-- ./ room  -->
 
+              <!-- guest  -->
               <div class="form-group tm-form-group m-1">
                 <label for="guest">인원</label>
                 <select class="form-control tm-select" style="min-width: 100px;" id="guest" name="guest">
@@ -161,7 +179,9 @@
                   <option value="10">10</option>
                 </select>
               </div>
+              <!-- ./ guest  -->
 
+              <!-- pet  -->
               <div class="form-group tm-form-group m-1">
                 <label for="pet">펫</label>
                 <select class="form-control tm-select" style="min-width: 100px;" id="pet" name="pet">
@@ -171,7 +191,10 @@
                   <option value="4">4</option>
                 </select>
               </div>
-              <button type="submit" class="btn tm-btn tm-btn-white-primary text-uppercase m-1" id="btnSubmit" style="max-width: fit-content; color: white; border: 1px solid;">
+              <!-- ./ pet  -->
+
+              <button type="submit" class="btn tm-btn tm-btn-white-primary text-uppercase m-1" id="btnSubmit"
+                      style="max-width: fit-content; color: white; border: 1px solid;">
                 Search
               </button>
             </form>
@@ -241,7 +264,8 @@
 
 <!-- load JS files -->
 <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
 <!-- https://floating-ui.com/ -->
@@ -283,15 +307,23 @@
         // Date Picker in Search form
         $('#startDate, #endDate').datepicker({
             format: 'yyyy-mm-dd',  // 원하는 날짜 형식으로 설정
+            autoclose : true,
+            startDate: 'today',
+            todayHighlight : true ,
         })
 
-        $('#startDate').val(searchData.checkIn);
-        $('#endDate').val(searchData.checkOut);
+        // $('#startDate').val(searchData.checkIn);
+        // $('#endDate').val(searchData.checkOut);
+        $('#startDate').datepicker('setDate', searchData.checkIn); // (-1D:하루전, -1M:한달전, -1Y:일년전), (+1D:하루후, -1M:한달후, -1Y:일년후)
+        $('#endDate').datepicker('setDate', searchData.checkOut); // (-1D:하루전, -1M:한달전, -1Y:일년전), (+1D:하루후, -1M:한달후, -1Y:일년후)
         $('#inputRoom').val(searchData.room);
         $('#guest').val(searchData.guest);
         $('#pet').val(searchData.pet);
 
         let selectCity = $('#selectCity');
+        let selectType = $('#selectType');
+        selectCity.val(searchData.location);
+        selectType.val(searchData.hotelType);
 
         $.ajax({
             url: '/main/commoncode/REG',
@@ -320,6 +352,7 @@
 
             // 검색 조건을 sessionStorage에 저장
             let location = $('#selectCity').val();
+            let hotelType = $('#selectType').val();  // 호�� 타입(일반/��별/��별+하이��)
             let checkIn = $('#startDate').val();
             let checkOut = $('#endDate').val();
             let room = $('#inputRoom').val();
@@ -338,6 +371,7 @@
                     contentType: 'application/json',
                     data: JSON.stringify({
                         location: location,
+                        hotelType: hotelType,
                         checkIn: checkIn,
                         checkOut: checkOut,
                         room: room,

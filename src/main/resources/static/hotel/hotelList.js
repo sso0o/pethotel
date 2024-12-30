@@ -13,7 +13,7 @@ function updateHotelList(hotels) {
 <!--                  lacus sit amet lectus. Donec blandit luctus dictum...</p>-->
               </div>
               <a href="/hotel/hotelDetail/${hotel.hotelId}" class="tm-recommended-price-box" style="position: relative;">
-                <p class="tm-recommended-price" style="position: absolute; bottom: 0;">~ ${Number(hotel.minPrice).toLocaleString()} 원 </p>
+                <p class="tm-recommended-price" style="position: absolute; bottom: 10px;">${Number(hotel.minPrice).toLocaleString()} ~</p>
               </a>
             </div>    
         `;
@@ -47,6 +47,7 @@ function loadMoreHotels() {
         page: currentPage,
         size: 4,
         location: searchData.location,
+        hotelType: searchData.hotelType,
         checkIn: searchData.checkIn,
         checkOut: searchData.checkOut,
         room: searchData.room,

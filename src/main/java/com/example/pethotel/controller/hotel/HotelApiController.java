@@ -42,6 +42,7 @@ public class HotelApiController {
     @GetMapping("/hotel/search")
     public ResponseEntity getHotelLists(@RequestParam("page") int page, @RequestParam("size") int size,
                                          @RequestParam("location") String location,
+                                         @RequestParam("hotelType") String hotelType,
                                          @RequestParam("checkIn") String checkIn,
                                          @RequestParam("checkOut") String checkOut,
                                          @RequestParam("room") int room,
@@ -49,9 +50,17 @@ public class HotelApiController {
                                          @RequestParam("pet") int pet) {
         HashMap<Object, Object> resultMap = new HashMap<>();
         location = (location == null || location.equals("전국")) ? "" : location;
-        SearchHotelRequest request = new SearchHotelRequest(location, checkIn, checkOut, room, guest, pet);
+        SearchHotelRequest request = new SearchHotelRequest(location, hotelType, checkIn, checkOut, room, guest, pet);
         Page<SearchHotelResponse> hotels = hotelService.findBySearchOption(request, page, size);
         resultMap.put("hotels", hotels);
+        return ResponseEntity.ok().body(resultMap);
+    }
+
+    @GetMapping("/hotel/searchOp")
+    public ResponseEntity getSearchOption() {
+        HashMap<Object, Object> resultMap = new HashMap<>();
+        List<Hotel> result = hotelService.findAll();
+        resultMap.put("hotels", result);
         return ResponseEntity.ok().body(resultMap);
     }
 
@@ -61,6 +70,7 @@ public class HotelApiController {
                                            @RequestParam("page") int page,
                                            @RequestParam("size") int size,
                                            @RequestParam("location") String location,
+                                           @RequestParam("hotelType") String hotelType,
                                            @RequestParam("checkIn") String checkIn,
                                            @RequestParam("checkOut") String checkOut,
                                            @RequestParam("room") int room,
@@ -68,7 +78,7 @@ public class HotelApiController {
                                            @RequestParam("pet") int pet) {
         HashMap<Object, Object> resultMap = new HashMap<>();
         // SearchHotelRequest 객체 생성
-        SearchHotelRequest request = new SearchHotelRequest(location, checkIn, checkOut, room, guest, pet);
+        SearchHotelRequest request = new SearchHotelRequest(location, hotelType, checkIn, checkOut, room, guest, pet);
 
         Page<Room> rooms = roomService.findSearchRoom(hotelId, request, page, size);
         resultMap.put("rooms", rooms);

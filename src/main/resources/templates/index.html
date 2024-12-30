@@ -107,12 +107,21 @@
           <div class="row tm-banner-row" id="tm-section-search">
             <form class="tm-search-form tm-section-pad-2" id="searchForm">
               <div class="form-row tm-search-form-row">
-                <div class="form-group tm-form-group tm-form-group-pad tm-form-group-1">
-                  <label for="selectCity">Choose Your Destination</label>
-                  <select class="form-control tm-select" id="selectCity" name="selectCity">
-                    <option></option>
-                  </select>
+                <div class="form-group tm-form-group tm-form-group-1">
+                  <div class="form-group tm-form-group tm-form-group-pad tm-form-group-2">
+                    <label for="selectCity">Destination</label>
+                    <select class="form-control tm-select" id="selectCity" name="selectCity">
+                      <option th:each="REG : ${REG}" th:value="${REG.codeName}" th:text="${REG.codeName}"></option>
+                    </select>
+                  </div>
+                  <div class="form-group tm-form-group tm-form-group-pad tm-form-group-2">
+                    <label for="selectType">Accommodation Type</label>
+                    <select class="form-control tm-select" id="selectType" name="selectType">
+                      <option th:each="HTP : ${HTP}" th:value="${HTP.codeName}" th:text="${HTP.codeName}"></option>
+                    </select>
+                  </div>
                 </div>
+
                 <div class="form-group tm-form-group tm-form-group-1">
                   <div class="form-group tm-form-group tm-form-group-pad tm-form-group-2">
                     <label for="inputRoom">How many rooms?</label>
@@ -580,8 +589,13 @@
     // }
     $(function () {
 
+        let searchData = JSON.parse(sessionStorage.getItem('searchData'));
+
         $('#startDate, #endDate').datepicker({
             format: 'yyyy-mm-dd',  // 원하는 날짜 형식으로 설정
+            autoclose : true,
+            startDate: 'today',
+            todayHighlight : true ,
         })
         $('#startDate').datepicker('setDate', 'today'); // (-1D:하루전, -1M:한달전, -1Y:일년전), (+1D:하루후, -1M:한달후, -1Y:일년후)
         $('#endDate').datepicker('setDate', '+1D'); // (-1D:하루전, -1M:한달전, -1Y:일년전), (+1D:하루후, -1M:한달후, -1Y:일년후)
@@ -597,30 +611,36 @@
         });
 
         let selectCity = $('#selectCity');
+        let selectType = $('#selectType');
+        selectCity.val(searchData.location);
+        selectType.val(searchData.hotelType);
 
-        $.ajax({
-            url: '/main/commoncode/REG',
-            type: 'get',
-            success: function (data) {
-                selectCity.empty();
-                $.each(data.codes, function (i, code) {
-                    let option = $('<option></option>')
-                        .val(code.codeName)  // 호텔의 id를 value로 설정
-                        .text(code.codeName);  // 호텔의 이름을 텍스트로 설정
-                    selectCity.append(option);  // select에 option 추가
-                });
-            },
-            error: function (request, status, error) {
-                let result = jQuery.parseJSON(request.responseText)
-                alert(result.msg);
-            }
-        })
+
+
+        // $.ajax({
+        //     url: '/main/commoncode/REG',
+        //     type: 'get',
+        //     success: function (data) {
+        //         selectCity.empty();
+        //         $.each(data.codes, function (i, code) {
+        //             let option = $('<option></option>')
+        //                 .val(code.codeName)  // 호텔의 id를 value로 설정
+        //                 .text(code.codeName);  // 호텔의 이름을 텍스트로 설정
+        //             selectCity.append(option);  // select에 option 추가
+        //         });
+        //     },
+        //     error: function (request, status, error) {
+        //         let result = jQuery.parseJSON(request.responseText)
+        //         alert(result.msg);
+        //     }
+        // })
 
         $('#searchForm').on('submit', function (e) {
             e.preventDefault();
 
             // 검색 조건을 sessionStorage에 저장
             let location = $('#selectCity').val();
+            let hotelType = $('#selectType').val();
             let checkIn = $('#startDate').val();
             let checkOut = $('#endDate').val();
             let room = $('#inputRoom').val();
@@ -628,7 +648,7 @@
             let pet = $('#pet').val();
 
             // 조건이 모두 채워져 있는지 체크
-            if (!location || !checkIn || !checkOut || !room || !guest || !pet) {
+            if (!location || !hotelType || !checkIn || !checkOut || !room || !guest || !pet) {
                 // 조건이 비어 있는 경우
                 alert('모든 검색 조건을 입력해주세요.');
             } else {
@@ -639,6 +659,7 @@
                     contentType: 'application/json',
                     data: JSON.stringify({
                         location: location,
+                        hotelType: hotelType,
                         checkIn: checkIn,
                         checkOut: checkOut,
                         room: room,

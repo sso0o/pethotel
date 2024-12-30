@@ -24,21 +24,25 @@ public interface HotelRepository extends JpaRepository<Hotel, Long> {
             "INNER JOIN Room r ON h.hotelId = r.hotel.hotelId " +
             "INNER JOIN RoomDetail d on r.roomId = d.room.roomId " +
             "WHERE h.location like %:location% " +
+            "AND h.hotelType = :hotelType " +
             "AND r.limitGuest >= :guest " +
             "AND r.limitPet >= :pet " +
             "AND d.roomDetailId NOT IN (" +
-            "   SELECT b.roomDetailId " +
-            "   FROM Booking b " +
-            "   WHERE b.paymentId IS NOT NULL " +
-            "   AND (b.startDate < :checkOut AND b.endDate > :checkIn)) " +
+            "   SELECT v.roomDetailId " +
+            "   FROM VwPaidBooking v " +
+            "   WHERE v.paymentId IS NOT NULL " +
+            "   AND (v.startDate < :checkOut AND v.endDate > :checkIn)) " +
             "GROUP BY h.hotelId, h.hotelName, h.hotelType, h.hotelInfo " +
             "having COUNT(d) >= :room ")
     Page<SearchHotelResponse> findBySearchOption(Pageable pageable,
                                                  @Param("location") String location,
+                                                 @Param("hotelType") String hotelType,
                                                  @Param("guest") int guest,
                                                  @Param("pet") int pet,
                                                  @Param("checkIn") String checkIn,
                                                  @Param("checkOut") String checkOut,
                                                  @Param("room") int room);
+
+
 
 }

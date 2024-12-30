@@ -53,6 +53,7 @@ function loadMoreRooms(hotelId) {
         page: currentPage,
         size: 4,
         location: searchData.location,
+        hotelType: searchData.hotelType,
         checkIn: searchData.checkIn,
         checkOut: searchData.checkOut,
         room: searchData.room,

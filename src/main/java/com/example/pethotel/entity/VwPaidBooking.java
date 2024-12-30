@@ -23,7 +23,7 @@ public class VwPaidBooking {
     @Column(name = "room_id")
     private Long roomId;
 
-    @Column(name = "room_d_id")
+    @Column(name = "roomdetail_id")
     private Long roomDetailId;
 
     @Column(name = "target_date")
