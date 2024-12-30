@@ -23,7 +23,7 @@ public interface HotelRepository extends JpaRepository<Hotel, Long> {
             "FROM Hotel h " +
             "INNER JOIN Room r ON h.hotelId = r.hotel.hotelId " +
             "INNER JOIN RoomDetail d on r.roomId = d.room.roomId " +
-            "WHERE h.location = :location " +
+            "WHERE h.location like %:location% " +
             "AND r.limitGuest >= :guest " +
             "AND r.limitPet >= :pet " +
             "AND d.roomDetailId NOT IN (" +
@@ -40,6 +40,5 @@ public interface HotelRepository extends JpaRepository<Hotel, Long> {
                                                  @Param("checkIn") String checkIn,
                                                  @Param("checkOut") String checkOut,
                                                  @Param("room") int room);
-
 
 }

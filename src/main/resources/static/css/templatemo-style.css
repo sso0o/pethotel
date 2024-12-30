@@ -647,8 +647,20 @@ footer p { color: white; }
         max-width: 600px;
         margin: 0 auto 15px;
     }
+    .tm-hotel-list-wrap {
+        display: flex;
+        flex-wrap: wrap;
+        max-width: 600px;
+        margin: 0 auto 15px;
+    }
 
     .tm-recommended-place {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        width: 270px;
+    }
+    .tm-hotel-list {
         display: block;
         margin-left: auto;
         margin-right: auto;

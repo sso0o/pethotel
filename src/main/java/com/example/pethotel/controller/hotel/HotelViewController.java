@@ -2,11 +2,13 @@ package com.example.pethotel.controller.hotel;
 
 import com.example.pethotel.dto.hotel.SearchHotelRequest;
 import com.example.pethotel.entity.Booking;
+import com.example.pethotel.entity.CommonCode;
 import com.example.pethotel.entity.Hotel;
 import com.example.pethotel.entity.Room;
 import com.example.pethotel.service.BookingService;
 import com.example.pethotel.service.HotelService;
 import com.example.pethotel.service.RoomService;
+import com.example.pethotel.service.admin.CommonCodeService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.List;
 import java.util.UUID;
 
 @Controller
@@ -24,6 +27,7 @@ public class HotelViewController {
     private final HotelService hotelService;
     private final RoomService roomService;
     private final BookingService bookingService;
+    private final CommonCodeService commonCodeService;
 
     @GetMapping("/hotel")
     public String showHotelPage(HttpSession session, Model model) {
@@ -36,6 +40,8 @@ public class HotelViewController {
             // 세션에서 searchData를 삭제
             //session.removeAttribute("searchData");
         }
+        List<CommonCode> HTP = commonCodeService.findByCodeHeadAndCodeDetailNotAndCodeUseLike("HTP", "", "Y");
+        model.addAttribute("HTP", HTP);
         return "hotel/hotelList";
     }
 

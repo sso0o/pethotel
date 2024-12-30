@@ -3,28 +3,42 @@ function updateHotelList(hotels) {
     let hotelListContainer = $('#hotelListContainer');
     hotels.forEach(hotel => {
         let hotelItem = `
-        <li class="mb-4" id="hotel-${hotel.hotelId}">
-          <div class="hotel-detail-content">
-            <a href="/hotel/hotelDetail/${hotel.hotelId}">
-              <div class="hotel-detail">
-                <div class="hotel-detail-1" >
-                </div>
-                <div class="hotel-detail-2">
-                  ${hotel.hotelName}
-                </div>
-                <div class="hotel-detail-3">
-                  ~ ${Number(hotel.minPrice).toLocaleString()} 부터 <!-- minPrice를 천 단위 콤마로 포맷 -->
-                </div>
+            <div class="tm-recommended-place mb-4" id="hotel-${hotel.hotelId}" style="min-height: 200px;">
+              <div class="tm-hotel-image-box" style="min-width: 270px;"></div>
+<!--              <img src="img/tm-img-06.jpg" alt="Image" class="img-fluid tm-recommended-img">-->
+              <div class="tm-recommended-description-box">
+                <h3 class="tm-recommended-title">${hotel.hotelName}</h3>
+<!--                <p class="tm-text-highlight">One North</p>-->
+<!--                <p class="tm-text-gray">Sed egestas, odio nec bibendum mattis, quam odio hendrerit risus, eu varius eros-->
+<!--                  lacus sit amet lectus. Donec blandit luctus dictum...</p>-->
               </div>
-            </a>
-          </div>
-        </li>
+              <a href="/hotel/hotelDetail/${hotel.hotelId}" class="tm-recommended-price-box" style="position: relative;">
+                <p class="tm-recommended-price" style="position: absolute; bottom: 0;">~ ${Number(hotel.minPrice).toLocaleString()} 원 </p>
+              </a>
+            </div>    
         `;
         hotelListContainer.append(hotelItem);
         // 이미지 렌더링 함수 호출
         imgRender(hotel.hotelId);
     });
 }
+
+// <li className="mb-4" id="hotel-${hotel.hotelId}">
+//     <div className="hotel-detail-content">
+//         <a href="/hotel/hotelDetail/${hotel.hotelId}">
+//             <div className="hotel-detail">
+//                 <div className="hotel-detail-1">
+//                 </div>
+//                 <div className="hotel-detail-2">
+//                     ${hotel.hotelName}
+//                 </div>
+//                 <div className="hotel-detail-3">
+//                     ~ ${Number(hotel.minPrice).toLocaleString()} 부터 <!-- minPrice를 천 단위 콤마로 포맷 -->
+//                 </div>
+//             </div>
+//         </a>
+//     </div>
+// </li>
 
 // 처음 및 스크롤시 호텔목롤 요청하 함수
 function loadMoreHotels() {
@@ -57,27 +71,40 @@ function loadMoreHotels() {
             alert(result.msg);
         }
     })
+
+
 }
 
 // 호텔의 이미지를 렌더링하는 함수
 function imgRender(hotelId) {
     $.ajax({
-        url: '/hotel/img/'+BigInt(hotelId),
+        url: '/hotel/img/' + BigInt(hotelId),
         async: false,
         type: 'get',
-        success: function (result){
-            if (result.hotelPhotos.length > 0){
+        success: function (result) {
+            if (result.hotelPhotos.length > 0) {
                 let slickHtml = '<div class="hotel-images-slick img-div" >';
                 result.hotelPhotos.forEach(photo => {
                     slickHtml += `
-                    <div><img src="./hotel/uploads/hotel/${photo.himgFile}" alt="호텔 이미지" class="img-fluid"></div>
+                    <div><img src="http://localhost:8081/uploads/hotel/${photo.himgFile}" alt="호텔 이미지" class="img-fluid"></div>
                 `;
                 });
                 slickHtml += '</div>';
 
                 // HTML 구조에 슬릭 HTML 추가
-                let hotelImageContainer = $('#hotel-' + hotelId + ' .hotel-detail-1');
+                let hotelImageContainer = $('#hotel-' + hotelId + ' .tm-hotel-image-box');
                 hotelImageContainer.html(slickHtml);  // 기존의 이미지를 덮어씌운다
+
+                if ($('#hotel-' + hotelId + ' .hotel-images-slick').not('.slick-initialized').length > 0) {
+                    $('#hotel-' + hotelId + ' .hotel-images-slick').slick({
+                        slidesToShow: 1,
+                        slidesToScroll: 1,
+                        arrows: false,
+                        dots: false,
+                        autoplay: true,
+                        autoplaySpeed: 2000
+                    });
+                }
             }
 
         },
