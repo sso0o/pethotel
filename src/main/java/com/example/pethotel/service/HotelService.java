@@ -82,7 +82,7 @@ public class HotelService {
 
     // 페이징 처리된 호텔 목록 조회
     public List<SearchHotelResponse> findBySearchFilter(SearchHotelRequest request, Criteria criteria) {
-        return hotelMapper.findBySearchFilter(request.getLocation(), request.getHotelType(), request.getGuest(), request.getPet(), request.getRoom(), criteria.getSize(), criteria.getSkip());
+        return hotelMapper.findBySearchFilter(request.getLocation(), request.getHotelType(), request.getGuest(), request.getPet(), request.getCheckIn(), request.getCheckOut(), request.getRoom(), criteria.getSize(), criteria.getSkip());
     }
 
 

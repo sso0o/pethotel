@@ -17,6 +17,8 @@ public interface HotelMapper {
             @Param("hotelType") String hotelType,
             @Param("guest") int guest,
             @Param("pet") int pet,
+            @Param("checkIn") String checkIn,
+            @Param("checkOut") String checkOut,
             @Param("room") int room,
             @Param("size") int size,
             @Param("skip") int skip);

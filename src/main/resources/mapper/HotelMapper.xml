@@ -16,6 +16,7 @@
 
     <!-- 실제 쿼리에서 resultMap 사용 -->
     <select id="findBySearchFilter" resultType="com.example.pethotel.dto.hotel.SearchFilterHotelResponse">
+        <![CDATA[
         SELECT h.hotel_id             AS hotelId,
                h.hotel_name           AS hotelName,
                h.hotel_type           AS hotelType,
@@ -39,10 +40,12 @@
             SELECT v.roomdetail_id
             FROM vw_paid_booking v
             WHERE v.payment_id IS NOT NULL
+            AND (v.start_date < #{checkOut} AND v.end_date > #{checkIn})
         )
         GROUP BY h.hotel_id, h.hotel_name, h.hotel_type, h.hotel_info
         HAVING COUNT(d.roomdetail_id) >= #{room}
         LIMIT #{size} OFFSET #{skip}
+        ]]>
     </select>
 
 
