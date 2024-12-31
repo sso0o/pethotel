@@ -13,6 +13,7 @@ import java.util.Optional;
 
 public interface HotelRepository extends JpaRepository<Hotel, Long> {
 
+
     List<Hotel> findAllByUserId(Long userId);
 
     Optional<Hotel> findById(Long hotelId);

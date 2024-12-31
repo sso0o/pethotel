@@ -34,10 +34,10 @@ public class Hotel {
     @Column(name = "address")
     private String address;
 
-    @Column(name = "detailAddress")
+    @Column(name = "detail_address")
     private String detailAddress;
 
-    @Column(name = "extraAddress")
+    @Column(name = "extra_address")
     private String extraAddress;
 
     @Column(name = "hotel_phone")

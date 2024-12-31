@@ -34,6 +34,9 @@ spring:
     stream:
       max-nesting-depth: 2000
 
+mybatis:
+  mapper-locations: classpath:mapper/*.xml  # 매퍼 XML 파일 위치
+  type-aliases-package: com.example.pethotel.entity  # 엔티티 클래스 패키지
 
 logging:
   level:

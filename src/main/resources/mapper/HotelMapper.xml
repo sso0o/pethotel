@@ -2,8 +2,49 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.example.pethotel.mapper.HotelMapper">
-    <select id="findAll" resultType="Hotel">
-        SELECT * from hotel;
+
+    <!-- resultMap을 사용하여 호텔 엔티티에 매핑 -->
+<!--    <resultMap id="SearchHotelResponse" type="com.example.pethotel.dto.hotel.SearchHotelResponse">-->
+<!--        <result column="hotel_id" property="hotelId"/>-->
+<!--        <result column="hotel_name" property="hotelName"/>-->
+<!--        <result column="hotel_type" property="hotelType"/>-->
+<!--        <result column="hotel_info" property="hotelInfo"/>-->
+<!--        <result column="max_price" property="maxPrice"/>-->
+<!--        <result column="min_price" property="minPrice"/>-->
+<!--        <result column="room_count" property="roomCount"/>-->
+<!--    </resultMap>-->
+
+    <!-- 실제 쿼리에서 resultMap 사용 -->
+    <select id="findBySearchFilter" resultType="com.example.pethotel.dto.hotel.SearchFilterHotelResponse">
+        SELECT h.hotel_id             AS hotelId,
+               h.hotel_name           AS hotelName,
+               h.hotel_type           AS hotelType,
+               h.hotel_info           AS hotelInfo,
+               MAX(r.room_price)      AS max_price,
+               MIN(r.room_price)      AS min_price,
+               COUNT(d.roomdetail_id) AS room_count,
+               (
+                   SELECT GROUP_CONCAT(f.code SEPARATOR ', ') as hotelFacilities
+                   FROM hotelfacility f
+                   WHERE f.hotel_id = h.hotel_id
+               )                  AS hotelFacilities
+        FROM hotel h
+                 INNER JOIN room r ON h.hotel_id = r.hotel_id
+                 INNER JOIN roomdetail d ON r.room_id = d.room_id
+        WHERE h.location LIKE CONCAT('%', #{location}, '%')
+        AND h.hotel_type LIKE CONCAT('%', #{hotelType}, '%')
+        AND r.limit_guest >= #{guest}
+        AND r.limit_pet >= #{pet}
+        AND d.roomdetail_id NOT IN (
+            SELECT v.roomdetail_id
+            FROM vw_paid_booking v
+            WHERE v.payment_id IS NOT NULL
+        )
+        GROUP BY h.hotel_id, h.hotel_name, h.hotel_type, h.hotel_info
+        HAVING COUNT(d.roomdetail_id) >= #{room}
+        LIMIT #{size} OFFSET #{skip}
     </select>
+
+
 
 </mapper>

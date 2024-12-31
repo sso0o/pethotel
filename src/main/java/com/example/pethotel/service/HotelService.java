@@ -1,5 +1,6 @@
 package com.example.pethotel.service;
 
+import com.example.pethotel.dto.Criteria;
 import com.example.pethotel.dto.hotel.SearchHotelRequest;
 import com.example.pethotel.dto.hotel.SearchHotelResponse;
 import com.example.pethotel.dto.manager.AddHotelRequest;
@@ -79,9 +80,9 @@ public class HotelService {
         return hotelRepository.findBySearchOption(pageable, request.getLocation(), request.getHotelType(), request.getGuest(), request.getPet(), request.getCheckIn(), request.getCheckOut(), request.getRoom());
     }
 
-    public List<Hotel> findAll(){
-        List<Hotel> list = hotelMapper.findAll();
-        return list;
+    // 페이징 처리된 호텔 목록 조회
+    public List<SearchHotelResponse> findBySearchFilter(SearchHotelRequest request, Criteria criteria) {
+        return hotelMapper.findBySearchFilter(request.getLocation(), request.getHotelType(), request.getGuest(), request.getPet(), request.getRoom(), criteria.getSize(), criteria.getSkip());
     }
 
 

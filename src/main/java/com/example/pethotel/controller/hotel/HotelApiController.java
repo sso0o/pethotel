@@ -1,5 +1,6 @@
 package com.example.pethotel.controller.hotel;
 
+import com.example.pethotel.dto.Criteria;
 import com.example.pethotel.dto.hotel.AddBookingRequest;
 import com.example.pethotel.dto.hotel.SearchHotelRequest;
 import com.example.pethotel.dto.hotel.SearchHotelResponse;
@@ -56,10 +57,21 @@ public class HotelApiController {
         return ResponseEntity.ok().body(resultMap);
     }
 
-    @GetMapping("/hotel/searchOp")
-    public ResponseEntity getSearchOption() {
+    // 검색 조건에 맞는 호텔 목록 가져오기
+    @GetMapping("/hotel/searchOption")
+    public ResponseEntity getSearchOption(@RequestParam("page") int page, @RequestParam("size") int size,
+                                          @RequestParam("location") String location,
+                                          @RequestParam("hotelType") String hotelType,
+                                          @RequestParam("checkIn") String checkIn,
+                                          @RequestParam("checkOut") String checkOut,
+                                          @RequestParam("room") int room,
+                                          @RequestParam("guest") int guest,
+                                          @RequestParam("pet") int pet) {
         HashMap<Object, Object> resultMap = new HashMap<>();
-        List<Hotel> result = hotelService.findAll();
+        location = (location == null || location.equals("전국")) ? "" : location;
+        SearchHotelRequest request = new SearchHotelRequest(location, hotelType, checkIn, checkOut, room, guest, pet);
+        Criteria criteria = new Criteria(page, size);
+        List<SearchHotelResponse> result = hotelService.findBySearchFilter(request, criteria);
         resultMap.put("hotels", result);
         return ResponseEntity.ok().body(resultMap);
     }
