@@ -7,8 +7,7 @@
 * 프레임워크: Spring Boot, Spring Security
 * 데이터베이스: MySQL
 * 템플릿 엔진: Thymeleaf
-* ORM: JPA (Java Persistence API)
-* 쿼리 방식: Native Query
+* ORM: JPA, MyBatis
 * 프론트엔드: JavaScript, HTML/CSS
 * 버전 관리: Git
 ***
