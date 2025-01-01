@@ -63,7 +63,7 @@
               </li>
               <!-- 회원만 볼 수 있는 링크 -->
               <li sec:authorize="hasAuthority('USER')" class="nav-item">
-                <a class="nav-link" href="/mybooking">My Booking</a>
+                <a class="nav-link" href="/myBooking">My Booking</a>
               </li>
               <!-- 매니저만 볼 수 있는 링크 -->
               <li sec:authorize="hasAuthority('MANAGER')" class="nav-item">
@@ -223,6 +223,7 @@
         </li>
       </ul>
       <!-- 탭 타이틀 종료 -->
+
       <!-- 탭 컨텐트 시작 -->
       <div class="tab-content clearfix">
         <!-- Tab 1 -->
@@ -584,10 +585,6 @@
 
 
 <script>
-    // function logoutModal(){
-    //     let myModal = new bootstrap.Modal(document.getElementById('logoutModal'));
-    //     myModal.show();
-    // }
     $(function () {
 
         let searchData = JSON.parse(sessionStorage.getItem('searchData'));
@@ -616,25 +613,22 @@
         selectCity.val(searchData.location);
         selectType.val(searchData.hotelType);
 
+        // 탭을 클릭했을 때의 동작
+        $('.tm-tab-link').on('click', function(e) {
+            // 클릭된 탭의 id를 추출
+            let target = $(this).attr('href');
 
+            $('.tm-tab-link').removeClass('active');
+            $(this).addClass('active');
 
-        // $.ajax({
-        //     url: '/main/commoncode/REG',
-        //     type: 'get',
-        //     success: function (data) {
-        //         selectCity.empty();
-        //         $.each(data.codes, function (i, code) {
-        //             let option = $('<option></option>')
-        //                 .val(code.codeName)  // 호텔의 id를 value로 설정
-        //                 .text(code.codeName);  // 호텔의 이름을 텍스트로 설정
-        //             selectCity.append(option);  // select에 option 추가
-        //         });
-        //     },
-        //     error: function (request, status, error) {
-        //         let result = jQuery.parseJSON(request.responseText)
-        //         alert(result.msg);
-        //     }
-        // })
+            // 모든 탭 콘텐츠에서 active 클래스 제거
+            $('.tab-pane').removeClass('show active');
+            $(target).addClass('show active');
+
+            // 기본 동작을 방지 (페이지 새로고침 방지)
+            e.preventDefault();
+        });
+
 
         $('#searchForm').on('submit', function (e) {
             e.preventDefault();

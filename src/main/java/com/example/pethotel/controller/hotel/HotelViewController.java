@@ -58,9 +58,9 @@ public class HotelViewController {
         return "hotel/hotelDetail";
     }
 
-    @GetMapping("/mybooking")
+    @GetMapping("/myBooking")
     public String showMyBookingPage(Model model){
-        return "mybooking/myBooking";
+        return "myBooking/myBooking";
     }
 
     @GetMapping("/mypage")

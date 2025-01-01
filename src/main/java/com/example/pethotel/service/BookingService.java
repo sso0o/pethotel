@@ -4,6 +4,7 @@ import com.example.pethotel.dto.hotel.AddBookingRequest;
 import com.example.pethotel.dto.manager.HotelBookingResponse;
 import com.example.pethotel.dto.manager.HotelRequestResponse;
 import com.example.pethotel.entity.Booking;
+import com.example.pethotel.mapper.BookingMapper;
 import com.example.pethotel.repository.BookingRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +16,8 @@ import java.util.*;
 @RequiredArgsConstructor
 public class BookingService {
     private final BookingRepository bookingRepository;
+
+    private final BookingMapper bookingMapper;
 
     // 예약 저장
     public Booking save(AddBookingRequest request) {

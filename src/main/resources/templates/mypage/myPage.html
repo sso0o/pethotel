@@ -78,7 +78,7 @@
               </li>
               <!-- 회원만 볼 수 있는 링크 -->
               <li sec:authorize="hasAuthority('USER')" class="nav-item">
-                <a class="nav-link" href="/mybooking">My Booking</a>
+                <a class="nav-link" href="/myBooking">My Booking</a>
               </li>
               <!-- 매니저만 볼 수 있는 링크 -->
               <li sec:authorize="hasAuthority('MANAGER')" class="nav-item">

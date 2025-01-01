@@ -81,12 +81,15 @@ public interface BookingRepository extends JpaRepository<Booking, UUID> {
 
     @Query(value = "SELECT  " +
             " b.createdAt AS bookingDate, h.hotelName AS hotelName, b.hotelId AS hotelId, r.roomType AS roomType, b.roomId AS roomId, " +
-            " CONCAT(b.bookingGuest,' / ', b.bookingPet) AS bookingGP, b.startDate AS startDate, b.endDate AS endDate, " +
-            " b.totalPrice AS totalPrice, b.payChk AS payChk " +
+            " b.bookingGuest AS bookingGuest,  b.bookingPet AS bookingPet, b.startDate AS startDate, b.endDate AS endDate, " +
+            " b.totalPrice AS totalPrice, b.totalDate AS totalDate, " +
+            " b.payChk AS payChk, b.paymentId AS paymentId " +
             "FROM Booking b " +
             "left join Hotel h on b.hotelId = h.hotelId " +
             "left join Room r on b.roomId = r.roomId " +
-            "where b.userId = :userid")
+            "where b.userId = :userid " +
+            "and b.paymentId is not null " +
+            "and b.payChk in ('paid', 'Success')")
     List<Map<String, Object>> findByUserid(Long userid);
 }
 
