@@ -1,19 +1,23 @@
-function loadMyBooking(){
-    let userId = $('#user').data('user-id');
+// function loadMyBooking(){
+//     let userId = $('#user').data('user-id');
+//
+//     $.ajax({
+//         url: '/mybooking/'+userId,
+//         type: 'get',
+//         success: function (result) {
+//             if (result.myBookings.length > 0) {
+//                 drawBookingDetail(result.myBookings);
+//             }
+//         },
+//         error: function (request, status, error) {
+//             let result = jQuery.parseJSON(request.responseText)
+//             alert(result.msg);
+//         }
+//     });
+// }
 
-    $.ajax({
-        url: '/mybooking/'+userId,
-        type: 'get',
-        success: function (result) {
-            if (result.myBookings.length > 0) {
-                drawBookingDetail(result.myBookings);
-            }
-        },
-        error: function (request, status, error) {
-            let result = jQuery.parseJSON(request.responseText)
-            alert(result.msg);
-        }
-    });
+function loadMyBooking(){
+
 }
 
 function drawBookingDetail(myBookings){

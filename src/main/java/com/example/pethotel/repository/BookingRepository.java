@@ -89,8 +89,8 @@ public interface BookingRepository extends JpaRepository<Booking, UUID> {
             "left join Room r on b.roomId = r.roomId " +
             "where b.userId = :userid " +
             "and b.paymentId is not null " +
-            "and b.payChk in ('paid', 'Success')")
-    List<Map<String, Object>> findByUserid(Long userid);
+            "and b.payChk = :payChk")
+    List<Map<String, Object>> findByUserid(Long userid, String payChk);
 }
 
 

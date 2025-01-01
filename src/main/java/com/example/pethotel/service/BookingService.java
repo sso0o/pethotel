@@ -109,7 +109,7 @@ public class BookingService {
         return bookingRepository.save(booking);
     }
 
-    public List<Map<String, Object>> findByUserid(Long userid) {
-        return bookingRepository.findByUserid(userid);
+    public List<Map<String, Object>> findByUserid(Long userid, String payChk) {
+        return bookingRepository.findByUserid(userid, payChk);
     }
 }

@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @Controller
@@ -60,6 +61,13 @@ public class HotelViewController {
 
     @GetMapping("/myBooking")
     public String showMyBookingPage(Model model){
+        long userId = 3;
+        List<Map<String, Object>> paidBookings = bookingService.findByUserid(userId, "paid");
+        List<Map<String, Object>> waitingBookings = bookingService.findByUserid(userId, "Success");
+        List<Map<String, Object>> cancelBookings = bookingService.findByUserid(userId, "cancel");
+        model.addAttribute("paidBookings", paidBookings);
+        model.addAttribute("waitingBookings", waitingBookings);
+        model.addAttribute("cancelBookings", cancelBookings);
         return "myBooking/myBooking";
     }
 
