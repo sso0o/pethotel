@@ -58,7 +58,7 @@ public class HotelApiController {
     }
 
     // 검색 조건에 맞는 호텔 목록 가져오기
-    @GetMapping("/hotel/searchOption")
+    @GetMapping("/hotel/SearchFilter")
     public ResponseEntity getSearchOption(@RequestParam("page") int page, @RequestParam("size") int size,
                                           @RequestParam("location") String location,
                                           @RequestParam("hotelType") String hotelType,

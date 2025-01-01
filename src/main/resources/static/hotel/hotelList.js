@@ -2,13 +2,21 @@
 function updateHotelList(hotels) {
     let hotelListContainer = $('#hotelListContainer');
     hotels.forEach(hotel => {
+        let facilities = hotel.hotelFacilities ? hotel.hotelFacilities.split(", ") : [];
+        let facilityChips = facilities.length > 0 ?
+            facilities.map(facility => {
+                return `<span class="chip">${facility}</span>`;
+            }).join(' ') : ``;
         let hotelItem = `
             <div class="tm-recommended-place mb-4" id="hotel-${hotel.hotelId}" style="min-height: 200px;">
               <div class="tm-hotel-image-box" style="min-width: 270px;"></div>
 <!--              <img src="img/tm-img-06.jpg" alt="Image" class="img-fluid tm-recommended-img">-->
               <div class="tm-recommended-description-box">
                 <h3 class="tm-recommended-title">${hotel.hotelName}</h3>
-<!--                <p class="tm-text-highlight">One North</p>-->
+                <div></div>
+                <div>
+                  ${facilityChips} 
+                </div>
 <!--                <p class="tm-text-gray">Sed egestas, odio nec bibendum mattis, quam odio hendrerit risus, eu varius eros-->
 <!--                  lacus sit amet lectus. Donec blandit luctus dictum...</p>-->
               </div>
@@ -56,13 +64,13 @@ function loadMoreHotels() {
     };
 
     $.ajax({
-        url: '/hotel/search',
+        url: '/hotel/SearchFilter',
         type: 'get',
         async: false,
         data: data,
         success: function (result) {
-            if (result.hotels.content.length > 0) {
-                updateHotelList(result.hotels.content);
+            if (result.hotels.length > 0) {
+                updateHotelList(result.hotels);
                 currentPage++;
                 isLoading = false;
             }

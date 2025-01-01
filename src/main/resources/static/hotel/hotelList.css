@@ -52,13 +52,27 @@
 /*    font-weight: 500;*/
 /*}*/
 
+.chip {
+    border: 1px solid;
+    display: inline-block;
+    padding: 0.1rem 0.2rem;
+    font-size: 0.9rem;
+    border-radius: 3px;
+    margin: 2px;
+    color: #787676;
+}
+
+.chip span {
+    margin-left: 10px;
+}
+
 .hotel-images-slick {
-    max-height: 260px;
+    max-height: 270px;
     max-width: 260px;
 }
 
 .img-div{
-    max-width: 260px;
+    max-width: 270px;
     max-height: 260px;
     overflow: hidden;
     margin: 0 auto;
