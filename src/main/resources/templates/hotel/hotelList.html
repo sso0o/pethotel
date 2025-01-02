@@ -21,15 +21,17 @@
 
   <!-- load stylesheets -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700">
-  <link rel="stylesheet" href="font-awesome-4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/font-awesome-4.7.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css" />
   <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
   <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css"/>
 
 
   <!-- Templatemo style -->
-  <link rel="stylesheet" href="css/templatemo-style.css">
-  <link rel="stylesheet" type="text/css" href="hotel/hotelList.css">
+  <link rel="stylesheet" href="/css/templatemo-style.css">
+
+  <!-- Custom styles for this page -->
+  <link rel="stylesheet" type="text/css" href="/hotel/hotelList.css">
   <script src="/hotel/hotelList.js"></script>
 
 
@@ -113,8 +115,6 @@
                   <option th:each="REG : ${REG}" th:value="${REG.codeName}" th:text="${REG.codeName}"></option>
                 </select>
               </div>
-              <!-- ./ selectCity  -->
-
               <!-- selectType  -->
               <div class="form-group tm-form-group m-1">
                 <label for="selectType">숙소</label>
@@ -122,22 +122,16 @@
                   <option th:each="HTP : ${HTP}" th:value="${HTP.codeName}" th:text="${HTP.codeName}"></option>
                 </select>
               </div>
-              <!-- ./ selectType  -->
-
               <!-- checkIn  -->
               <div class="form-group tm-form-group m-1">
                 <label for="startDate">체크인</label>
                 <input type="text" class="form-control" style="min-width: 150px;" id="startDate" name="startDate" placeholder="Check In">
               </div>
-              <!-- ./ checkIn  -->
-
               <!-- checkOut  -->
               <div class="form-group tm-form-group m-1">
                 <label for="endDate">체크아웃</label>
                 <input type="text" class="form-control" style="min-width: 150px;" id="endDate" name="endDate" placeholder="Check Out">
               </div>
-              <!-- ./ checkOut  -->
-
               <!-- room  -->
               <div class="form-group tm-form-group m-1">
                 <label for="inputRoom">방</label>
@@ -154,8 +148,6 @@
                   <option value="10">10 Rooms</option>
                 </select>
               </div>
-              <!-- ./ room  -->
-
               <!-- guest  -->
               <div class="form-group tm-form-group m-1">
                 <label for="guest">인원</label>
@@ -172,8 +164,6 @@
                   <option value="10">10</option>
                 </select>
               </div>
-              <!-- ./ guest  -->
-
               <!-- pet  -->
               <div class="form-group tm-form-group m-1">
                 <label for="pet">펫</label>
@@ -184,12 +174,9 @@
                   <option value="4">4</option>
                 </select>
               </div>
-              <!-- ./ pet  -->
 
-              <button type="submit" class="btn tm-btn tm-btn-white-primary text-uppercase m-1" id="btnSubmit"
-                      style="max-width: fit-content; color: white; border: 1px solid;">
-                Search
-              </button>
+              <button type="submit" class="btn btn-white m-1" id="btnSubmit">검색</button>
+              <button type="button" class="btn btn-highlight m-1" id="btnFilter">필터</button>
             </form>
           </nav>
         </div>
@@ -203,13 +190,16 @@
   <div class="tm-page-wrap mx-auto justify-content-center">
     <div class="tm-container-outer">
       <div class="container pt-3 pb-3">
-        <div class="hotel-filter-container">
-          <div></div>
-        </div>
+
       </div>   <!-- .container -->
     </div>   <!-- .tm-container-outer -->
     <div class="tm-container-outer">
       <div class="container">
+<!--        <div class="hotel-filter-container">-->
+<!--          <div>-->
+<!--            -->
+<!--          </div>-->
+<!--        </div>-->
         <div class="hotel-list-container">
           <div class="tm-recommended-place-wrap pb-5" id="hotelListContainer"></div>
         </div>
@@ -244,6 +234,30 @@
   </div>
 </div>
 
+<!-- Filter Modal-->
+<div class="modal fade" id="filterModal" tabindex="-1" aria-labelledby="filterModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="filterModalLabel">검색 필터</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <h6>숙소 제공 시설</h6>
+        <div>
+          <span th:each="hfc : ${HFC}"
+                class="filterChip"
+                th:data-code="${hfc.code}"
+                th:text="${hfc.codeName}"></span>
+          <input type="hidden" id="inputFilterChips" name="inputFilterChips" >
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="btnFilterSearch">검색</button>
+    </div>
+  </div>
+</div>
 
 <!-- load JS files -->
 <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
@@ -276,6 +290,7 @@
             }
         });
     }
+
     $(function () {
 
         // Close navbar after clicked
@@ -294,10 +309,8 @@
             todayHighlight : true ,
         })
 
-        // $('#startDate').val(searchData.checkIn);
-        // $('#endDate').val(searchData.checkOut);
-        $('#startDate').datepicker('setDate', searchData.checkIn); // (-1D:하루전, -1M:한달전, -1Y:일년전), (+1D:하루후, -1M:한달후, -1Y:일년후)
-        $('#endDate').datepicker('setDate', searchData.checkOut); // (-1D:하루전, -1M:한달전, -1Y:일년전), (+1D:하루후, -1M:한달후, -1Y:일년후)
+        $('#startDate').val(searchData.checkIn);
+        $('#endDate').val(searchData.checkOut);
         $('#inputRoom').val(searchData.room);
         $('#guest').val(searchData.guest);
         $('#pet').val(searchData.pet);
@@ -352,20 +365,67 @@
             }
         })
 
-        // 슬릭 슬라이더 초기화
-        $('.hotel-images-slick').slick({
-            slidesToShow: 1,
-            slidesToScroll: 1,
-            arrows: false,
-            dots: false,
-            autoplay: true,
-            autoplaySpeed: 2000,
-        });
-
         $('#btnLogout').on('click', function() {
             let myModal = new bootstrap.Modal(document.getElementById('logoutModal'));
             myModal.show();
         });
+
+        $('#btnFilter').on('click', function() {
+            let myModal = new bootstrap.Modal(document.getElementById('filterModal'));
+            myModal.show();
+        });
+
+        $('#btnFilterSearch').on('click', function() {
+            let inputFilterChips = $('#inputFilterChips').val();
+            alert(inputFilterChips);
+        });
+
+        let chips = document.querySelectorAll('.filterChip');
+        let selectedChips = new Set();
+        let selectedChipsInput = $('#inputFilterChips');
+
+        chips.forEach(chip => {
+            chip.addEventListener('click', function() {
+                let chipValue = this.getAttribute('data-code');
+                this.classList.toggle('active');
+
+                if (this.classList.contains('active')) {
+                    selectedChips.add(chipValue);  // Set에 값 추가
+                } else {
+                    selectedChips.delete(chipValue);  // Set에서 값 제거
+                }
+
+                // Set에서 값을 쉼표로 구분한 문자열로 변환하여 숨겨진 입력 필드에 저장
+                selectedChipsInput.val(Array.from(selectedChips).join(','));
+
+                // if (this.classList.contains('active')) {
+                //     selectedChips.push(chipValue);
+                // } else {
+                //     selectedChips = selectedChips.filter(item => item !== chipValue);
+                // }
+                //
+                // // 숨겨진 입력 필드에서 기존 값을 가져와서 처리
+                // let currentValue = selectedChipsInput.val(); // jQuery로 가져온 값은 문자열입니다
+                // let allSelectedChips = currentValue ? currentValue.split(',') : []; // 기존 값과 선택된 값 합침
+                // allSelectedChips = [...new Set([...allSelectedChips, ...selectedChips])];
+                // // 선택된 칩들의 값을 쉼표로 구분하여 숨겨진 입력 필드에 저장
+                // selectedChipsInput.val(allSelectedChips.join(','));
+            });
+        });
+
+
+
+        // // 슬릭 슬라이더 초기화
+        // $('.hotel-images-slick').slick({
+        //     slidesToShow: 1,
+        //     slidesToScroll: 1,
+        //     arrows: false,
+        //     dots: false,
+        //     autoplay: true,
+        //     autoplaySpeed: 2000,
+        // });
+
+
 
 
     });

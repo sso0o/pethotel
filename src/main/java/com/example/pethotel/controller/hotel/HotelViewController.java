@@ -37,14 +37,15 @@ public class HotelViewController {
         if (searchData != null) {
            // 검색 조건을 모델에 추가하여 뷰에 전달
             model.addAttribute("searchData", searchData);
-
             // 세션에서 searchData를 삭제
             //session.removeAttribute("searchData");
         }
         List<CommonCode> REG = commonCodeService.findByCodeHeadAndCodeDetailNotAndCodeUseLike("REG", "", "Y");
         List<CommonCode> HTP = commonCodeService.findByCodeHeadAndCodeDetailNotAndCodeUseLike("HTP", "", "Y");
+        List<CommonCode> HFC = commonCodeService.findByCodeHeadAndCodeDetailNotAndCodeUseLike("HFC", "", "Y");
         model.addAttribute("REG", REG);
         model.addAttribute("HTP", HTP);
+        model.addAttribute("HFC", HFC);
         return "hotel/hotelList";
     }
 

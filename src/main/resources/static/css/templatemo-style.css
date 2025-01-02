@@ -66,11 +66,37 @@ p:last-child { margin-bottom: 0; }
 .btn-primary {
     background: #69c6ba;
     border: none;
-    border-radius: 0;
+    /*border-radius: 0;*/
     outline: none;
 }
 
+.btn-highlight {
+    background: #c66995;
+    color: white;
+    border: none;
+    /*border-radius: 0;*/
+    outline: none;
+}
+
+.btn-white {
+    background: white;
+    color: #c66995;
+    border: none;
+    /*border-radius: 0;*/
+    outline: none;
+}
+
+
 .btn-primary:hover { background: #c66995; }
+.btn-highlight:hover {
+    background: white;
+    color: #c66995;
+}
+.btn-white:hover {
+    background: #c66995;
+    color: white;
+}
+
 .tm-top-bar .navbar-expand-lg .navbar-nav .nav-link { padding: 50px 35px; }
 
 .tm-top-bar {
