@@ -54,9 +54,11 @@ public class HotelViewController {
         Hotel hotel = hotelService.findById(hotelId);
         List<CommonCode> REG = commonCodeService.findByCodeHeadAndCodeDetailNotAndCodeUseLike("REG", "", "Y");
         List<CommonCode> HTP = commonCodeService.findByCodeHeadAndCodeDetailNotAndCodeUseLike("HTP", "", "Y");
+        List<CommonCode> HFC = commonCodeService.findByCodeHeadAndCodeDetailNotAndCodeUseLike("HFC", "", "Y");
         model.addAttribute("hotel", hotel);
         model.addAttribute("REG", REG);
         model.addAttribute("HTP", HTP);
+        model.addAttribute("HFC", HFC);
         return "hotel/hotelDetail";
     }
 
