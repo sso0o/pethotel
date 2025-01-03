@@ -66,8 +66,7 @@
           <button type="button" id="nav-toggle" class="navbar-toggler collapsed" data-toggle="collapse"
                   data-target="#mainNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
-          </button>
-          <!-- 토글 버튼 (모바일용) 종료-->
+          </button> <!-- 토글 버튼 (모바일용) 종료-->
 
           <div id="mainNav" class="collapse navbar-collapse justify-content-end tm-bg-white">
             <ul class="navbar-nav ml-auto">
@@ -106,6 +105,7 @@
       </div> <!-- row -->
     </div> <!-- container -->
   </div> <!-- .tm-top-bar -->
+  <!-- navbar 종료 -->
 
   <div class="mobile-d-none">
     <div class="tm-top-bar-form tm-bg-primary justify-content-center" style="display: flex; align-items: center">
@@ -181,41 +181,40 @@
               </div>
 
               <button type="submit" class="btn btn-white m-1" id="btnSubmit">검색</button>
-              <button type="button" class="btn btn-highlight m-1" id="btnFilter">필터</button>
             </form>
           </nav>
         </div>
       </div> <!-- .tm-top-bar-form -->
 
     </div>
-    <!-- navbar 종료 -->
+
   </div>
 
   <!-- 본문 시작 -->
   <div class="tm-page-wrap mx-auto justify-content-center">
     <div class="tm-container-outer">
-      <div class="pt-3 pb-3">
-        <!-- 필터 자리 -->
-      </div>
-    </div>
-    <div class="tm-container-outer">
       <div class="container">
+
+      </div> <!-- container -->
+
+    </div> <!-- tm-container-outer -->
+    <div class="tm-container-outer">
+      <div class="container pt-3 pb-3">
         <div class="hotel-detail-container" id="hotelImgContainer">
-<!--          <input type="hidden" th:value="${hotel.hotelId}" id="hotelId">-->
+          <!--          <input type="hidden" th:value="${hotel.hotelId}" id="hotelId">-->
 
           <div th:text="${hotel.hotelInfo}">
-        </div>
-      </div>
-
-    </div>
-    <div class="tm-container-outer mt-3">
-      <div class="container">
-        <div class="room-detail-container">
-          <div class="room-detail-div" id="roomListContainer">
           </div>
-        </div>
-      </div>  <!-- .container -->
-    </div>     <!-- .tm-container-outer -->
+      </div>   <!-- .container -->
+    </div>   <!-- .tm-container-outer -->
+    <div class="tm-container-outer">
+    <div class="container">
+      <div class="room-detail-container">
+        <div class="tm-recommended-place-wrap pb-5" id="roomListContainer"></div>
+<!--          <div class="room-detail-div" id="roomListContainer"></div>-->
+      </div>
+    </div>  <!-- .container -->
+  </div>     <!-- .tm-container-outer -->
 
 
 
@@ -223,7 +222,8 @@
       <p class="mb-0">Copyright © <span class="tm-current-year">2018</span> Your Company
         . Designed by <a rel="nofollow" href="http://www.google.com/+templatemo" target="_parent">Template</a></p>
     </footer>
-  </div>
+  </div> <!-- tm-container-outer -->
+  </div> <!-- tm-page-wrap -->
   <!-- 본문 종료 -->
 
 </div>
@@ -241,32 +241,6 @@
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
         <a class="btn btn-primary" href="/logout">Logout</a>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Filter Modal-->
-<div class="modal fade" id="filterModal" tabindex="-1" aria-labelledby="filterModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="filterModalLabel">검색 필터</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <h6>숙소 제공 시설</h6>
-        <div>
-        <span th:each="hfc : ${HFC}"
-              class="filterChip"
-              th:data-code="${hfc.code}"
-              th:text="${hfc.codeName}"></span>
-          <input type="hidden" id="inputFilterChips" name="inputFilterChips" >
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="btnFilterSearch">검색</button>
       </div>
     </div>
   </div>
@@ -412,49 +386,6 @@
         $('#btnLogout').on('click', function() {
             let myModal = new bootstrap.Modal(document.getElementById('logoutModal'));
             myModal.show();
-        });
-
-        $('#btnFilter').on('click', function() {
-            let myModal = new bootstrap.Modal(document.getElementById('filterModal'));
-            myModal.show();
-        });
-
-        $('#btnFilterSearch').on('click', function() {
-            let inputFilterChips = $('#inputFilterChips').val();
-            alert(inputFilterChips);
-        });
-
-        let chips = document.querySelectorAll('.filterChip');
-        let selectedChips = new Set();
-        let selectedChipsInput = $('#inputFilterChips');
-
-        chips.forEach(chip => {
-            chip.addEventListener('click', function() {
-                let chipValue = this.getAttribute('data-code');
-                this.classList.toggle('active');
-
-                if (this.classList.contains('active')) {
-                    selectedChips.add(chipValue);  // Set에 값 추가
-                } else {
-                    selectedChips.delete(chipValue);  // Set에서 값 제거
-                }
-
-                // Set에서 값을 쉼표로 구분한 문자열로 변환하여 숨겨진 입력 필드에 저장
-                selectedChipsInput.val(Array.from(selectedChips).join(','));
-
-                // if (this.classList.contains('active')) {
-                //     selectedChips.push(chipValue);
-                // } else {
-                //     selectedChips = selectedChips.filter(item => item !== chipValue);
-                // }
-                //
-                // // 숨겨진 입력 필드에서 기존 값을 가져와서 처리
-                // let currentValue = selectedChipsInput.val(); // jQuery로 가져온 값은 문자열입니다
-                // let allSelectedChips = currentValue ? currentValue.split(',') : []; // 기존 값과 선택된 값 합침
-                // allSelectedChips = [...new Set([...allSelectedChips, ...selectedChips])];
-                // // 선택된 칩들의 값을 쉼표로 구분하여 숨겨진 입력 필드에 저장
-                // selectedChipsInput.val(allSelectedChips.join(','));
-            });
         });
 
         // 슬릭 슬라이더 초기화

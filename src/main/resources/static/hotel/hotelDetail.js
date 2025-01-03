@@ -3,42 +3,24 @@ function updateRoomList(rooms) {
     let roomListContainer = $('#roomListContainer');
     rooms.forEach(room => {
         let roomItem = `
-        <li class="mb-4" id="room-${room.roomId}">
-        <div class="room-container">
-          <div class="row room-head-content">
-            <div class="col">${room.roomType}</div>
-           </div>
-          <div class="row room-detail-content">
-            <div class="room-detail">
-                <div class="col-3 room-detail-1" >
-                </div>
-                <div class="col-4 room-detail-2">
-                  <div style="margin: 10px">
-                    ${room.roomType}
-                  </div>
-                </div>
-                <div class="col-2 room-detail-3">
-                  <div style="margin: 10px">
+        <div class="tm-recommended-place mb-4" id="room-${room.roomId}" style="min-height: 200px;">
+            <div class="tm-room-image-box" style="min-width: 270px;"></div>
+            <div class="tm-recommended-description-box">
+                <h3 class="tm-recommended-title">${room.roomType}</h3>
+                <p>
                     <i class="fa fa-user" aria-hidden="true"></i>
-                    ${room.limitGuest}<br>
+                    ${room.limitGuest} / 
                     <i class="fa fa-paw" aria-hidden="true"></i>
                     ${room.limitPet}
-                  </div>
+                </p>
+                <p>체크인 : ${room.checkIn}<br>체크아웃 : ${room.checkOut}</p>
+                <div>
                 </div>
-                <div class="col-2 room-detail-4">
-                  <div style="margin: 10px">
-                    ${Number(room.roomPrice).toLocaleString()} <h6 style="color: #999999;">/ 박</h6>
-                  </div>
-                </div>
-                <div class="col-1 room-detail-5">
-                  <button type="button" class="btn btn-primary p-2" style="max-width: fit-content; margin: 10px" onclick="window.location.href='/booking/${room.roomId}'">
-                  예약
-                  </button>
-                </div>
-              </div>
-          </div>
+            </div>
+            <a href="#" class="tm-recommended-price-box" style="position: relative;">
+                <p class="tm-recommended-price" style="position: absolute; bottom: 10px;">${Number(room.roomPrice).toLocaleString()} <span style="font-size: 1rem;"> / 박</span></p>
+            </a>
         </div>
-        </li>
         `;
         roomListContainer.append(roomItem);
         imgRender(room);
@@ -93,7 +75,7 @@ function imgRender(room) {
         slickHtml += '</div>';
 
         // HTML 구조에 슬릭 HTML 추가
-        let hotelImageContainer = $('#room-' + room.roomId + ' .room-detail-1');
+        let hotelImageContainer = $('#room-' + room.roomId + ' .tm-room-image-box');
         hotelImageContainer.html(slickHtml);  // 기존의 이미지를 덮어씌운다
     }
 }
