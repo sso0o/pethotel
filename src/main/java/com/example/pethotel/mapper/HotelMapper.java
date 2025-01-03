@@ -13,6 +13,8 @@ public interface HotelMapper {
 //    List<SearchHotelResponse> findBySearchFilter(SearchHotelRequest request, Criteria criteria);
 
     List<SearchHotelResponse> findBySearchFilter(
+            @Param("filter") List<String> filter,
+            @Param("filterSize") int filterSize,
             @Param("location") String location,
             @Param("hotelType") String hotelType,
             @Param("guest") int guest,

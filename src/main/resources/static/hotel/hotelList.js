@@ -54,6 +54,8 @@ function loadMoreHotels() {
     let data = {
         page: currentPage,
         size: 4,
+        filter: $('#inputFilterChips').val(),
+        filterSize: $('#inputFilterSize').val() ? parseInt($('#inputFilterSize').val(), 10): 0,
         location: searchData.location,
         hotelType: searchData.hotelType,
         checkIn: searchData.checkIn,

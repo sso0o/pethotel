@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Getter
 public class SearchHotelRequest {
+    private String filter;
+    private int filterSize;
     private String location;
     private String hotelType;
     private String checkIn;

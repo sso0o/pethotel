@@ -17,6 +17,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -85,7 +86,9 @@ public class HotelService {
     // 페이징 처리된 호텔 목록 조회
     public List<SearchHotelResponse> findBySearchFilter(SearchHotelRequest request, Criteria criteria) {
         int skip = (criteria.getPage() - 1) * criteria.getSize();
-        return hotelMapper.findBySearchFilter(request.getLocation(), request.getHotelType(),
+        List<String> filterList = Arrays.asList(request.getFilter().split(","));
+        return hotelMapper.findBySearchFilter(filterList, request.getFilterSize(),
+                request.getLocation(), request.getHotelType(),
                 request.getGuest(), request.getPet(),
                 request.getCheckIn(), request.getCheckOut(),
                 request.getRoom(), criteria.getSize(), skip);

@@ -34,10 +34,14 @@
                  INNER JOIN room r ON h.hotel_id = r.hotel_id
                  INNER JOIN roomdetail d ON r.room_id = d.room_id
         WHERE
-            <if test="filter != null">
-            <![CDATA[
-            h.hotel_id in (select hotel_id from hotelfacility where code in #{filter} group by hotel_id having count(code) >= #{filterSize}) AND
-            ]]>
+            <if test="filter != null and filter.size() > 0 and filterSize > 0 ">
+            h.hotel_id in (
+                select hotel_id
+                from hotelfacility
+                where code in
+                      <foreach item="item" collection="filter" open="(" separator="," close=")">#{item}</foreach>
+                group by hotel_id
+                having count(code)  >= #{filterSize}) AND
             </if>
             h.location LIKE CONCAT('%', #{location}, '%')
           AND h.hotel_type LIKE CONCAT('%', #{hotelType}, '%')
