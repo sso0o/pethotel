@@ -45,7 +45,8 @@
      th:if="${hotel != null}"
      th:data-hotel-id="${hotel.hotelId}"
      th:data-hotel-name="${hotel.hotelName}"
-     th:data-hotel-info="${hotel.hotelInfo}">
+     th:data-hotel-info="${hotel.hotelInfo}"
+     th:data-address="${hotel.address}">
 </div>
 
 <!-- .main-content 시작-->
@@ -193,18 +194,25 @@
   <!-- 본문 시작 -->
   <div class="tm-page-wrap mx-auto justify-content-center">
     <div class="tm-container-outer">
-      <div class="container">
-
-      </div> <!-- container -->
-
-    </div> <!-- tm-container-outer -->
-    <div class="tm-container-outer">
       <div class="container pt-3 pb-3">
-        <div class="hotel-detail-container" id="hotelImgContainer">
-          <!--          <input type="hidden" th:value="${hotel.hotelId}" id="hotelId">-->
+        <div class="hotel-detail-container" id="hotelContainer">
+          <h2 th:text="${hotel.hotelName}"></h2>
+          <h5 th:text="${hotel.address}"></h5>
+          <div class="divImg mb-2" >
+            <div class="hotelImg" id="hotelImg" >
+              <div class="main-hotel-img main-img-div" >
+                <div th:each="photo : ${hotel.hotelPhotos}">
+                  <img th:src="@{/uploads/hotel/{filename}(filename=${photo.himgFile})}" alt="호텔 이미지"
+                       class="img-fluid"
+                       style="height: 400px; width: 100%; object-fit: cover;">
+                </div>
+              </div>
+            </div> <!-- .hotelImg -->
+            <div id="roomImg" >
 
-          <div th:text="${hotel.hotelInfo}">
-          </div>
+            </div>
+          </div> <!-- .divImg -->
+          <p th:text="${hotel.hotelInfo}"></p>
       </div>   <!-- .container -->
     </div>   <!-- .tm-container-outer -->
     <div class="tm-container-outer">
@@ -297,10 +305,8 @@
             todayHighlight : true ,
         })
 
-        // $('#startDate').val(searchData.checkIn);
-        // $('#endDate').val(searchData.checkOut);
-        $('#startDate').datepicker('setDate', searchData.checkIn); // (-1D:하루전, -1M:한달전, -1Y:일년전), (+1D:하루후, -1M:한달후, -1Y:일년후)
-        $('#endDate').datepicker('setDate', searchData.checkOut); // (-1D:하루전, -1M:한달전, -1Y:일년전), (+1D:하루후, -1M:한달후, -1Y:일년후)
+        $('#startDate').val(searchData.checkIn);
+        $('#endDate').val(searchData.checkOut);
         $('#inputRoom').val(searchData.room);
         $('#guest').val(searchData.guest);
         $('#pet').val(searchData.pet);
@@ -371,9 +377,6 @@
                         } else {// 목적지가 변경되지 않으면 객실 상세로
                             window.location.href = '/hotel/hotelDetail/'+hotel.data('hotel-id');
                         }
-
-
-
                     },
                     error: function (request, status, error) {
                         let result = jQuery.parseJSON(request.responseText)
@@ -388,14 +391,23 @@
             myModal.show();
         });
 
-        // 슬릭 슬라이더 초기화
-        $('.room-images-slick').slick({
+        // // 슬릭 슬라이더 초기화
+        // $('.room-images-slick').slick({
+        //     slidesToShow: 1,
+        //     slidesToScroll: 1,
+        //     arrows: false,
+        //     dots: false,
+        //     autoplay: true,
+        //     autoplaySpeed: 3000,
+        // });
+
+        $('.main-hotel-img').slick({
             slidesToShow: 1,
             slidesToScroll: 1,
             arrows: false,
             dots: false,
             autoplay: true,
-            autoplaySpeed: 3000,
+            autoplaySpeed: 2000,
         });
 
 

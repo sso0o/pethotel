@@ -66,7 +66,7 @@ public interface BookingRepository extends JpaRepository<Booking, UUID> {
             "select d.room_name, d.roomdetail_id, " +
             "group_concat(" +
             "   case " +
-            "      when ( select count(*) from vw_paid_booking v where v.target_date = r.target_date and v.room_d_id = d.roomdetail_id) then 'X' " +
+            "      when ( select count(*) from vw_paid_booking v where v.target_date = r.target_date and v.roomdetail_id = d.roomdetail_id) then 'X' " +
             "      else 'O' " +
             "   end " +
             "   Order by r.target_date separator ', ' ) as days " +

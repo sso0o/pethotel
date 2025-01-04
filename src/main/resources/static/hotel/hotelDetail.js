@@ -77,5 +77,16 @@ function imgRender(room) {
         // HTML 구조에 슬릭 HTML 추가
         let hotelImageContainer = $('#room-' + room.roomId + ' .tm-room-image-box');
         hotelImageContainer.html(slickHtml);  // 기존의 이미지를 덮어씌운다
+
+        if ($('#room-' + room.roomId + ' .room-images-slick').not('.slick-initialized').length > 0) {
+            $('#room-' + room.roomId + ' .room-images-slick').slick({
+                slidesToShow: 1,
+                slidesToScroll: 1,
+                arrows: false,
+                dots: false,
+                autoplay: true,
+                autoplaySpeed: 2000
+            });
+        }
     }
 }

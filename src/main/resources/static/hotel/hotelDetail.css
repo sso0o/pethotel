@@ -21,53 +21,9 @@
     font-size: large;
 }
 
-.room-detail-content {
-
-}
-
-.room-detail-div li {
-    list-style: none;
-}
-
-.room-detail {
-    display: flex;
-    min-height: 200px;
-}
-
-.room-detail-1 { /* 사진 */
-    padding: 10px;
-}
-
-.room-detail-2 { /* 상품 안내 */
-    background-clip: content-box;
-    background-color: white;
-    padding: 5px 1px;
-}
-
-.room-detail-3 { /* 최대인원*/
-    background-clip: content-box;
-    background-color: white;
-    padding: 5px 1px;
-    text-align: center;
-    font-size: x-large;
-    font-weight: 500;
-}
-
-.room-detail-4 { /* 가격 */
-    background-clip: content-box;
-    background-color: white;
-    padding: 5px 1px;
-    color: #ed5c59;
-    text-align: end;
-    font-size: x-large;
-    font-weight: 500;
-}
-
-.room-detail-5 { /* 예약버튼 */
-    background-clip: content-box;
-    background-color: white;
-    padding: 5px 5px 5px 1px;
-    text-align: center;
+.hotelImg{
+    width: 500px;
+    height: 400px;
 }
 
 .room-images-slick {
@@ -82,8 +38,30 @@
     margin: 0 auto;
 }
 
+.divImg{
+    display: flex;
+    justify-content: space-around;
+}
+
+.main-img-div{
+    width: 100%;
+    height: 400px;
+    overflow: hidden;
+    margin: 0 auto;
+}
+
 .img-div .img-fluid {
     width: 100%;
     height: 100%;
     object-fit: cover;
+}
+
+.main-img-div .img-fluid {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.slick-list{
+    height: 400px;
 }
