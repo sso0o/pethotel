@@ -10,7 +10,7 @@ public class AddBookingRequest {
     private Long userId;
     private Long hotelId;
     private Long roomId;
-    private Long roomDetailId;
+//    private Long roomDetailId;
     private String checkIn;
     private String checkOut;
     private int guest;
@@ -24,7 +24,7 @@ public class AddBookingRequest {
                 .userId(userId)
                 .hotelId(hotelId)
                 .roomId(roomId)
-                .roomDetailId(roomDetailId)
+//                .roomDetailId(roomDetailId)
                 .startDate(checkIn)
                 .endDate(checkOut)
                 .bookingGuest(guest)

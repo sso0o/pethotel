@@ -14,7 +14,6 @@ public class SearchHotelRequest {
     private String hotelType;
     private String checkIn;
     private String checkOut;
-    private int room;
     private int guest;
     private int pet;
 }

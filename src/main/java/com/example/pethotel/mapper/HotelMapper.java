@@ -21,7 +21,7 @@ public interface HotelMapper {
             @Param("pet") int pet,
             @Param("checkIn") String checkIn,
             @Param("checkOut") String checkOut,
-            @Param("room") int room,
+//            @Param("room") int room,
             @Param("size") int size,
             @Param("skip") int skip);
 }

@@ -66,12 +66,11 @@ public class HotelApiController {
                                           @RequestParam("hotelType") String hotelType,
                                           @RequestParam("checkIn") String checkIn,
                                           @RequestParam("checkOut") String checkOut,
-                                          @RequestParam("room") int room,
                                           @RequestParam("guest") int guest,
                                           @RequestParam("pet") int pet) {
         HashMap<Object, Object> resultMap = new HashMap<>();
         location = (location == null || location.equals("전국")) ? "" : location;
-        SearchHotelRequest request = new SearchHotelRequest(filter, filterSize, location, hotelType, checkIn, checkOut, room, guest, pet);
+        SearchHotelRequest request = new SearchHotelRequest(filter, filterSize, location, hotelType, checkIn, checkOut, guest, pet);
         Criteria criteria = new Criteria(page, size);
         List<SearchHotelResponse> result = hotelService.findBySearchFilter(request, criteria);
         resultMap.put("hotels", result);
@@ -87,7 +86,6 @@ public class HotelApiController {
                                            @RequestParam("hotelType") String hotelType,
                                            @RequestParam("checkIn") String checkIn,
                                            @RequestParam("checkOut") String checkOut,
-                                           @RequestParam("room") int room,
                                            @RequestParam("guest") int guest,
                                            @RequestParam("pet") int pet) {
         HashMap<Object, Object> resultMap = new HashMap<>();
@@ -95,7 +93,7 @@ public class HotelApiController {
         int filterSize = 0;
 
         // SearchHotelRequest 객체 생성
-        SearchHotelRequest request = new SearchHotelRequest(filter, filterSize, location, hotelType, checkIn, checkOut, room, guest, pet);
+        SearchHotelRequest request = new SearchHotelRequest(filter, filterSize, location, hotelType, checkIn, checkOut, guest, pet);
 
         Page<Room> rooms = roomService.findSearchRoom(hotelId, request, page, size);
         resultMap.put("rooms", rooms);

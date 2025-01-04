@@ -80,7 +80,7 @@ public class HotelService {
         Pageable pageable = PageRequest.of(page - 1, size);  // 페이지는 0부터 시작하므로, 1을 빼서 전달
         return hotelRepository.findBySearchOption(pageable, request.getLocation(), request.getHotelType(),
                 request.getGuest(), request.getPet(),
-                request.getCheckIn(), request.getCheckOut(), request.getRoom());
+                request.getCheckIn(), request.getCheckOut());
     }
 
     // 페이징 처리된 호텔 목록 조회
@@ -91,7 +91,8 @@ public class HotelService {
                 request.getLocation(), request.getHotelType(),
                 request.getGuest(), request.getPet(),
                 request.getCheckIn(), request.getCheckOut(),
-                request.getRoom(), criteria.getSize(), skip);
+//                request.getRoom(),
+                criteria.getSize(), skip);
     }
 
 

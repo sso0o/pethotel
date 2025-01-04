@@ -124,22 +124,22 @@
                 </div>
 
                 <div class="form-group tm-form-group tm-form-group-1">
+<!--                  <div class="form-group tm-form-group tm-form-group-pad tm-form-group-2">-->
+<!--                    <label for="inputRoom">How many rooms?</label>-->
+<!--                    <select name="room" class="form-control tm-select" id="inputRoom">-->
+<!--                      <option value="1" selected>1 Room</option>-->
+<!--                      <option value="2">2 Rooms</option>-->
+<!--                      <option value="3">3 Rooms</option>-->
+<!--                      <option value="4">4 Rooms</option>-->
+<!--                      <option value="5">5 Rooms</option>-->
+<!--                      <option value="6">6 Rooms</option>-->
+<!--                      <option value="7">7 Rooms</option>-->
+<!--                      <option value="8">8 Rooms</option>-->
+<!--                      <option value="9">9 Rooms</option>-->
+<!--                      <option value="10">10 Rooms</option>-->
+<!--                    </select>-->
+<!--                  </div>-->
                   <div class="form-group tm-form-group tm-form-group-pad tm-form-group-2">
-                    <label for="inputRoom">How many rooms?</label>
-                    <select name="room" class="form-control tm-select" id="inputRoom">
-                      <option value="1" selected>1 Room</option>
-                      <option value="2">2 Rooms</option>
-                      <option value="3">3 Rooms</option>
-                      <option value="4">4 Rooms</option>
-                      <option value="5">5 Rooms</option>
-                      <option value="6">6 Rooms</option>
-                      <option value="7">7 Rooms</option>
-                      <option value="8">8 Rooms</option>
-                      <option value="9">9 Rooms</option>
-                      <option value="10">10 Rooms</option>
-                    </select>
-                  </div>
-                  <div class="form-group tm-form-group tm-form-group-pad tm-form-group-3">
                     <label for="guest">Guest</label>
                     <select class="form-control tm-select" id="guest" name="guest">
                       <option value="1" selected>1</option>
@@ -154,8 +154,7 @@
                       <option value="10">10</option>
                     </select>
                   </div>
-                  <div class="form-group tm-form-group tm-form-group-pad tm-form-group-3">
-
+                  <div class="form-group tm-form-group tm-form-group-pad tm-form-group-2">
                     <label for="pet">Pet</label>
                     <select class="form-control tm-select" id="pet" name="pet">
                       <option value="1" selected>1</option>
@@ -638,12 +637,11 @@
             let hotelType = $('#selectType').val();
             let checkIn = $('#startDate').val();
             let checkOut = $('#endDate').val();
-            let room = $('#inputRoom').val();
             let guest = $('#guest').val();
             let pet = $('#pet').val();
 
             // 조건이 모두 채워져 있는지 체크
-            if (!location || !hotelType || !checkIn || !checkOut || !room || !guest || !pet) {
+            if (!location || !hotelType || !checkIn || !checkOut || !guest || !pet) {
                 // 조건이 비어 있는 경우
                 alert('모든 검색 조건을 입력해주세요.');
             } else {
@@ -657,7 +655,6 @@
                         hotelType: hotelType,
                         checkIn: checkIn,
                         checkOut: checkOut,
-                        room: room,
                         guest: guest,
                         pet: pet
                     }),

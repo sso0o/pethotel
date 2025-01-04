@@ -33,16 +33,14 @@ public interface HotelRepository extends JpaRepository<Hotel, Long> {
             "   FROM VwPaidBooking v " +
             "   WHERE v.paymentId IS NOT NULL " +
             "   AND (v.startDate < :checkOut AND v.endDate > :checkIn)) " +
-            "GROUP BY h.hotelId, h.hotelName, h.hotelType, h.hotelInfo " +
-            "having COUNT(d) >= :room ")
+            "GROUP BY h.hotelId, h.hotelName, h.hotelType, h.hotelInfo ")
     Page<SearchHotelResponse> findBySearchOption(Pageable pageable,
                                                  @Param("location") String location,
                                                  @Param("hotelType") String hotelType,
                                                  @Param("guest") int guest,
                                                  @Param("pet") int pet,
                                                  @Param("checkIn") String checkIn,
-                                                 @Param("checkOut") String checkOut,
-                                                 @Param("room") int room);
+                                                 @Param("checkOut") String checkOut);
 
 
 

@@ -105,7 +105,7 @@ public class BookingService {
     public Booking updateRoomDetailId(UUID bookingId, Long roomDetailId) {
         Booking booking = bookingRepository.findById(bookingId)
                 .orElseThrow(() -> new IllegalArgumentException("not found: " + bookingId));
-        booking.updateRoomDetailId(roomDetailId);
+        booking.updateRoomId(roomDetailId);
         return bookingRepository.save(booking);
     }
 
