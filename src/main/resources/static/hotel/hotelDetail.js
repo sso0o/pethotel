@@ -17,7 +17,7 @@ function updateRoomList(rooms) {
                 <div>
                 </div>
             </div>
-            <a href="#" class="tm-recommended-price-box" style="position: relative;">
+            <a href="/booking/${room.roomId}" class="tm-recommended-price-box" style="position: relative;">
                 <p class="tm-recommended-price" style="position: absolute; bottom: 10px;">${Number(room.roomPrice).toLocaleString()} <span style="font-size: 1rem;"> / 박</span></p>
             </a>
         </div>

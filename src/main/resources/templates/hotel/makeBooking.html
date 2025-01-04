@@ -119,9 +119,10 @@
   <!-- 본문 시작 -->
   <div class="tm-page-wrap mx-auto justify-content-center">
     <div class="tm-container-outer">
-      <div class="container">
-        <!-- Page Content -->
-        <div class="p-5">
+      <div class="container pt-3 pb-3">
+        <div class="make-booking-container" >
+          <h2>객실 예약</h2>
+
           <div class="row content-box p-4">
             <div class=" col-6 content-box-main" id="bookingDetail">
               <h2 th:text="${hotel.hotelName}"></h2>
@@ -129,19 +130,15 @@
               <p text=""></p>
             </div>
             <div class=" col-6 content-box-main">
-              <div>
-                여기다가는 객실 정보 넣을거야
+              <div id="priceBox"></div>
+              <hr/>
+              <div class="content-box-bottom">
+                <button type="button" class="btn btn-primary tm-btn tm-btn-search" id="btnPayment" >결제</button>
               </div>
             </div>
-            <hr/>
-            <div class="content-box-bottom">
-              <button type="button" class="btn btn-primary tm-btn tm-btn-search" id="btnPayment" >결제</button>
-            </div>
+
           </div>
-
-
-        </div>
-      </div>  <!-- .container -->
+        </div>   <!-- .container -->
     </div>     <!-- .tm-container-outer -->
 
 
