@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @Getter
 public class UpdateRoomRequest {
     private String roomType;
+    private String roomName;
     private int roomPrice;
     private int limitGuest;
     private int limitPet;

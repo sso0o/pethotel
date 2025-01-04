@@ -28,6 +28,9 @@ public class Room {
     @Column(name = "room_type")
     private String roomType;
 
+    @Column(name = "room_name")
+    private String roomName;
+
     @Column(name = "room_price")
     private int roomPrice;
 
@@ -53,11 +56,12 @@ public class Room {
     private List<RoomFeature> roomFeatures;
 
     @Builder
-    public Room (Hotel hotel, String roomType,
+    public Room (Hotel hotel, String roomType, String roomName,
                  int roomPrice, int limitGuest, int limitPet,
                  String checkIn, String checkOut) {
         this.hotel = hotel;
         this.roomType = roomType;
+        this.roomName = roomName;
         this.roomPrice = roomPrice;
         this.limitGuest = limitGuest;
         this.limitPet = limitPet;
@@ -66,10 +70,11 @@ public class Room {
     }
 
 
-    public void update(String roomType,
+    public void update(String roomType, String roomName,
                        int roomPrice, int limitGuest, int limitPet,
                        String checkIn, String checkOut) {
         this.roomType = roomType;
+        this.roomName = roomName;
         this.roomPrice = roomPrice;
         this.limitGuest = limitGuest;
         this.limitPet = limitPet;

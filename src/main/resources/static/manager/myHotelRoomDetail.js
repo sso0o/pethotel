@@ -2,6 +2,7 @@ function addNewRoom(){
     let hotelId = $('#hotelId').val();
     let roomId = $('#roomId').val();
     let roomType = $('#roomType').val();
+    let roomName = $('#roomName').val();
     let roomPrice = $('#roomPrice').val();
     let limitGuest = $('#limitGuest').val();
     let limitPet = $('#limitPet').val();
@@ -22,6 +23,7 @@ function addNewRoom(){
     data = JSON.stringify({
         hotelId : hotelId,
         roomType : roomType,
+        roomName : roomName,
         roomPrice : roomPrice,
         limitGuest : limitGuest,
         limitPet : limitPet,
@@ -95,6 +97,7 @@ function loadRoomDetail(roomId){
         success:function (data){
             $('#roomId').val(data.room.roomId);
             $('#roomType').val(data.room.roomType);
+            $('#roomName').val(data.room.roomName);
             $('#roomPrice').val(data.room.roomPrice);
             $('#limitGuest').val(data.room.limitGuest);
             $('#limitPet').val(data.room.limitPet);
@@ -139,6 +142,7 @@ function loadRoomDetail(roomId){
 function modifyRoom(roomId){
     let hotelId = $('#hotelId').val();
     let roomType = $('#roomType').val();
+    let roomName = $('#roomName').val();
     let roomPrice = $('#roomPrice').val();
     let limitGuest = $('#limitGuest').val();
     let limitPet = $('#limitPet').val();
@@ -158,6 +162,7 @@ function modifyRoom(roomId){
     data = JSON.stringify({
         hotelId : hotelId,
         roomType : roomType,
+        roomName : roomName,
         roomPrice : roomPrice,
         limitGuest : limitGuest,
         limitPet : limitPet,

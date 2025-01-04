@@ -73,6 +73,7 @@ public class ManagerViewController {
             model.addAttribute("room", room);
         }
 
+        List<CommonCode> RTP = commonCodeService.findByCodeHeadAndCodeDetailNotAndCodeUseLike("RTP", "", "Y");
         List<CommonCode> RAM = commonCodeService.findByCodeHeadAndCodeDetailNotAndCodeUseLike("RAM", "", "Y");
         List<CommonCode> RFT = commonCodeService.findByCodeHeadAndCodeDetailNotAndCodeUseLike("RFT", "", "Y");
         List<CommonCode> RFT01 = commonCodeService.findByCodeHeadAndCodeDetailNotAndCodeUseLike("RFT01", "", "Y");
@@ -83,6 +84,7 @@ public class ManagerViewController {
         List<CommonCode> RFT06 = commonCodeService.findByCodeHeadAndCodeDetailNotAndCodeUseLike("RFT06", "", "Y");
         List<CommonCode> RFT07 = commonCodeService.findByCodeHeadAndCodeDetailNotAndCodeUseLike("RFT07", "", "Y");
 
+        model.addAttribute("RTP", RTP);
         model.addAttribute("RAM", RAM);
         model.addAttribute("RFT", RFT);
         model.addAttribute("RFT01", RFT01);

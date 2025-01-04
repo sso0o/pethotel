@@ -43,8 +43,8 @@ public class RoomService {
     public Room update(Long roomId, UpdateRoomRequest req) {
         Room room = roomRepository.findById(roomId)
                 .orElseThrow(() ->  new IllegalArgumentException("not found : "+roomId));
-        room.update(req.getRoomType(), req.getRoomPrice(),
-                req.getLimitGuest(), req.getLimitPet(),
+        room.update(req.getRoomType(), req.getRoomName(),
+                req.getRoomPrice(), req.getLimitGuest(), req.getLimitPet(),
                 req.getCheckIn(), req.getCheckOut());
         return room;
     }

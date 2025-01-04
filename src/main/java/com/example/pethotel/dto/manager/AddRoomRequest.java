@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 public class AddRoomRequest {
 
     private String roomType;
+    private String roomName;
     private int roomPrice;
     private int limitGuest;
     private int limitPet;
@@ -33,6 +34,7 @@ public class AddRoomRequest {
     public Room toEntity(Hotel hotel) {
         return Room.builder()
                 .roomType(roomType)
+                .roomName(roomName)
                 .roomPrice(roomPrice)
                 .limitGuest(limitGuest)
                 .limitPet(limitPet)
