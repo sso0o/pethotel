@@ -201,8 +201,9 @@
                       <th>최대펫수</th>
                       <th>체크인</th>
                       <th>체크아웃</th>
-                      <th>객실 상세</th>
+<!--                      <th>객실 상세</th>-->
                       <th>수정</th>
+                      <th>복제</th>
                     </tr>
                     </thead>
                     <tfoot>
@@ -539,16 +540,22 @@ $(function(){
             {data: "limitPet"},
             {data: "checkIn"},
             {data: "checkOut"},
+            // {
+            //     render: function (data, type, row) {
+            //         return '<button type="button" class="btn btn-outline-secondary" ' +
+            //             'onclick="hotelRoomList(' + row.roomId + ')"><i class="fas fa-list"></i></button>'
+            //     }
+            // },
             {
                 render: function (data, type, row) {
                     return '<button type="button" class="btn btn-outline-secondary" ' +
-                        'onclick="hotelRoomList(' + row.roomId + ')"><i class="fas fa-list"></i></button>'
+                        'onclick="modifyRoom(' + row.roomId + ')"><i class="fas fa-pen"></i></button>'
                 }
             },
             {
                 render: function (data, type, row) {
                     return '<button type="button" class="btn btn-outline-secondary" ' +
-                        'onclick="modifyRoom(' + row.roomId + ')"><i class="fas fa-pen"></i></button>'
+                        'onclick="copyRoom(' + row.roomId + ')"><i class="fas fa-clone"></i></button>'
                 }
             },
         ],

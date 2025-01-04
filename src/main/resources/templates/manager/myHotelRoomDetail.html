@@ -206,8 +206,9 @@
                   <div class="mb-3 mt-3">
                     <label for="roomType" class="form-label">객실 타입</label>
                     <select class="form-select" id="roomType" name="roomType">
-                      <option th:each="RTP : ${RTP}" th:value="${RTP.code}" th:text="${RTP.codeName}"></option>
+                      <option th:each="RTP : ${RTP}" th:value="${RTP.codeName}" th:text="${RTP.codeName}"></option>
                     </select>
+                  </div>
                   <div class="mb-3">
                     <label for="roomName" class="form-label">객실 이름</label>
                     <input type="text"

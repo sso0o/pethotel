@@ -222,3 +222,7 @@ function modifyRoom(roomId){
     let hotelId = $('#hotelId').val();
     window.location.href = '/manager/myhotelroomdetail/' + userId + '/' + hotelId + '/' + roomId;
 }
+
+function copyRoom(roomId){
+
+}
