@@ -1,17 +1,9 @@
 package com.example.pethotel.controller.hotel;
 
 import com.example.pethotel.dto.Criteria;
-import com.example.pethotel.dto.hotel.AddBookingRequest;
-import com.example.pethotel.dto.hotel.SearchHotelRequest;
-import com.example.pethotel.dto.hotel.SearchHotelResponse;
-import com.example.pethotel.entity.Booking;
-import com.example.pethotel.entity.Hotel;
-import com.example.pethotel.entity.HotelImg;
-import com.example.pethotel.entity.Room;
-import com.example.pethotel.service.BookingService;
-import com.example.pethotel.service.HotelImgService;
-import com.example.pethotel.service.HotelService;
-import com.example.pethotel.service.RoomService;
+import com.example.pethotel.dto.hotel.*;
+import com.example.pethotel.entity.*;
+import com.example.pethotel.service.*;
 import com.example.pethotel.service.payment.PaymentService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -34,6 +26,7 @@ public class HotelApiController {
     private final BookingService bookingService;
 
     private final PaymentService paymentService;
+    private final RoomImgService roomImgService;
 
     //=============================================================================================
     //================================              get               =============================
@@ -102,6 +95,25 @@ public class HotelApiController {
         return ResponseEntity.ok().body(resultMap);
     }
 
+    // 검색 조건에 맞는 객실 가져오기
+    @GetMapping("/hotel/searchRoom/{hotelId}")
+    public ResponseEntity getAvailableRoomList(@PathVariable("hotelId") Long hotelId,
+                                           @RequestParam("checkIn") String checkIn,
+                                           @RequestParam("checkOut") String checkOut,
+                                           @RequestParam("guest") int guest,
+                                           @RequestParam("pet") int pet,
+                                           @RequestParam("room") int room,
+                                           @RequestParam("page") int page,
+                                           @RequestParam("size") int size
+    ) {
+        HashMap<Object, Object> resultMap = new HashMap<>();
+        SearchHotelRoomRequest request = new SearchHotelRoomRequest(hotelId, checkIn, checkOut, guest, pet, room);
+        Criteria criteria = new Criteria(page, size);
+        List<SearchHotelRoomResponse> rooms = roomService.findAvailableRoomList(request, criteria);
+        resultMap.put("rooms", rooms);
+        return ResponseEntity.ok().body(resultMap);
+    }
+
     // 세션에 있는 검색조건 가져오기
     @GetMapping("/hotel/getSearchOption")
     public ResponseEntity getHotelSearchOption(HttpSession session){
@@ -121,6 +133,16 @@ public class HotelApiController {
         Hotel hotel = hotelService.findById(hotelId);
         List<HotelImg> imgs = hotelImgService.findByHotel(hotel);
         resultMap.put("hotelPhotos", imgs);
+        return ResponseEntity.ok().body(resultMap);
+    }
+
+    // 호텔 아이디별 사진 가져오기
+    @GetMapping("/hotel/room/img/{roomId}")
+    public ResponseEntity getRoomImg(@PathVariable Long roomId) {
+        HashMap<Object, Object> resultMap = new HashMap<>();
+        Room room = roomService.findById(roomId);
+        List<RoomImg> imgs = roomImgService.findByRoom(room);
+        resultMap.put("roomPhotos", imgs);
         return ResponseEntity.ok().body(resultMap);
     }
 

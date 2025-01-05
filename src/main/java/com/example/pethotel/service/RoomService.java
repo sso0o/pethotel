@@ -1,10 +1,14 @@
 package com.example.pethotel.service;
 
+import com.example.pethotel.dto.Criteria;
 import com.example.pethotel.dto.hotel.SearchHotelRequest;
+import com.example.pethotel.dto.hotel.SearchHotelRoomRequest;
+import com.example.pethotel.dto.hotel.SearchHotelRoomResponse;
 import com.example.pethotel.dto.manager.AddRoomRequest;
 import com.example.pethotel.dto.manager.UpdateRoomRequest;
 import com.example.pethotel.entity.Hotel;
 import com.example.pethotel.entity.Room;
+import com.example.pethotel.mapper.RoomMapper;
 import com.example.pethotel.repository.*;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -28,6 +32,8 @@ public class RoomService {
 
     @PersistenceContext
     private EntityManager entityManager;
+
+    private final RoomMapper roomMapper;
 
     // 객실 저장 요청
     public Room save(AddRoomRequest req) {
@@ -97,6 +103,14 @@ public class RoomService {
     // 매니저가 예약관리 페이지때 씀
     public List<Room> findAllByHotel(Hotel hotel) {
         return roomRepository.findAllByHotel(hotel);
+    }
+
+    public List<SearchHotelRoomResponse> findAvailableRoomList(SearchHotelRoomRequest request, Criteria criteria){
+        int skip = (criteria.getPage() - 1) * criteria.getSize();
+        return roomMapper.findAvailableRoomList(request.getHotelId(), request.getGuest(), request.getPet(),
+                request.getCheckIn(), request.getCheckOut(),
+                request.getRoom(), criteria.getSize(), skip);
+
     }
 
 }

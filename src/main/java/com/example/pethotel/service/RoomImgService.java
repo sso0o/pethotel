@@ -1,6 +1,7 @@
 package com.example.pethotel.service;
 
 import com.example.pethotel.dto.manager.AddRoomImgRequest;
+import com.example.pethotel.entity.Room;
 import com.example.pethotel.entity.RoomImg;
 import com.example.pethotel.repository.RoomImgRepository;
 import lombok.RequiredArgsConstructor;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -30,5 +32,9 @@ public class RoomImgService {
             file.delete();
         }
         roomImgRepository.delete(roomImg);
+    }
+
+    public List<RoomImg> findByRoom(Room room) {
+        return  roomImgRepository.findByRoom(room);
     }
 }
