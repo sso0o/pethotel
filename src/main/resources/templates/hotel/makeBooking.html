@@ -44,7 +44,9 @@
      th:data-room-type="${room.roomType}"
      th:data-room-price="${room.roomPrice}"
      th:data-room-limit-guest="${room.limitGuest}"
-     th:data-room-limit-pet="${room.limitPet}">
+     th:data-room-limit-pet="${room.limitPet}"
+     th:data-room-check-in="${room.checkIn}"
+     th:data-room-check-out="${room.checkOut}">
 </div>
 <div id="hotel"
      th:data-hotel-id="${hotel.hotelId}"
@@ -125,16 +127,10 @@
 
           <div class="row content-box p-4">
             <div class=" col-6 content-box-main" id="bookingDetail">
-              <h2 th:text="${hotel.hotelName}"></h2>
-              <h3 th:text="${room.roomType}"></h3>
-              <p text=""></p>
             </div>
             <div class=" col-6 content-box-main">
-              <div id="priceBox"></div>
-              <hr/>
-              <div class="content-box-bottom">
-                <button type="button" class="btn btn-primary tm-btn tm-btn-search" id="btnPayment" >결제</button>
-              </div>
+              <div id="guestDetail"></div>
+
             </div>
 
           </div>
@@ -214,8 +210,8 @@
         });
 
 
-        let btnPayment = $('#btnPayment');
-        btnPayment.click(function () {
+        let btnBooking = $('#btnBooking');
+        btnBooking.click(function () {
             $.ajax({
                 url: '/booking/saveBookingData',
                 type: 'post',
@@ -232,15 +228,16 @@
                     totalDate: dayDiff
                 }),
                 success: function (data) {
-                    oPay.open({
-                        "merchantPayKey": "20241207WWKEnn",
-                        "productName": hotelDetail.data('hotel-name')+" - "+roomDetail.data('room-type'),
-                        "productCount": "1",
-                        "totalPayAmount": roomDetail.data('room-price')*dayDiff,
-                        "taxScopeAmount": roomDetail.data('room-price')*dayDiff,
-                        "taxExScopeAmount": "0",
-                        "returnUrl": "http://localhost:8081/booking/complete?bookingId="+data.booking.bookingId.toString(),
-                    });
+                    location.href = "/booking/complete?bookingId="+data.booking.bookingId.toString();
+                    // oPay.open({
+                    //     "merchantPayKey": "20241207WWKEnn",
+                    //     "productName": hotelDetail.data('hotel-name')+" - "+roomDetail.data('room-type'),
+                    //     "productCount": "1",
+                    //     "totalPayAmount": roomDetail.data('room-price')*dayDiff,
+                    //     "taxScopeAmount": roomDetail.data('room-price')*dayDiff,
+                    //     "taxExScopeAmount": "0",
+                    //     "returnUrl": "http://localhost:8081/booking/complete?bookingId="+data.booking.bookingId.toString(),
+                    // });
                 },
                 error: function (request, status, error) {
                     let result = jQuery.parseJSON(request.responseText)
