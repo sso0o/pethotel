@@ -225,9 +225,12 @@
                     guest: searchData.guest,
                     pet: searchData.pet,
                     totalPrice: roomDetail.data('room-price')*dayDiff,
-                    totalDate: dayDiff
+                    totalDate: dayDiff,
+                    payChk: 'Booking',
+                    room: searchData.room
                 }),
                 success: function (data) {
+                    // console.log(data.booking);
                     location.href = "/booking/complete?bookingId="+data.booking.bookingId.toString();
                     // oPay.open({
                     //     "merchantPayKey": "20241207WWKEnn",

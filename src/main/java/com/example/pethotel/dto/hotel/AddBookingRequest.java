@@ -18,6 +18,8 @@ public class AddBookingRequest {
     private int totalPrice;
     private int totalDate;
     private String paymentId;
+    private String payChk;
+    private int room;
 
     public Booking toEntity() {
         return Booking.builder()
@@ -32,6 +34,7 @@ public class AddBookingRequest {
                 .totalPrice(totalPrice)
                 .totalDate(totalDate)
                 .paymentId(paymentId)
+                .payChk(payChk)
                 .build();
 
     }

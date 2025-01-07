@@ -11,10 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -164,8 +161,14 @@ public class HotelApiController {
     @PostMapping("/booking/saveBookingData")
     public ResponseEntity saveBookingData(HttpSession session, @RequestBody AddBookingRequest req){
         HashMap<Object, Object> resultMap = new HashMap<>();
-        Booking booking = bookingService.save(req);
-        resultMap.put("booking", booking);
+        int room = req.getRoom();
+        List<Booking> bookings = new ArrayList<>();
+        for(int i = 0; i < room; i++){
+            Booking booking = bookingService.save(req);
+            bookings.add(booking);
+        }
+
+        resultMap.put("booking", bookings);
         return ResponseEntity.ok().body(resultMap);
     }
 
