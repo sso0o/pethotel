@@ -1,16 +1,14 @@
 package com.example.pethotel.controller.hotel;
 
 import com.example.pethotel.dto.hotel.SearchHotelRequest;
-import com.example.pethotel.entity.Booking;
-import com.example.pethotel.entity.CommonCode;
-import com.example.pethotel.entity.Hotel;
-import com.example.pethotel.entity.Room;
+import com.example.pethotel.entity.*;
 import com.example.pethotel.service.BookingService;
 import com.example.pethotel.service.HotelService;
 import com.example.pethotel.service.RoomService;
 import com.example.pethotel.service.admin.CommonCodeService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -63,8 +61,10 @@ public class HotelViewController {
     }
 
     @GetMapping("/myBooking")
-    public String showMyBookingPage(Model model){
-        long userId = 3;
+    public String showMyBookingPage(Model model, Authentication authentication){
+        User user = (User) authentication.getPrincipal();
+        Long userId = user.getId();
+
         List<Map<String, Object>> paidBookings = bookingService.findByUserid(userId, "paid");
         List<Map<String, Object>> waitingBookings = bookingService.findByUserid(userId, "Success");
         List<Map<String, Object>> cancelBookings = bookingService.findByUserid(userId, "cancel");
@@ -76,7 +76,7 @@ public class HotelViewController {
 
     @GetMapping("/mypage")
     public String showMyPage(Model model){
-        return "mypage/myPage";
+        return "myPage/myPage";
     }
 
     @GetMapping("/booking/{roomId}")

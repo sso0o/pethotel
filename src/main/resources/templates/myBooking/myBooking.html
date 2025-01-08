@@ -150,6 +150,13 @@
                 <p class="tm-recommended-price-link">Continue Reading</p>
               </div>
             </div>
+            <div th:if="${waitingBookings.isEmpty()}" style="text-align: center;">
+              <img src="img/tourism.png" alt="여행자 아이콘 제작자: Freepik - Flaticon" class="img-fluid"
+                   style="max-width: 200px; margin: 30px;"
+                   title="여행자 아이콘 제작자: Freepik - Flaticon">
+              <!--              <a href="https://www.flaticon.com/kr/free-icons/" title="여행자 아이콘">여행자 아이콘 제작자: Freepik - Flaticon</a>-->
+              <p>예약이 없습니다.</p>
+            </div>
           </div>
         </div> <!-- tab-pane -->
         <!-- Tab 2 -->
@@ -174,6 +181,13 @@
               <p class="tm-recommended-price">$110</p>
               <p class="tm-recommended-price-link">Continue Reading</p>
             </div>
+          </div>
+          <div th:if="${paidBookings.isEmpty()}" style="text-align: center;">
+            <img src="img/tourism.png" alt="여행자 아이콘 제작자: Freepik - Flaticon" class="img-fluid"
+                 style="max-width: 200px; margin: 30px;"
+                 title="여행자 아이콘 제작자: Freepik - Flaticon">
+            <!--              <a href="https://www.flaticon.com/kr/free-icons/" title="여행자 아이콘">여행자 아이콘 제작자: Freepik - Flaticon</a>-->
+            <p>완료된 예약이 없습니다.</p>
           </div>
         </div> <!-- tab-pane -->
         <!-- Tab 3 -->
