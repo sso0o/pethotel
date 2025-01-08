@@ -23,66 +23,93 @@
 
     <!-- Templatemo style -->
     <link rel="stylesheet" href="/css/templatemo-style.css">
-    <script src="/common/common.js"></script>
-
+    <link rel="stylesheet" href="/common/signup.css">
 
     <style>
-        .gradient-custom {
-            background: #e6e6e6;
-        }
     </style>
 </head>
-<body class="gradient-custom">
-<section class="d-flex vh-100">
-    <div class="container-fluid row justify-content-center align-content-center">
-        <div class="card" style="border-radius: 1rem; width: auto; ">
-            <div class="card-body p-5 text-center">
-                <h2>SIGN UP</h2>
-                <p class="mt-2 mb-5">서비스를 사용하려면 회원가입을 해주세요!</p>
 
-                <div class = "mb-2">
-<!--                    <form th:action="@{/signup}" method="POST">-->
-                    <form id="userForm">
-                        <div class="mb-3">
-                            <label class="form-label" for="username">이름</label>
-                            <input type="text" class="form-control" id="username" name="username">
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label" for="userid">로그인 아이디</label>
-                            <input type="text" class="form-control" id="userid" name="userid">
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label" for="password" oninput="passwordCheck()">비밀번호</label>
-                            <input type="password" class="form-control" id="password" name="password">
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label" for="passwordCheck" oninput="passwordCheck()">비밀번호 확인</label>
-                            <input type="password" class="form-control" id="passwordCheck" name="passwordCheck">
-                            <span id="pwConfirm">비밀번호 확인</span>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label" for="nickname">별명</label>
-                            <input type="text" class="form-control" id="nickname" name="nickname">
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label" for="userphone">전화번호</label>
-                            <input type="text" class="form-control" id="userphone" name="userphone">
-                        </div>
-                        <div class="mt-3 mb-3" id="errorDiv" style="text-align: center; color: red; display: none;">
-                            <p id="errorMsg"></p>
-                        </div>
+<body>
+<!-- .main-content 시작-->
+<div class="tm-main-content" style="display: grid; place-items: center;">
+    <!-- 본문 시작 -->
+    <div class="tm-page2-wrap mx-auto justify-content-center">
+        <div class="tm-container-outer">
+            <div class="container" style="padding: 0;">
+                <div class="sign-up-container" >
+                    <div class="card" style="box-shadow: 0 0 3px rgba(0, 0, 0, 0.15); border-radius: 1rem; width: 500px; ">
+                        <div class="card-body p-5">
+                            <h2 style="text-align: center;">SIGN UP</h2>
+                            <p class="mt-2 mb-5">서비스를 사용하려면 회원가입을 해주세요!</p>
 
-                        <button type="submit" class="btn btn-primary tm-btn text-uppercase"
-                                id="btnSubmit"
-                                style="border-radius: 0.25rem;">
-                            SIGN UP
-                        </button>
-                    </form>
-                </div>
-            </div>
+                            <div class = "mb-2">
+                                <!--                    <form th:action="@{/signup}" method="POST">-->
+                                <form id="userForm" style="display: grid;">
+                                    <div class="form-group tm-form-group mb-3">
+                                        <label for="username">이름</label>
+                                        <input type="text" class="form-control" id="username" name="username">
+                                    </div>
+                                    <div class="form-group tm-form-group mb-3">
+                                        <label for="userid">로그인 아이디</label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" id="userid" name="userid">
+                                            <button type="button" class="btn btn-outline-secondary" id="btnIdCheck">중복확인</button>
+                                        </div>
+                                        <span id="idConfirm" class="form-text"></span>
+                                        <input type="hidden" id="idCheckValue" >
+                                    </div>
+                                    <div class="form-group tm-form-group mb-3">
+                                        <label for="password">비밀번호</label>
+                                        <input type="password" class="form-control" id="password" name="password">
+                                    </div>
+                                    <div class="form-group tm-form-group mb-3">
+                                        <label for="passwordCheck">비밀번호 확인</label>
+                                        <input type="password" class="form-control" id="passwordCheck" name="passwordCheck">
+                                        <span id="pwConfirm" class="form-text"></span>
+                                    </div>
+                                    <div class="form-group tm-form-group mb-3">
+                                        <label for="nickname">닉네임</label>
+                                        <input type="text" class="form-control" id="nickname" name="nickname">
+                                    </div>
+                                    <div class="form-group tm-form-group mb-3">
+                                        <label for="userphone">전화번호</label>
+                                        <input type="text" class="form-control" id="userphone" name="userphone">
+                                    </div>
+                                    <div class="form-check mb-3">
+                                        <input class="form-check-input" type="radio" name="roleType" id="role-user" value="USER" checked>
+                                        <label class="form-check-label" for="role-user">
+                                            일반 고객
+                                        </label>
+                                    </div>
+                                    <div class="form-check mb-3">
+                                        <input class="form-check-input" type="radio" name="roleType" id="role-manager" value="MANAGER">
+                                        <label class="form-check-label" for="role-manager">
+                                            숙박 업소
+                                        </label>
+                                    </div>
+
+
+                                    <div class="mt-3 mb-3" id="errorDiv" style="text-align: center; color: red; display: none;">
+                                        <p id="errorMsg"></p>
+                                    </div>
+
+                                    <button type="submit" class="btn btn-primary tm-btn text-uppercase"
+                                            id="btnSubmit"
+                                            style="border-radius: 0.25rem;">
+                                        SIGN UP
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>   <!-- .container -->
+            </div>     <!-- .tm-container-outer -->
         </div>
     </div>
-</section>
+    <!-- 본문 종료 -->
+
+</div>
+
 
 <!-- load JS files -->
 <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
@@ -115,8 +142,34 @@
         $password.on('input', checkPasswordMatch);
         $passwordCheck.on('input', checkPasswordMatch);
 
-
-
+        $('#btnIdCheck').on('click', function (){
+            let userid = $('#userid').val();
+            if (userid === '') {
+                $('#idConfirm').text('아이디를 입력해주세요').css('color', 'red');
+                return;
+            }
+            $.ajax({
+                url: '/check-id',
+                type: 'get',
+                data: { userid: userid },
+                dataType: 'json',
+                contentType: 'application/json',
+                success: function (data) {
+                    if (data.isDuplicate) {
+                        $('#idConfirm').text('이미 사용중인 아이디 입니다.').css('color', 'red');
+                        $('#idCheckValue').val(false);
+                    } else {
+                        $('#idConfirm').text('사용 가능한 아이디 입니다.').css('color', 'green');
+                        $('#idCheckValue').val(true);
+                    }
+                },
+                error: function (request, status, error) {
+                    let result = jQuery.parseJSON(request.responseText)
+                    console.log(result.msg);
+                    $('#idConfirm').text('오류가 발생했습니다. 다시 시도해 주세요').css('color', 'red');
+                }
+            })
+        });
 
 
         $('#userForm').on('submit', function (e) {
@@ -127,6 +180,15 @@
             let password = $('#password').val();
             let nickname = $('#nickname').val();
             let userphone = $('#userphone').val();
+            let userrole = $('input[name=roleType]:checked').val();
+            let idCheckValue = $('#idCheckValue').val();
+
+            if (idCheckValue === '') {
+                $('#idConfirm').text('중복체크 해주세요').css('color', 'red');
+                return;
+            } else if (idCheckValue === 'false'){
+                return;
+            }
 
             $.ajax({
                 url: '/signup',
@@ -136,11 +198,14 @@
                     userid: userid,
                     password: password,
                     nickname: nickname,
-                    userphone: userphone
+                    userphone: userphone,
+                    userrole: userrole
                 },
                 success: function (result) {
                     $('#errorDiv').hide();
                     $('#errorMsg').text('');
+                    alert(result.msg);
+                    window.location.replace('/login');
                 },
                 error: function (request, status, error) {
                     let result = jQuery.parseJSON(request.responseText)

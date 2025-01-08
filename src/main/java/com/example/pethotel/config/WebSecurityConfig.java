@@ -51,7 +51,7 @@ public class WebSecurityConfig  {
                 .requestCache(request -> request
                         .requestCache(requestCache))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/login", "/signup", "/", "/hotel/**", "/main/**", "/uploads/**").permitAll()
+                        .requestMatchers("/login", "/signup", "/", "/hotel/**", "/main/**", "/uploads/**", "/check-id").permitAll()
                         .requestMatchers("/booking/**").hasAnyAuthority("USER", "MANAGER")
                         .requestMatchers("/mybooking", "/mybooking/**").hasAnyAuthority("USER")
                         .requestMatchers("/manager/**").hasAnyAuthority("ADMIN", "MANAGER")
@@ -95,7 +95,8 @@ public class WebSecurityConfig  {
             public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
                 // prevPage 세션 값이 있으면 해당 페이지로 리디렉션, 없으면 기본 '/' 페이지로 리디렉션
                 String prevPage = (String) request.getSession().getAttribute("prevPage");
-                if (prevPage == null) {
+
+                if (prevPage == null || prevPage.equals("http://localhost:8081/signup")) {
                     prevPage = "/";
                 }
 

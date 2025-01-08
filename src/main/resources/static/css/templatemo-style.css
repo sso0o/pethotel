@@ -46,6 +46,9 @@ p:last-child { margin-bottom: 0; }
     min-height: 100vh;
     padding-bottom: 80px;
 }
+.tm-page2-wrap {
+    max-width: 1000px;
+}
 
 .tm-container-outer {
     max-width: 1400px;

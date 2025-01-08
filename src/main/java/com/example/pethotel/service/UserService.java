@@ -14,13 +14,18 @@ public class UserService {
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder passwordEncoder;
 
-    public Long save(AddUserRequest req) {
+    public User save(AddUserRequest req) {
         return userRepository.save(User.builder()
                 .username(req.getUsername())
                 .userid(req.getUserid())
                 .password(passwordEncoder.encode(req.getPassword()))
-                .userphone(req.getUserphone())
                 .nickname(req.getNickname())
-                .build()).getId();
+                .userphone(req.getUserphone())
+                .userrole(req.getUserrole())
+                .build());
+    }
+
+    public boolean isUserIdTaken(String userid) {
+        return userRepository.existsByUserid(userid);
     }
 }
