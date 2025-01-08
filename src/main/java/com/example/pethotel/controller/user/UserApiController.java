@@ -9,10 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -60,6 +57,15 @@ public class UserApiController {
         HashMap<Object, Object> resultMap = new HashMap<>();
         boolean isDuplicate = userService.isUserIdTaken(userid);
         resultMap.put("isDuplicate", isDuplicate);
+        return ResponseEntity.ok().body(resultMap);
+    }
+
+
+    @PutMapping("/delete-account/{userId}")
+    public ResponseEntity deleteAccount(@PathVariable Long userId) {
+        HashMap<Object, Object> resultMap = new HashMap<>();
+        userService.updateUserstatus(userId, "N");
+        resultMap.put("msg", "회원 탈퇴 성공");
         return ResponseEntity.ok().body(resultMap);
     }
 

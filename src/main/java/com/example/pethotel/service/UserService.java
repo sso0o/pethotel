@@ -28,4 +28,10 @@ public class UserService {
     public boolean isUserIdTaken(String userid) {
         return userRepository.existsByUserid(userid);
     }
+
+    public void updateUserstatus(Long userId, String userstatus) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() ->  new IllegalArgumentException("not found : "+userId));
+        user.updateUserstatus(userstatus);
+    }
 }

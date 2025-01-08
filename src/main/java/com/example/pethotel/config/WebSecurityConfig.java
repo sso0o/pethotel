@@ -51,7 +51,7 @@ public class WebSecurityConfig  {
                 .requestCache(request -> request
                         .requestCache(requestCache))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/login", "/signup", "/", "/hotel/**", "/main/**", "/uploads/**", "/check-id").permitAll()
+                        .requestMatchers("/login", "/signup", "/", "/hotel/**", "/main/**", "/uploads/**", "/check-id", "/delete-account/**").permitAll()
                         .requestMatchers("/booking/**").hasAnyAuthority("USER", "MANAGER")
                         .requestMatchers("/mybooking", "/mybooking/**").hasAnyAuthority("USER")
                         .requestMatchers("/manager/**").hasAnyAuthority("ADMIN", "MANAGER")

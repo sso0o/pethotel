@@ -75,7 +75,9 @@ public class HotelViewController {
     }
 
     @GetMapping("/mypage")
-    public String showMyPage(Model model){
+    public String showMyPage(Model model, Authentication authentication){
+        User user = (User) authentication.getPrincipal();
+        model.addAttribute("user", user);
         return "myPage/myPage";
     }
 

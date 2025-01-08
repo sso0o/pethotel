@@ -75,6 +75,10 @@ public class User implements UserDetails {
         this.userstatus = userstatus;
     }
 
+    public void updateUserstatus(String userstatus){
+        this.userstatus = userstatus;
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(userrole));
