@@ -1,0 +1,9 @@
+.my-page-container{
+    max-width: 970px;
+    margin: 60px auto;
+}
+
+.content-box{
+    border: 1px solid;
+    margin: 0 auto;
+}
