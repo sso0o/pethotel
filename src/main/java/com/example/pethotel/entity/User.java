@@ -67,12 +67,11 @@ public class User implements UserDetails {
         this.userstatus = (userstatus != null) ? userstatus : "Y";
     }
 
-    public void update(String password, String userrole, String userphone, String nickname, String userstatus) {
+    public void update(String usern, String password, String nickname, String userphone) {
+        this.usern = usern;
         this.password = password;
-        this.userrole = userrole;
-        this.userphone = userphone;
         this.nickname = nickname;
-        this.userstatus = userstatus;
+        this.userphone = userphone;
     }
 
     public void updateUserstatus(String userstatus){

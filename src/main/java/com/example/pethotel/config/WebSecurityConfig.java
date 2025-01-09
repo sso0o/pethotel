@@ -17,6 +17,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
@@ -51,7 +52,7 @@ public class WebSecurityConfig  {
                 .requestCache(request -> request
                         .requestCache(requestCache))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/login", "/signup", "/", "/hotel/**", "/main/**", "/uploads/**", "/check-id", "/delete-account/**").permitAll()
+                        .requestMatchers("/login", "/signup", "/", "/hotel/**", "/main/**", "/uploads/**", "/account/**").permitAll()
                         .requestMatchers("/booking/**").hasAnyAuthority("USER", "MANAGER")
                         .requestMatchers("/mybooking", "/mybooking/**").hasAnyAuthority("USER")
                         .requestMatchers("/manager/**").hasAnyAuthority("ADMIN", "MANAGER")
@@ -93,6 +94,9 @@ public class WebSecurityConfig  {
         return new AuthenticationSuccessHandler() {
             @Override
             public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+                // 로그인 성공 시 에러 메시지 세션에서 제거
+                request.getSession().removeAttribute("error");
+
                 // prevPage 세션 값이 있으면 해당 페이지로 리디렉션, 없으면 기본 '/' 페이지로 리디렉션
                 String prevPage = (String) request.getSession().getAttribute("prevPage");
 
@@ -114,15 +118,18 @@ public class WebSecurityConfig  {
             String errorMessage = "Invalid username or password"; // 로그인 실패 메시지 설정
 
             // 예외에 따라 동적으로 에러 메시지 처리
-            if (exception instanceof BadCredentialsException) {
-                errorMessage = "Invalid username or password";
+            if (exception instanceof UsernameNotFoundException) {
+                errorMessage = "사용자를 찾을 수 없습니다.";
+            } else if (exception instanceof BadCredentialsException) {
+                errorMessage = "잘못된 사용자명 또는 비밀번호입니다.";
             } else {
-                errorMessage = "Authentication failed. Please try again.";
+                errorMessage = "인증에 실패했습니다. 다시 시도해주세요.";
             }
 
-            // 요청에 에러 메시지를 세팅
-            request.setAttribute("error", errorMessage);
-            // 로그인 페이지로 리디렉션하며 오류 파라미터를 전달
+            // 세션에 error 메시지 저장
+            request.getSession().setAttribute("error", errorMessage);
+
+            // 로그인 페이지로 리디렉션하면서 에러 메시지 전달
             response.sendRedirect("/login?error=true");
         };
     }

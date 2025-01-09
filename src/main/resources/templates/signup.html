@@ -149,7 +149,7 @@
                 return;
             }
             $.ajax({
-                url: '/check-id',
+                url: '/account/check',
                 type: 'get',
                 data: { userid: userid },
                 dataType: 'json',
@@ -178,6 +178,7 @@
             let username = $('#username').val();
             let userid = $('#userid').val();
             let password = $('#password').val();
+            let passwordCheck = $('#passwordCheck').val();
             let nickname = $('#nickname').val();
             let userphone = $('#userphone').val();
             let userrole = $('input[name=roleType]:checked').val();
@@ -187,6 +188,13 @@
                 $('#idConfirm').text('중복체크 해주세요').css('color', 'red');
                 return;
             } else if (idCheckValue === 'false'){
+                return;
+            }
+
+            if (password !== passwordCheck){
+                $('#errorDiv').show();  // 오류 메시지를 표시하는 div를 보이게
+                $('#errorMsg').text('');
+                $('#errorMsg').text('비밀번호를 확인해주세요');  // 오류 메시지에 삽입
                 return;
             }
 

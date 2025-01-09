@@ -1,6 +1,8 @@
 package com.example.pethotel.controller.user;
 
 import com.example.pethotel.dto.AddUserRequest;
+import com.example.pethotel.dto.UpdateUserRequest;
+import com.example.pethotel.entity.User;
 import com.example.pethotel.service.CommonService;
 import com.example.pethotel.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -52,22 +54,37 @@ public class UserApiController {
         response.sendRedirect("/");  // "/" 경로로 리다이렉트
     }
 
-    @GetMapping("/check-id")
-    public ResponseEntity checkUserId(@RequestParam String userid) {
+    @GetMapping("/account/check")
+    public ResponseEntity checkAccount(@RequestParam String userid) {
         HashMap<Object, Object> resultMap = new HashMap<>();
         boolean isDuplicate = userService.isUserIdTaken(userid);
         resultMap.put("isDuplicate", isDuplicate);
         return ResponseEntity.ok().body(resultMap);
     }
 
-
-    @PutMapping("/delete-account/{userId}")
-    public ResponseEntity deleteAccount(@PathVariable Long userId) {
+    @PutMapping("/account/update/{id}")
+    public ResponseEntity updateAccount(@PathVariable Long id, @RequestBody UpdateUserRequest req) {
         HashMap<Object, Object> resultMap = new HashMap<>();
-        userService.updateUserstatus(userId, "N");
+        User updateUser = userService.update(id, req);
+        resultMap.put("user", updateUser);
+        resultMap.put("msg", "회원 정보 수정 성공");
+        return ResponseEntity.ok().body(resultMap);
+    }
+
+    @PutMapping("/account/delete")
+    public ResponseEntity deleteAccount(@RequestParam Long id, HttpServletRequest httpRequest, HttpServletResponse httpResponse) {
+        HashMap<Object, Object> resultMap = new HashMap<>();
+        userService.updateUserstatus(id, "N");
+
+        // 로그아웃 처리
+        SecurityContextLogoutHandler logoutHandler = new SecurityContextLogoutHandler();
+        logoutHandler.logout(httpRequest, httpResponse, null);
+
         resultMap.put("msg", "회원 탈퇴 성공");
         return ResponseEntity.ok().body(resultMap);
     }
+
+
 
 
 }

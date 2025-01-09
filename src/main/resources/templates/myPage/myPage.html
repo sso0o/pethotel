@@ -154,7 +154,7 @@
                           id="btnSubmit">
                     정보 변경
                   </button>
-                  <button type="button" class="btn btn-secondary tm-btn" id="btnDelete">회원 탈퇴</button>
+                  <button type="button" class="btn btn-secondary tm-btn mt-3" id="btnDelete">회원 탈퇴</button>
                 </form>
               </div>
             </div>
@@ -222,15 +222,29 @@
             myModal.show();
         });
 
+        const $password = $('#password');
+        const $passwordCheck = $('#passwordCheck');
+
+        function checkPasswordMatch() {
+            if ($password.val() === $passwordCheck.val()) {
+                $('#pwConfirm').text('비밀번호 일치').css('color', 'green')
+            } else {
+                $('#pwConfirm').text('비밀번호 불일치').css('color', 'red')
+            }
+        }
+
+        $password.on('input', checkPasswordMatch);
+        $passwordCheck.on('input', checkPasswordMatch);
+
         $('#userForm').on('submit', function (e) {
             e.preventDefault();
 
             let username = $('#username').val();
             let userid = $('#userid').val();
             let password = $('#password').val();
+            let passwordCheck = $('#passwordCheck').val();
             let nickname = $('#nickname').val();
             let userphone = $('#userphone').val();
-            let userrole = $('input[name=roleType]:checked').val();
             let idCheckValue = $('#idCheckValue').val();
 
             if (idCheckValue === '') {
@@ -240,20 +254,30 @@
                 return;
             }
 
+            if (password !== passwordCheck || password === ''){
+                $('#errorDiv').show();  // 오류 메시지를 표시하는 div를 보이게
+                $('#errorMsg').text('');
+                $('#errorMsg').text('비밀번호를 확인해주세요');  // 오류 메시지에 삽입
+                return;
+            }
+
+            let data = JSON.stringify({
+                username: username,
+                password: password,
+                nickname: nickname,
+                userphone: userphone
+            })
+
             $.ajax({
-                url: '/change-info',
+                url: '/account/update/' + $('#user').data('user-id'),
                 type: 'put',
-                data: {
-                    username: username,
-                    password: password,
-                    nickname: nickname,
-                    userphone: userphone
-                },
+                data: data,
+                contentType: 'application/json',  // 요청 데이터 형식을 JSON으로 설정
                 success: function (result) {
-                    // $('#errorDiv').hide();
-                    // $('#errorMsg').text('');
-                    // alert(result.msg);
-                    // window.location.replace('/login');
+                    $('#errorDiv').hide();
+                    $('#errorMsg').text('');
+                    alert(result.msg);
+                    window.location.reload();
                 },
                 error: function (request, status, error) {
                     let result = jQuery.parseJSON(request.responseText)
@@ -270,8 +294,9 @@
             if (confirmation) {
                 // 사용자가 '확인'을 클릭한 경우
                 $.ajax({
-                    url: '/delete-account/'+$('#user').data('user-id'),  // 탈퇴를 처리할 URL
+                    url: '/account/delete',  // 탈퇴를 처리할 URL
                     type: 'put',
+                    data:{id: $('#user').data('user-id')},
                     success: function(result) {
                         alert(result.msg);  // 탈퇴 성공 메시지 표시
                         window.location.replace('/');

@@ -80,7 +80,7 @@
                   </div>
                   <!-- 로그인 실패 메시지 -->
                   <div class="mb-3" th:if="${param.error}" style="color: red;">
-                    <p th:text="${error}"></p>
+                    <p th:text="${session.error}"></p>
                   </div>
 
                   <button type="submit" class="btn btn-primary tm-btn text-uppercase" >Submit</button>
