@@ -44,5 +44,6 @@ public class UserService {
         User user = userRepository.findById(id)
                 .orElseThrow(() ->  new IllegalArgumentException("not found : "+id));
         user.updateUserstatus(userstatus);
+
     }
 }

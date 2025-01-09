@@ -4,6 +4,7 @@ import com.example.pethotel.dto.AddUserRequest;
 import com.example.pethotel.dto.UpdateUserRequest;
 import com.example.pethotel.entity.User;
 import com.example.pethotel.service.CommonService;
+import com.example.pethotel.service.UserDetailService;
 import com.example.pethotel.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -21,6 +22,7 @@ import java.util.HashMap;
 public class UserApiController {
 
     private final UserService userService;
+    private final UserDetailService userDetailService;
 
     private final CommonService commonService;
 
@@ -65,10 +67,15 @@ public class UserApiController {
     @PutMapping("/account/update/{id}")
     public ResponseEntity updateAccount(@PathVariable Long id, @RequestBody UpdateUserRequest req) {
         HashMap<Object, Object> resultMap = new HashMap<>();
+        // 유저 정보 갱신
         User updateUser = userService.update(id, req);
+        // 인증 정보를 최신 상태로 갱신
+        userDetailService.updateUserDetails(updateUser);
+
         resultMap.put("user", updateUser);
         resultMap.put("msg", "회원 정보 수정 성공");
         return ResponseEntity.ok().body(resultMap);
+
     }
 
     @PutMapping("/account/delete")

@@ -277,7 +277,7 @@
                     $('#errorDiv').hide();
                     $('#errorMsg').text('');
                     alert(result.msg);
-                    window.location.reload();
+                    window.location.replace('/');
                 },
                 error: function (request, status, error) {
                     let result = jQuery.parseJSON(request.responseText)
