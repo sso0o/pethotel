@@ -483,6 +483,34 @@ label { font-weight: 700; }
     transition: all 0.3s ease;
 }
 
+.tm-recommended-button-box {
+    background-color: #69c6ba;
+    background-image: url(../img/button-curve.png);
+    background-repeat: no-repeat;
+    background-size: auto 100%;
+    font-weight: 400;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -webkit-justify-content: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    padding-left: 20px;
+    width: 200px;
+    transition: all 0.3s ease;
+}
+
 .tm-recommended-price-box:hover { background-color: #c66995; }
 
 .tm-recommended-price {
@@ -490,6 +518,14 @@ label { font-weight: 700; }
     font-size: 1.6rem;
     font-weight: 600;
 }
+
+.tm-recommended-button {
+    color: white;
+    font-size: 1.6rem;
+    font-weight: 600;
+}
+
+
 
 .tm-recommended-price-link {
     color: white;

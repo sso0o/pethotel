@@ -113,6 +113,9 @@
       <!-- 탭 타이틀 시작 -->
       <ul class="nav nav-pills tm-tabs-links">
         <li class="tm-tab-link-li">
+          <a href="#0a" data-toggle="tab" class="tm-tab-link">결제 대기</a>
+        </li>
+        <li class="tm-tab-link-li">
           <a href="#1a" data-toggle="tab" class="tm-tab-link active">다가오는 예약</a>
         </li>
         <li class="tm-tab-link-li">
@@ -126,10 +129,10 @@
 
       <!-- 탭 컨텐트 시작 -->
       <div class="tab-content clearfix">
-        <!-- Tab 1 -->
-        <div class="tab-pane fade show active" id="1a">
-          <div class="tm-recommended-place-wrap" id="myBookingContainer-1">
-            <div th:each="booking : ${waitingBookings}"
+        <!-- Tab 0 -->
+        <div class="tab-pane fade show" id="0a">
+          <div class="tm-recommended-place-wrap" id="myBookingContainer-0">
+            <div th:each="booking : ${pendingPayment}"
                  th:id="'booking-' + ${booking.paymentId}"
                  class="tm-recommended-place mb-4"
                  style="width: fit-content; margin: auto;">
@@ -145,12 +148,44 @@
                   <i class="fa fa-paw" aria-hidden="true"></i> <span th:text="${booking.bookingPet}"></span> </p>
                 <p> 가격: <span th:text="${booking.totalPrice}"></span> 원</p>
               </div>
-              <div class="tm-recommended-price-box">
-                <p class="tm-recommended-price">$110</p>
-                <p class="tm-recommended-price-link">Continue Reading</p>
+              <div class="tm-recommended-button-box">
+                <button type="button" class="tm-recommended-button btn tm-btn btn-primary" id="btnCancel-1">예약취소</button>
+                <button type="button" class="tm-recommended-button btn tm-btn btn-primary" id="btnPayment">결제하기</button>
               </div>
             </div>
-            <div th:if="${waitingBookings.isEmpty()}" style="text-align: center;">
+            <div th:if="${pendingPayment.isEmpty()}" style="text-align: center;">
+              <img src="img/tourism.png" alt="여행자 아이콘 제작자: Freepik - Flaticon" class="img-fluid"
+                   style="max-width: 200px; margin: 30px;"
+                   title="여행자 아이콘 제작자: Freepik - Flaticon">
+              <!--              <a href="https://www.flaticon.com/kr/free-icons/" title="여행자 아이콘">여행자 아이콘 제작자: Freepik - Flaticon</a>-->
+              <p>예약이 없습니다.</p>
+            </div>
+          </div>
+        </div> <!-- tab-pane -->
+        <!-- Tab 1 -->
+        <div class="tab-pane fade show active" id="1a">
+          <div class="tm-recommended-place-wrap" id="myBookingContainer-1">
+            <div th:each="booking : ${paidBookings}"
+                 th:id="'booking-' + ${booking.paymentId}"
+                 class="tm-recommended-place mb-4"
+                 style="width: fit-content; margin: auto;">
+              <div class="tm-recommended-description-box">
+                <h3 class="tm-recommended-title" th:text="${booking.hotelName}">호텔 이름</h3>
+                <p> </p>
+                <p th:text="${booking.roomType}">객실 타입</p>
+                <p> 예약 일자:
+                  <span th:text="${booking.startDate}"></span> ~
+                  <span th:text="${booking.endDate}"></span>  총 <span th:text="${booking.totalDate}"></span> 일</p>
+                <p> 예약 인원:
+                  <i class="fa fa-user" aria-hidden="true"></i> <span th:text="${booking.bookingGuest}"></span> /
+                  <i class="fa fa-paw" aria-hidden="true"></i> <span th:text="${booking.bookingPet}"></span> </p>
+                <p> 가격: <span th:text="${booking.totalPrice}"></span> 원</p>
+              </div>
+              <div class="tm-recommended-button-box">
+                <button type="button" class="tm-recommended-button btn tm-btn btn-primary" id="btnCancel-2">예약취소</button>
+              </div>
+            </div>
+            <div th:if="${paidBookings.isEmpty()}" style="text-align: center;">
               <img src="img/tourism.png" alt="여행자 아이콘 제작자: Freepik - Flaticon" class="img-fluid"
                    style="max-width: 200px; margin: 30px;"
                    title="여행자 아이콘 제작자: Freepik - Flaticon">
@@ -161,7 +196,7 @@
         </div> <!-- tab-pane -->
         <!-- Tab 2 -->
         <div class="tab-pane fade" id="2a">
-          <div th:each="booking : ${paidBookings}"
+          <div th:each="booking : ${completedBookings}"
                th:id="'booking-' + ${booking.paymentId}"
                class="tm-recommended-place mb-4"
                style="width: fit-content; margin: auto;">
@@ -177,12 +212,11 @@
                 <i class="fa fa-paw" aria-hidden="true"></i> <span th:text="${booking.bookingPet}"></span> </p>
               <p> 가격: <span th:text="${booking.totalPrice}"></span> 원</p>
             </div>
-            <div class="tm-recommended-price-box">
-              <p class="tm-recommended-price">$110</p>
-              <p class="tm-recommended-price-link">Continue Reading</p>
+            <div class="tm-recommended-button-box">
+              <button type="button" class="tm-recommended-button btn tm-btn btn-primary" id="btnReview">리뷰작성</button>
             </div>
           </div>
-          <div th:if="${paidBookings.isEmpty()}" style="text-align: center;">
+          <div th:if="${completedBookings.isEmpty()}" style="text-align: center;">
             <img src="img/tourism.png" alt="여행자 아이콘 제작자: Freepik - Flaticon" class="img-fluid"
                  style="max-width: 200px; margin: 30px;"
                  title="여행자 아이콘 제작자: Freepik - Flaticon">
@@ -193,7 +227,7 @@
         <!-- Tab 3 -->
         <div class="tab-pane fade" id="3a">
           <div class="tm-recommended-place-wrap" id="myBookingContainer-3">
-            <div th:each="booking : ${cancelBookings}"
+            <div th:each="booking : ${canceledBookings}"
                  th:id="'booking-' + ${booking.paymentId}"
                  class="tm-recommended-place mb-4"
                  style="width: fit-content; margin: auto;">
@@ -214,7 +248,7 @@
                 <p class="tm-recommended-price-link">Continue Reading</p>
               </div>
             </div>
-            <div th:if="${cancelBookings.isEmpty()}" style="text-align: center;">
+            <div th:if="${canceledBookings.isEmpty()}" style="text-align: center;">
               <img src="img/tourism.png" alt="여행자 아이콘 제작자: Freepik - Flaticon" class="img-fluid"
                    style="max-width: 200px; margin: 30px;"
                    title="여행자 아이콘 제작자: Freepik - Flaticon">
@@ -302,7 +336,14 @@
         });
 
 
-        loadMyBooking();
+        $('#btnCancel-1, #btnCancel-2').on('click', function(){
+            let confirmation = confirm("예약을 취소하시겠습니까?");
+            if (confirmation) {
+                // 사용자가 '확인'을 클릭한 경우
+            }
+
+
+        })
 
 
 

@@ -65,12 +65,16 @@ public class HotelViewController {
         User user = (User) authentication.getPrincipal();
         Long userId = user.getId();
 
-        List<Map<String, Object>> paidBookings = bookingService.findByUserid(userId, "paid");
-        List<Map<String, Object>> waitingBookings = bookingService.findByUserid(userId, "Success");
-        List<Map<String, Object>> cancelBookings = bookingService.findByUserid(userId, "cancel");
+        List<Map<String, Object>> pendingPayment = bookingService.findPendingOrCancelByUserid(userId, "Booking");
+        List<Map<String, Object>> paidBookings = bookingService.findPaidOrCompleteByUserid(userId, "paid");
+        List<Map<String, Object>> completedBookings = bookingService.findPaidOrCompleteByUserid(userId, "Success");
+        List<Map<String, Object>> canceledBookings = bookingService.findPendingOrCancelByUserid(userId, "Cancel");
+
+
+        model.addAttribute("pendingPayment", pendingPayment);
         model.addAttribute("paidBookings", paidBookings);
-        model.addAttribute("waitingBookings", waitingBookings);
-        model.addAttribute("cancelBookings", cancelBookings);
+        model.addAttribute("completedBookings", completedBookings);
+        model.addAttribute("canceledBookings", canceledBookings);
         return "myBooking/myBooking";
     }
 
