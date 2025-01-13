@@ -96,5 +96,13 @@ public class Booking {
         this.roomDetailId = roomDetailId;
     }
 
+    public void update(int totalPrice) {
+        this.totalPrice = totalPrice;
+    }
+
+    public void updateCancel(String cancel) {
+        this.payChk = cancel;
+    }
+
 
 }

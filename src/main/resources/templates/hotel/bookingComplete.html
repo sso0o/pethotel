@@ -201,26 +201,26 @@
         let payResult = $('#payResult');
         let resultCode = payResult.data('result-code');
 
-        // if ($('#booking').length > 0) {
-        //     let data = JSON.stringify({
-        //         paymentId: payResult.data('payment-id'),
-        //         payChk: resultCode
-        //     })
-        //
-        //     $.ajax({
-        //         url: '/booking/paymentChk/'+$('#booking').data('booking-id'),
-        //         type: "PUT",
-        //         contentType: "application/json",
-        //         data: data,
-        //         success: function(response) {
-        //             location.href = "/booking/complete";
-        //         },
-        //         error: function (request, status, error) {
-        //             let result = jQuery.parseJSON(request.responseText)
-        //             alert(result.msg);
-        //         }
-        //     })
-        // }
+        if ($('#booking').length > 0) {
+            let data = JSON.stringify({
+                paymentId: payResult.data('payment-id'),
+                payChk: resultCode
+            })
+
+            $.ajax({
+                url: '/booking/paymentChk/'+$('#booking').data('booking-id'),
+                type: "PUT",
+                contentType: "application/json",
+                data: data,
+                success: function(response) {
+                    location.href = "/booking/complete";
+                },
+                error: function (request, status, error) {
+                    let result = jQuery.parseJSON(request.responseText)
+                    alert(result.msg);
+                }
+            })
+        }
 
         $('#btnLogout').on('click', function() {
             let myModal = new bootstrap.Modal(document.getElementById('logoutModal'));

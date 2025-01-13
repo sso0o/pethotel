@@ -66,8 +66,8 @@ public class HotelViewController {
         Long userId = user.getId();
 
         List<Map<String, Object>> pendingPayment = bookingService.findPendingOrCancelByUserid(userId, "Booking");
-        List<Map<String, Object>> paidBookings = bookingService.findPaidOrCompleteByUserid(userId, "paid");
-        List<Map<String, Object>> completedBookings = bookingService.findPaidOrCompleteByUserid(userId, "Success");
+        List<Map<String, Object>> paidBookings = bookingService.findPaidOrCompleteByUserid(userId, "Success");
+        List<Map<String, Object>> completedBookings = bookingService.findPaidOrCompleteByUserid(userId, "Completed");
         List<Map<String, Object>> canceledBookings = bookingService.findPendingOrCancelByUserid(userId, "Cancel");
 
 

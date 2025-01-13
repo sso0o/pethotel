@@ -33,6 +33,14 @@ public class BookingService {
         return bookingRepository.save(booking);
     }
 
+    @Transactional
+    public Booking updateCancel(UUID bookingId, String cancel) {
+        Booking booking = bookingRepository.findById(bookingId)
+                .orElseThrow(() -> new IllegalArgumentException("not found: " + bookingId));
+        booking.updateCancel(cancel);
+        return bookingRepository.save(booking);
+    }
+
 
     public Booking findById(UUID bookingId) {
         return bookingRepository.findById(bookingId)

@@ -149,8 +149,9 @@
                 <p> 가격: <span th:text="${booking.totalPrice}"></span> 원</p>
               </div>
               <div class="tm-recommended-button-box">
-                <button type="button" class="tm-recommended-button btn tm-btn btn-primary" id="btnCancel-1">예약취소</button>
-                <button type="button" class="tm-recommended-button btn tm-btn btn-primary" id="btnPayment">결제하기</button>
+                <button type="button" class="tm-recommended-button btn tm-btn btn-primary" th:onclick="cancelBooking([[${booking.bookingId}]])" >예약취소</button>
+                <button type="button" class="tm-recommended-button btn tm-btn btn-primary"
+                        th:onclick="paymentBooking([[${booking.bookingId}]])">결제하기</button>
               </div>
             </div>
             <div th:if="${pendingPayment.isEmpty()}" style="text-align: center;">
@@ -182,7 +183,7 @@
                 <p> 가격: <span th:text="${booking.totalPrice}"></span> 원</p>
               </div>
               <div class="tm-recommended-button-box">
-                <button type="button" class="tm-recommended-button btn tm-btn btn-primary" id="btnCancel-2">예약취소</button>
+                <button type="button" class="tm-recommended-button btn tm-btn btn-primary"  th:onclick="cancelBooking([[${booking.bookingId}]])" >예약취소</button>
               </div>
             </div>
             <div th:if="${paidBookings.isEmpty()}" style="text-align: center;">
@@ -302,6 +303,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-scrollTo/2.1.3/jquery.scrollTo.min.js"></script>
 
 <!-- Page level plugins -->
+<!-- 결제관련 api -->
+<script src="https://nsp.pay.naver.com/sdk/js/naverpay.min.js"></script>
 
 
 <script>
@@ -336,16 +339,46 @@
         });
 
 
-        $('#btnCancel-1, #btnCancel-2').on('click', function(){
-            let confirmation = confirm("예약을 취소하시겠습니까?");
-            if (confirmation) {
-                // 사용자가 '확인'을 클릭한 경우
-            }
-        })
+        // $('#btnCancel-1, #btnCancel-2').on('click', function(){
+        //     let confirmation = confirm("예약을 취소하시겠습니까?");
+        //     if (confirmation) {
+        //         // 사용자가 '확인'을 클릭한 경우
+        //     }
+        // })
 
-        $('#btnPayment').on('click', function(){
 
-        })
+
+        // $('#btnPayment').on('click', function(){
+        //     $.ajax({
+        //         url: '/mybooking/' + bookingId.toString(),
+        //         type: 'get',
+        //         success: function (data) {
+        //             oPay.open({
+        //                 "merchantPayKey": "20241207WWKEnn",
+        //                 // "productName": hotelDetail.data('hotel-name')+" - "+roomDetail.data('room-type'),
+        //                 "productName": "test",
+        //                 "productCount": "1",
+        //                 "totalPayAmount": "1000",
+        //                 "taxScopeAmount": "1000",
+        //                 "taxExScopeAmount": "0",
+        //                 "returnUrl": "http://localhost:8081/booking/complete?bookingId="+bookingId.toString(),
+        //             });
+        //         },
+        //         error: function (request, status, error) {
+        //             let result = jQuery.parseJSON(request.responseText);
+        //             alert(result.msg);
+        //         }
+        //     })
+        //     // oPay.open({
+        //     //     "merchantPayKey": "20241207WWKEnn",
+        //     //     "productName": hotelDetail.data('hotel-name')+" - "+roomDetail.data('room-type'),
+        //     //     "productCount": "1",
+        //     //     "totalPayAmount": roomDetail.data('room-price')*dayDiff,
+        //     //     "taxScopeAmount": roomDetail.data('room-price')*dayDiff,
+        //     //     "taxExScopeAmount": "0",
+        //     //     "returnUrl": "http://localhost:8081/booking/complete?bookingId="+data.booking.bookingId.toString(),
+        //     // });
+        // })
 
 
 

@@ -79,7 +79,7 @@ public interface BookingRepository extends JpaRepository<Booking, UUID> {
 
 
 
-    @Query(value = "SELECT  " +
+    @Query(value = "SELECT  b.bookingId AS bookingId, " +
             " b.createdAt AS bookingDate, h.hotelName AS hotelName, b.hotelId AS hotelId, r.roomType AS roomType, b.roomId AS roomId, " +
             " b.bookingGuest AS bookingGuest,  b.bookingPet AS bookingPet, b.startDate AS startDate, b.endDate AS endDate, " +
             " b.totalPrice AS totalPrice, b.totalDate AS totalDate, " +
@@ -92,7 +92,7 @@ public interface BookingRepository extends JpaRepository<Booking, UUID> {
             "and b.payChk = :payChk")
     List<Map<String, Object>> findPaidOrCompleteByUserid(Long userid, String payChk);
 
-    @Query(value = "SELECT  " +
+    @Query(value = "SELECT  b.bookingId AS bookingId, " +
             " b.createdAt AS bookingDate, h.hotelName AS hotelName, b.hotelId AS hotelId, r.roomType AS roomType, b.roomId AS roomId, " +
             " b.bookingGuest AS bookingGuest,  b.bookingPet AS bookingPet, b.startDate AS startDate, b.endDate AS endDate, " +
             " b.totalPrice AS totalPrice, b.totalDate AS totalDate, " +
