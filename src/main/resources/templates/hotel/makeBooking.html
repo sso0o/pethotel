@@ -52,10 +52,11 @@
      th:data-hotel-id="${hotel.hotelId}"
      th:data-hotel-name="${hotel.hotelName}">
 </div>
-
 <div id="user"
       th:data-user-id="${#authentication.principal.id}"
      th:data-user-name="${#authentication.principal.username}">
+</div>
+<div id="searchData">
 </div>
 
 <!-- .main-content 시작-->
@@ -196,39 +197,32 @@
         let hotelDetail = $('#hotel');
         let user = $('#user');
 
-        let searchData = JSON.parse(sessionStorage.getItem('searchData'));
-        let checkInDate = new Date(searchData.checkIn);  // 체크인 날짜
-        let checkOutDate = new Date(searchData.checkOut);  // 체크아웃 날짜
-
-        let timeDiff = checkOutDate.getTime() - checkInDate.getTime();
-        let dayDiff = timeDiff / (1000 * 3600 * 24);  // 밀리초를 일수로 변환
-
         let oPay = Naver.Pay.create({
             "mode" : "development", // development or production
             "clientId": "HN3GGCMDdTgGUfl0kFCo", // clientId
             "chainId": "Wms3cFptanlpSjR" // chainId
         });
 
-
-        let btnBooking = $('#btnBooking');
-        btnBooking.click(function () {
+        $('#btnBooking').on('click', function(){
+            let searchData = JSON.parse(sessionStorage.getItem('searchData'));
+            let data = JSON.stringify({
+                userId: user.data('user-id'),
+                roomId: roomDetail.data('room-id'),
+                hotelId: hotelDetail.data('hotel-id'),
+                checkIn: searchData.checkIn,
+                checkOut: searchData.checkOut,
+                guest: searchData.guest,
+                pet: searchData.pet,
+                totalPrice: roomDetail.data('room-price')*searchData.dateDiff,
+                totalDate: searchData.dateDiff,
+                payChk: "Booking",
+                room: searchData.room
+            })
             $.ajax({
                 url: '/booking/saveBookingData',
                 type: 'post',
                 contentType: 'application/json',
-                data: JSON.stringify({
-                    userId: user.data('user-id'),
-                    roomId: roomDetail.data('room-id'),
-                    hotelId: hotelDetail.data('hotel-id'),
-                    checkIn: searchData.checkIn,
-                    checkOut: searchData.checkOut,
-                    guest: searchData.guest,
-                    pet: searchData.pet,
-                    totalPrice: roomDetail.data('room-price')*dayDiff,
-                    totalDate: dayDiff,
-                    payChk: 'Booking',
-                    room: searchData.room
-                }),
+                data: data,
                 success: function (data) {
                     // console.log(data.booking);
                     location.href = "/booking/complete?bookingId="+data.booking.bookingId.toString();
@@ -247,9 +241,8 @@
                     alert(result.msg);
                 }
             })
+        })
 
-
-        });
 
         $('#btnLogout').on('click', function() {
             let myModal = new bootstrap.Modal(document.getElementById('logoutModal'));

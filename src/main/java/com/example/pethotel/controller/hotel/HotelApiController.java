@@ -153,14 +153,15 @@ public class HotelApiController {
     // 호텔 검색조건 저장
     @PostMapping("/hotel/saveSearchOption")
     public ResponseEntity saveSearchOption(HttpSession session, @RequestBody SearchHotelRequest req){
+        req.calculateDateDiff();
         session.setAttribute("searchData", req);
         return ResponseEntity.ok().body(req);
     }
 
     // 예약조건 저장
     @PostMapping("/booking/saveBookingData")
-    public ResponseEntity saveBookingData(HttpSession session, @RequestBody AddBookingRequest req){
-        HashMap<Object, Object> resultMap = new HashMap<>();
+    public ResponseEntity saveBookingData(@RequestBody AddBookingRequest req){
+                HashMap<Object, Object> resultMap = new HashMap<>();
         Booking booking = bookingService.save(req);
         resultMap.put("booking", booking);
         return ResponseEntity.ok().body(resultMap);

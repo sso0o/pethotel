@@ -89,6 +89,7 @@ public class HotelViewController {
     public String makeBookingPage(@PathVariable Long roomId, Model model) {
         Room room = roomService.findById(roomId);
         Hotel hotel = hotelService.findById(room.getHotel().getHotelId());
+
         model.addAttribute("room", room);
         model.addAttribute("hotel", hotel);
         return "hotel/makeBooking";
