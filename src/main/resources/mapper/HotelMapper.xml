@@ -53,8 +53,8 @@
             SELECT v.roomdetail_id
             FROM vw_paid_booking v
             WHERE v.payment_id IS NOT NULL
+            AND v.roomdetail_id IS NOT NULL
             AND (v.start_date < #{checkOut} AND v.end_date > #{checkIn})
-
             )
         GROUP BY h.hotel_id, h.hotel_name, h.hotel_type, h.hotel_info
         HAVING COUNT(d.roomdetail_id) >= #{room}
