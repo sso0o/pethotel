@@ -387,16 +387,18 @@ public class ManagerApiController {
             resultMap.put("msg", "중복된 일자가 있습니다");
         }else{
             booking = bookingService.updateRoomDetailId(bookingId, roomDetailId);
-            Map<String, Object> paymentResult = paymentService.nPayProgress(booking.getPaymentId());
-            if(paymentResult.get("code").equals("Success")){
-                bookingService.updatePaycheck(bookingId, "paid", booking.getPaymentId());
-                resultMap.put("booking", booking);
-                resultMap.put("msg", "요청 성공");
-            }else if (paymentResult.get("code").equals("TimeExpired")){
-                resultMap.put("msg", paymentResult.get("message"));
-            }
+            bookingService.updatePaycheck(bookingId, "Complete", booking.getPaymentId());
+            resultMap.put("msg", "요청 성공");
+//            Map<String, Object> paymentResult = paymentService.nPayProgress(booking.getPaymentId());
+//            if(paymentResult.get("code").equals("Success")){
+//                bookingService.updatePaycheck(bookingId, "paid", booking.getPaymentId());
+//                resultMap.put("booking", booking);
+//                resultMap.put("msg", "요청 성공");
+//            }else if (paymentResult.get("code").equals("TimeExpired")){
+//                resultMap.put("msg", paymentResult.get("message"));
+//            }
 
-            resultMap.put("paymentResult", paymentResult);
+//            resultMap.put("paymentResult", paymentResult);
         }
 
         return ResponseEntity.ok().body(resultMap);
