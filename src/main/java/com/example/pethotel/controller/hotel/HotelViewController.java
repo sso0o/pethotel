@@ -6,6 +6,7 @@ import com.example.pethotel.service.BookingService;
 import com.example.pethotel.service.HotelService;
 import com.example.pethotel.service.RoomService;
 import com.example.pethotel.service.admin.CommonCodeService;
+import com.example.pethotel.service.payment.PaymentService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -27,6 +28,8 @@ public class HotelViewController {
     private final RoomService roomService;
     private final BookingService bookingService;
     private final CommonCodeService commonCodeService;
+
+    private final PaymentService paymentService;
 
     @GetMapping("/hotel")
     public String showHotelPage(HttpSession session, Model model) {
@@ -66,7 +69,7 @@ public class HotelViewController {
         Long userId = user.getId();
 
         List<Map<String, Object>> pendingPayment = bookingService.findPendingOrCancelByUserid(userId, "Booking");
-        List<Map<String, Object>> paidBookings = bookingService.findPaidOrCompleteByUserid(userId, "Success");
+        List<Map<String, Object>> paidBookings = bookingService.findPaidOrCompleteByUserid(userId, "Paid");
         List<Map<String, Object>> completedBookings = bookingService.findPaidOrCompleteByUserid(userId, "Completed");
         List<Map<String, Object>> canceledBookings = bookingService.findPendingOrCancelByUserid(userId, "Cancel");
 
@@ -98,11 +101,21 @@ public class HotelViewController {
 
     @GetMapping("/booking/complete")
     public String bookingCompletePage(@RequestParam(required = false) String bookingId, @RequestParam(required = false) String resultCode,
-                                      @RequestParam(required = false) String resultMessage, @RequestParam(required = false) String reserveId,
-                                      @RequestParam(required = false) String paymentId, Model model){
-        if(bookingId!= null){
+                                      @RequestParam(required = false) String resultMessage, @RequestParam(required = false) String paymentId, Model model){
+
+        if(bookingId!= null && resultCode == null){
             Booking booking = bookingService.findById(UUID.fromString(bookingId));
+            Hotel hotel = hotelService.findById(booking.getHotelId());
+            Room room = roomService.findById(booking.getRoomId());
             model.addAttribute("booking", booking);
+            model.addAttribute("hotel", hotel);
+            model.addAttribute("room", room);
+        }
+
+        if(resultCode != null && resultCode.equals("Success")) {
+            //결제 승인 처리
+            Map<String, Object> paymentResult = paymentService.nPayProgress(paymentId);
+            bookingService.updatePaycheck(UUID.fromString(bookingId), "Paid", paymentId);
         }
         model.addAttribute("bookingId", bookingId);
         model.addAttribute("resultCode", resultCode);

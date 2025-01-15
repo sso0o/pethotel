@@ -29,8 +29,36 @@
 
   <!-- Templatemo style -->
   <link rel="stylesheet" href="/css/templatemo-style.css">
+  <link rel="stylesheet" href="/hotel/bookingComplete.css">
+  <script src="/hotel/bookingComplete.js"></script>
 
   <style>
+      /* 나눔스퀘어 폰트 적용 */
+      @import url('https://cdn.rawgit.com/moonspam/NanumSquare/master/nanumsquare.css');
+
+      /* 나눔스퀘어 네오 */
+      @font-face {
+          font-family: 'NanumSquareNeo-Variable-normal';
+          src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_11-01@1.0/NanumSquareNeo-Variable.woff2') format('woff2');
+          font-weight: normal;
+          font-style: normal;
+      }
+      @font-face {
+          font-family: 'NanumSquareNeo-Variable-bold';
+          src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_11-01@1.0/NanumSquareNeo-Variable.woff2') format('woff2');
+          font-weight: bold;
+          font-style: normal;
+      }
+
+      .pending-box {
+          font-family: 'NanumSquareNeo-Variable-normal', sans-serif;
+      }
+
+      /*.pending-box h2 {*/
+      /*    font-family: 'NanumSquareNeo-Variable-bold', sans-serif;*/
+      /*}*/
+
+
   </style>
 </head>
 
@@ -42,7 +70,6 @@
 
 <div id="booking"
      th:if="${booking != null}"
-     th:data-booking="${booking}"
      th:data-booking-id="${booking.bookingId}"
      th:data-booking-room-id="${booking.roomId}"
      th:data-booking-hotel-id="${booking.hotelId}"
@@ -52,16 +79,24 @@
      th:data-booking-total-price="${booking.totalPrice}"
      th:data-booking-total-date="${booking.totalDate}">
 </div>
-
+<div id="room"
+     th:if="${room != null}"
+     th:data-room-type="${room.roomType}">
+</div>
+<div id="hotel"
+     th:if="${hotel != null}"
+     th:data-hotel-name="${hotel.hotelName}">
+</div>
 <div id="user"
      th:data-user-id="${#authentication.principal.id}"
      th:data-user-name="${#authentication.principal.username}">
+</div>
+<div id="searchData">
 </div>
 
 
 <!-- .main-content 시작-->
 <div class="tm-main-content">
-
   <div class="tm-top-bar-bg"></div>
   <!-- navbar 시작 -->
   <div class="tm-top-bar" id="tm-top-bar">
@@ -122,26 +157,53 @@
   <!-- 본문 시작 -->
   <div class="tm-page-wrap mx-auto justify-content-center">
     <div class="tm-container-outer">
-      <div class="container">
-        <!-- Page Content -->
-        <div class="p-5">
-          <div class="content-box p-4">
-            <div class="content-box-main" id="result-container">
-              <p th:text="${resultMessage}"></p>
+      <div class="container pt-3 pb-3">
+        <div class="booking-complete-container" style="text-align: center;">
+          <div class="pending-box" th:if="${booking != null}">
+            <h2 style="font-family: 'NanumSquareNeo-Variable-bold', sans-serif;">예약 완료!</h2>
+            <hr>
+            <h3>결제 대기</h3>
+            <br/>
+            <h3 th:text="${hotel.hotelName}"></h3>
+            <h3><span th:text="${room.roomType}"></span> - <span th:text="${booking.totalDate}"></span>박</h3>
+            <br/>
+            <div class="row justify-content-center">
+              <div class="col-3">
+                <h5>체크인</h5>
+              </div>
+              <div class="col-3">
+                <h5 th:text="${booking.startDate}"></h5>
+              </div>
             </div>
-            <hr/>
-            <div class="content-box-bottom" style="display: flex">
-              <button type="button" class="btn btn-primary tm-btn " id="btnHome" > 홈으로</button>
-              <button type="button" class="btn btn-primary tm-btn " id="btnMybooking" > 예약 확인</button>
+            <div class="row justify-content-center">
+              <div class="col-3">
+                <h5>체크아웃</h5>
+              </div>
+              <div class="col-3">
+                <h5 th:text="${booking.endDate}"></h5>
+              </div>
+            </div>
+            <div class="row justify-content-center">
+              <div class="col-6">
+                <h4>총 금액</h4>
+                <h5 style="font-family: 'NanumSquareNeo-Variable-bold', sans-serif; color: red">
+                  <span th:text="${#numbers.formatInteger(booking.totalPrice, 0, 'COMMA')}"></span>원
+
+                </h5>
+                <hr>
+                <!-- 이미지 클릭 후 결제 페이지로 이동 -->
+                <img src="/img/btn_npay.svg" alt="결제 이미지" id="paymentImage" style="cursor: pointer;">
+              </div>
             </div>
           </div>
-
-
+          <div class="success-box" th:if="${resultCode == 'Success'}">
+            <h2 style="font-family: 'NanumSquareNeo-Variable-bold', sans-serif;">결제 완료!</h2>
+            <button type="button" class="btn btn-primary tm-btn " id="btnHome" > 홈으로</button>
+            <button type="button" class="btn btn-primary tm-btn " id="btnMybooking" > 예약 확인</button>
+          </div>
         </div>
-      </div>  <!-- .container -->
-    </div>     <!-- .tm-container-outer -->
-
-
+      </div>
+    </div>
 
     <footer class="tm-container-outer">
       <p class="mb-0">Copyright © <span class="tm-current-year">2018</span> Your Company
@@ -190,6 +252,26 @@
 
     $(function () {
 
+        $('#paymentImage').click(function () {
+            let room = $('#room');
+            let hotel = $('#hotel');
+            let booking = $('#booking');
+            let oPay = Naver.Pay.create({
+                "mode" : "development", // development or production
+                "clientId": "HN3GGCMDdTgGUfl0kFCo", // clientId
+                "chainId": "Wms3cFptanlpSjR" // chainId
+            });
+            oPay.open({
+                "merchantPayKey": "20241207WWKEnn",
+                "productName": hotel.data('hotel-name')+" - "+room.data('room-type'),
+                "productCount": "1",
+                "totalPayAmount": booking.data('booking-total-price'),
+                "taxScopeAmount": booking.data('booking-total-price'),
+                "taxExScopeAmount": "0",
+                "returnUrl": "http://localhost:8081/booking/complete?bookingId="+booking.data('booking-id').toString(),
+            });
+        })
+
         $('#btnHome').click(function () {
             location.href = "/";
         })
@@ -201,26 +283,21 @@
         let payResult = $('#payResult');
         let resultCode = payResult.data('result-code');
 
-        if ($('#booking').length > 0) {
-            let data = JSON.stringify({
-                paymentId: payResult.data('payment-id'),
-                payChk: resultCode
-            })
-
-            $.ajax({
-                url: '/booking/paymentChk/'+$('#booking').data('booking-id'),
-                type: "PUT",
-                contentType: "application/json",
-                data: data,
-                success: function(response) {
-                    location.href = "/booking/complete";
-                },
-                error: function (request, status, error) {
-                    let result = jQuery.parseJSON(request.responseText)
-                    alert(result.msg);
-                }
-            })
-        }
+        //
+        //     $.ajax({
+        //         url: '/booking/paymentChk/'+$('#booking').data('booking-id'),
+        //         type: "PUT",
+        //         contentType: "application/json",
+        //         data: data,
+        //         success: function(response) {
+        //             location.href = "/booking/complete";
+        //         },
+        //         error: function (request, status, error) {
+        //             let result = jQuery.parseJSON(request.responseText)
+        //             alert(result.msg);
+        //         }
+        //     })
+        // }
 
         $('#btnLogout').on('click', function() {
             let myModal = new bootstrap.Modal(document.getElementById('logoutModal'));

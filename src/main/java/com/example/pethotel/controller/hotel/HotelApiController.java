@@ -161,7 +161,7 @@ public class HotelApiController {
     // 예약조건 저장
     @PostMapping("/booking/saveBookingData")
     public ResponseEntity saveBookingData(@RequestBody AddBookingRequest req){
-                HashMap<Object, Object> resultMap = new HashMap<>();
+        HashMap<Object, Object> resultMap = new HashMap<>();
         Booking booking = bookingService.save(req);
         resultMap.put("booking", booking);
         return ResponseEntity.ok().body(resultMap);
