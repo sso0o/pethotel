@@ -26,7 +26,7 @@ public interface BookingRepository extends JpaRepository<Booking, UUID> {
             "FROM Booking b " +
             "left join Room r on b.roomId = r.roomId " +
             "WHERE b.hotelId = :hotelId " +
-            "AND b.payChk = 'Success' " +
+            "AND b.payChk = 'Paid' " +
             "AND b.paymentId IS NOT NULL")
     List<HotelRequestResponse> findAllByHotelIdAndPayChk(Long hotelId);
 
