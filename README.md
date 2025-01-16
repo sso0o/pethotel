@@ -16,7 +16,7 @@
 * 회원
   * 가입 / 정보 수정 / 탈퇴 
   * 숙소 검색 / 예약 / 결제 / 취소
-  * 리뷰 등록 / 수정 / 삭제
+  * _리뷰 등록 / 수정 / 삭제 (개발 예정)_
 
   
 * 숙소 관리자
@@ -41,8 +41,9 @@
 9. HotelFacilities
 10. RoomFeatures
 11. RoomAmenities
-12. Review
-13. ReviewImg
+12. Payment
+13. _Review_
+14. _ReviewImg_
 
 뷰
 1. VwPaidBooking
