@@ -184,7 +184,8 @@
       <!-- Begin Page Content -->
       <div class="container-fluid">
         <!-- DataTales Example -->
-        <div class="row" style="height: 50vh;">
+<!--        <div class="row" style="height: 50vh;">-->
+        <div class="row">
           <div class="col-12" style="height: 100%;">
             <div class="card shadow mb-4" style="height: 100%;">
               <div class="card-header py-3">
@@ -214,63 +215,63 @@
             </div>
           </div>
         </div>
-        <div class="row" style="height: 50vh;">
-          <div class="col-6" style="height: 100%;">
-            <div class="card shadow mb-4" style="height: 100%;">
-              <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">호텔 예약 현황</h6>
-              </div>
-              <div class="card-body">
-                <form id="hotelFacilityForm">
-                  <div class="form-group">
-<!--                    <div id="facilities" class="d-flex flex-wrap">-->
-<!--                      &lt;!&ndash; 시설 목록을 타임리프 반복문으로 칩 형식으로 표시 &ndash;&gt;-->
-<!--                      <div th:each="hfc : ${HFC}"-->
-<!--                           class="chip"-->
-<!--                           th:data-code="${hfc.code}"-->
-<!--                           th:text="${hfc.codeName}">-->
-<!--                      </div>-->
-<!--                      &lt;!&ndash; 선택된 시설들 &ndash;&gt;-->
-<!--                      <input type="hidden" name="selectedChips" id="selectedChips">-->
+<!--        <div class="row" style="height: 50vh;">-->
+<!--          <div class="col-6" style="height: 100%;">-->
+<!--            <div class="card shadow mb-4" style="height: 100%;">-->
+<!--              <div class="card-header py-3">-->
+<!--                <h6 class="m-0 font-weight-bold text-primary">호텔 예약 현황</h6>-->
+<!--              </div>-->
+<!--              <div class="card-body">-->
+<!--                <form id="hotelFacilityForm">-->
+<!--                  <div class="form-group">-->
+<!--&lt;!&ndash;                    <div id="facilities" class="d-flex flex-wrap">&ndash;&gt;-->
+<!--&lt;!&ndash;                      &lt;!&ndash; 시설 목록을 타임리프 반복문으로 칩 형식으로 표시 &ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;                      <div th:each="hfc : ${HFC}"&ndash;&gt;-->
+<!--&lt;!&ndash;                           class="chip"&ndash;&gt;-->
+<!--&lt;!&ndash;                           th:data-code="${hfc.code}"&ndash;&gt;-->
+<!--&lt;!&ndash;                           th:text="${hfc.codeName}">&ndash;&gt;-->
+<!--&lt;!&ndash;                      </div>&ndash;&gt;-->
+<!--&lt;!&ndash;                      &lt;!&ndash; 선택된 시설들 &ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;                      <input type="hidden" name="selectedChips" id="selectedChips">&ndash;&gt;-->
 
-<!--                    </div>-->
-                  </div>
-                </form>
-              </div>
-                그래프나 차트 삽입 예정
-            </div>
-          </div>
-          <div class="col-6" style="height: 100%;">
-            <div class="card shadow mb-4" style="height: 100%;">
-              <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">호텔 사진 관리</h6>
-              </div>
-              <div class="card-body">
-                <form id="hotelImgForm" enctype="multipart/form-data" class="mb-3">
-                  <label class="form-label" for="hotelPhotos"></label>
-                  <div style="display: flex;">
-                    <input type="file" class="form-control" id="hotelPhotos" name="hotelPhotos" style="width: 90%;"
-                           multiple/>
-                    <button type="submit" class="btn btn-primary ms-2 w-auto" style="width: 10%;">add</button>
-                  </div>
-                </form>
-                <div class="table-responsive">
-                  <table class="table table-bordered table-hover" id="tabHotelImg" width="100%" cellspacing="0">
-                    <thead>
-                    <tr>
-                      <th>사진 리스트</th>
-                    </tr>
-                    </thead>
-                    <tfoot>
-                    </tfoot>
-                    <tbody>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+<!--&lt;!&ndash;                    </div>&ndash;&gt;-->
+<!--                  </div>-->
+<!--                </form>-->
+<!--              </div>-->
+<!--                그래프나 차트 삽입 예정-->
+<!--            </div>-->
+<!--          </div>-->
+<!--          <div class="col-6" style="height: 100%;">-->
+<!--            <div class="card shadow mb-4" style="height: 100%;">-->
+<!--              <div class="card-header py-3">-->
+<!--                <h6 class="m-0 font-weight-bold text-primary">호텔 사진 관리</h6>-->
+<!--              </div>-->
+<!--              <div class="card-body">-->
+<!--                <form id="hotelImgForm" enctype="multipart/form-data" class="mb-3">-->
+<!--                  <label class="form-label" for="hotelPhotos"></label>-->
+<!--                  <div style="display: flex;">-->
+<!--                    <input type="file" class="form-control" id="hotelPhotos" name="hotelPhotos" style="width: 90%;"-->
+<!--                           multiple/>-->
+<!--                    <button type="submit" class="btn btn-primary ms-2 w-auto" style="width: 10%;">add</button>-->
+<!--                  </div>-->
+<!--                </form>-->
+<!--                <div class="table-responsive">-->
+<!--                  <table class="table table-bordered table-hover" id="tabHotelImg" width="100%" cellspacing="0">-->
+<!--                    <thead>-->
+<!--                    <tr>-->
+<!--                      <th>사진 리스트</th>-->
+<!--                    </tr>-->
+<!--                    </thead>-->
+<!--                    <tfoot>-->
+<!--                    </tfoot>-->
+<!--                    <tbody>-->
+<!--                    </tbody>-->
+<!--                  </table>-->
+<!--                </div>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </div>-->
       </div>
       <!-- /.container-fluid    -->
     </div>
