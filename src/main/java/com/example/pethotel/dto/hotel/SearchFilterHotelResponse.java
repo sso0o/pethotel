@@ -10,19 +10,21 @@ public class SearchFilterHotelResponse {
     private String hotelInfo;
     private Integer maxPrice;
     private Integer minPrice;
-    private Long roomCount;
+//    private Long roomCount;
     private String hotelFacilities;
 
     // Constructor
     public SearchFilterHotelResponse(Long hotelId, String hotelName, String hotelType, String hotelInfo,
-                               Integer maxPrice, Integer minPrice, Long roomCount, String hotelFacilities) {
+                               Integer maxPrice, Integer minPrice,
+//                                     Long roomCount,
+                                     String hotelFacilities) {
         this.hotelId = hotelId;
         this.hotelName = hotelName;
         this.hotelType = hotelType;
         this.hotelInfo = hotelInfo;
         this.maxPrice = maxPrice;
         this.minPrice = minPrice;
-        this.roomCount = roomCount;
+//        this.roomCount = roomCount;
         this.hotelFacilities = hotelFacilities;
     }
 }

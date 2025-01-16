@@ -2,6 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.example.pethotel.mapper.RoomMapper">
+
     <select id="findAvailableRoomList" resultType="com.example.pethotel.dto.hotel.SearchHotelRoomResponse">
         SELECT hotel_id             AS hotelId,
                r.room_id            AS roomId,
@@ -16,23 +17,53 @@
                count(roomdetail_id) AS roomCount
         FROM room r
         INNER JOIN roomdetail d ON r.room_id = d.room_id
+        <![CDATA[
         WHERE r.hotel_id = #{hotelId}
         AND r.limit_guest >= #{guest}
         AND r.limit_pet >= #{pet}
-        AND d.roomdetail_id NOT IN (
-            <![CDATA[
-            SELECT v.roomdetail_id
-            FROM vw_paid_booking v
-            WHERE v.payment_id IS NOT NULL
-            AND v.start_date < #{checkOut}
-            AND v.end_date > #{checkIn}
-            ]]>
-        )
-        <![CDATA[
+        ]]>
         Group by hotel_id, r.room_id, room_type, r.room_name, check_in, check_out, limit_guest, limit_pet, room_price, room_info
-        having count(roomdetail_id) > #{room}
+        <![CDATA[
+        HAVING COUNT(d.roomdetail_id) -
+            (SELECT COUNT(v.room_id) as count
+            FROM vw_paid_booking v
+            WHERE v.room_id = r.room_id
+            AND (v.start_date < #{checkOut} AND v.end_date > #{checkIn})
+            ) >= #{room}
         ]]>
         LIMIT #{size} OFFSET #{skip}
     </select>
+<!--    <select id="findAvailableRoomList" resultType="com.example.pethotel.dto.hotel.SearchHotelRoomResponse">-->
+<!--        SELECT hotel_id             AS hotelId,-->
+<!--               r.room_id            AS roomId,-->
+<!--               room_type            AS roomType,-->
+<!--               r.room_name          AS roomName,-->
+<!--               check_in             AS checkIn,-->
+<!--               check_out            AS checkOut,-->
+<!--               limit_guest          AS limitGuest,-->
+<!--               limit_pet            AS limitPet,-->
+<!--               room_price           AS roomPrice,-->
+<!--               room_info            AS roomInfo,-->
+<!--               count(roomdetail_id) AS roomCount-->
+<!--        FROM room r-->
+<!--        INNER JOIN roomdetail d ON r.room_id = d.room_id-->
+<!--        WHERE r.hotel_id = #{hotelId}-->
+<!--        AND r.limit_guest >= #{guest}-->
+<!--        AND r.limit_pet >= #{pet}-->
+<!--        AND d.roomdetail_id NOT IN (-->
+<!--            <![CDATA[-->
+<!--            SELECT v.roomdetail_id-->
+<!--            FROM vw_paid_booking v-->
+<!--            WHERE v.payment_id IS NOT NULL-->
+<!--            AND v.start_date < #{checkOut}-->
+<!--            AND v.end_date > #{checkIn}-->
+<!--            ]]>-->
+<!--        )-->
+<!--        <![CDATA[-->
+<!--        Group by hotel_id, r.room_id, room_type, r.room_name, check_in, check_out, limit_guest, limit_pet, room_price, room_info-->
+<!--        having count(roomdetail_id) >= #{room}-->
+<!--        ]]>-->
+<!--        LIMIT #{size} OFFSET #{skip}-->
+<!--    </select>-->
 
 </mapper>

@@ -2,65 +2,102 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.example.pethotel.mapper.HotelMapper">
-
-    <!-- resultMap을 사용하여 호텔 엔티티에 매핑 -->
-<!--    <resultMap id="SearchHotelResponse" type="com.example.pethotel.dto.hotel.SearchHotelResponse">-->
-<!--        <result column="hotel_id" property="hotelId"/>-->
-<!--        <result column="hotel_name" property="hotelName"/>-->
-<!--        <result column="hotel_type" property="hotelType"/>-->
-<!--        <result column="hotel_info" property="hotelInfo"/>-->
-<!--        <result column="max_price" property="maxPrice"/>-->
-<!--        <result column="min_price" property="minPrice"/>-->
-<!--        <result column="room_count" property="roomCount"/>-->
-<!--    </resultMap>-->
-
     <!-- 실제 쿼리에서 resultMap 사용 -->
     <select id="findBySearchFilter" resultType="com.example.pethotel.dto.hotel.SearchFilterHotelResponse">
-        SELECT h.hotel_id             AS hotelId,
-               h.hotel_name           AS hotelName,
-               h.hotel_type           AS hotelType,
-               h.hotel_info           AS hotelInfo,
-               MAX(r.room_price)      AS max_price,
-               MIN(r.room_price)      AS min_price,
-               COUNT(d.roomdetail_id) AS room_count,
-               (
-                   SELECT GROUP_CONCAT(c.code_name SEPARATOR ', ') as hotelFacilities
-                   FROM hotelfacility f
-                   INNER JOIN commoncode c on f.code = c.code and c.code_use = 'Y'
-                   WHERE f.hotel_id = h.hotel_id
-                )                  AS hotelFacilities
-        FROM hotel h
-                 INNER JOIN room r ON h.hotel_id = r.hotel_id
-                 INNER JOIN roomdetail d ON r.room_id = d.room_id
+        SELECT
+            a.hotel_id AS hotelId,
+            a.hotel_name AS hotelName,
+            a.hotel_type AS hotelType,
+            a.hotel_info AS hotelInfo,
+            MAX(b.room_price) AS max_price,
+            MIN(b.room_price) AS min_price,
+            -- 0 AS room_count,
+            GROUP_CONCAT(DISTINCT c.code_name ORDER BY c.code_name SEPARATOR ', ') AS hotelFacilities
+        FROM hotel a
+        INNER JOIN room b ON a.hotel_id = b.hotel_id
+        LEFT JOIN hotelfacility f ON a.hotel_id = f.hotel_id
+        LEFT JOIN commoncode c ON f.code = c.code AND c.code_use = 'Y'
         WHERE
-            <if test="filter != null and filter.size() > 0 and filterSize > 0 ">
-            h.hotel_id in (
-                select hotel_id
-                from hotelfacility
-                where code in
-                      <foreach item="item" collection="filter" open="(" separator="," close=")">#{item}</foreach>
-                group by hotel_id
-                having count(code)  >= #{filterSize}) AND
-            </if>
-            h.location LIKE CONCAT('%', #{location}, '%')
-            AND h.hotel_type LIKE CONCAT('%', #{hotelType}, '%')
+        a.location LIKE CONCAT('%', #{location}, '%')
+        AND a.hotel_type LIKE CONCAT('%', #{hotelType}, '%')
+        AND EXISTS(
+            SELECT 1
+            FROM room r
+            INNER JOIN  roomdetail d on r.room_id = d.room_id
             <![CDATA[
+            WHERE r.hotel_id = a.hotel_id
             AND r.limit_guest >= #{guest}
             AND r.limit_pet >= #{pet}
+            GROUP BY r.room_id
+            HAVING COUNT(d.roomdetail_id) -
+                   (SELECT COUNT(v.room_id) as count
+                    FROM vw_paid_booking v
+                    WHERE v.room_id = r.room_id
+                    AND (v.start_date < #{checkOut} AND v.end_date > #{checkIn})
+                    ) >= #{room}
             ]]>
-            AND d.roomdetail_id NOT IN (
-            <![CDATA[
-            SELECT v.roomdetail_id
-            FROM vw_paid_booking v
-            WHERE v.payment_id IS NOT NULL
-            AND v.roomdetail_id IS NOT NULL
-            AND (v.start_date < #{checkOut} AND v.end_date > #{checkIn})
+        )
+        <if test="filter != null and filter.size() > 0 and filterSize > 0 ">
+            AND EXISTS (
+            SELECT 1
+            FROM hotelfacility f2
+            WHERE f2.hotel_id = a.hotel_id
+            AND f2.code IN <foreach item="item" collection="filter" open="(" separator="," close=")">#{item}</foreach>
+            GROUP BY f2.hotel_id
+            HAVING COUNT(f2.code) >= #{filterSize}
             )
-        GROUP BY h.hotel_id, h.hotel_name, h.hotel_type, h.hotel_info
-        HAVING COUNT(d.roomdetail_id) >= #{room}
+        </if>
+        GROUP BY a.hotel_id, a.hotel_name, a.hotel_type, a.hotel_info
         LIMIT #{size} OFFSET #{skip}
-        ]]>
     </select>
+
+    <!-- 실제 쿼리에서 resultMap 사용 -->
+<!--    <select id="findBySearchFilter" resultType="com.example.pethotel.dto.hotel.SearchFilterHotelResponse">-->
+<!--        SELECT h.hotel_id             AS hotelId,-->
+<!--               h.hotel_name           AS hotelName,-->
+<!--               h.hotel_type           AS hotelType,-->
+<!--               h.hotel_info           AS hotelInfo,-->
+<!--               MAX(r.room_price)      AS max_price,-->
+<!--               MIN(r.room_price)      AS min_price,-->
+<!--               COUNT(d.roomdetail_id) AS room_count,-->
+<!--               (-->
+<!--                   SELECT GROUP_CONCAT(c.code_name SEPARATOR ', ') as hotelFacilities-->
+<!--                   FROM hotelfacility f-->
+<!--                   INNER JOIN commoncode c on f.code = c.code and c.code_use = 'Y'-->
+<!--                   WHERE f.hotel_id = h.hotel_id-->
+<!--                )                  AS hotelFacilities-->
+<!--        FROM hotel h-->
+<!--                 INNER JOIN room r ON h.hotel_id = r.hotel_id-->
+<!--                 INNER JOIN roomdetail d ON r.room_id = d.room_id-->
+<!--        WHERE-->
+<!--            <if test="filter != null and filter.size() > 0 and filterSize > 0 ">-->
+<!--            h.hotel_id in (-->
+<!--                select hotel_id-->
+<!--                from hotelfacility-->
+<!--                where code in-->
+<!--                      <foreach item="item" collection="filter" open="(" separator="," close=")">#{item}</foreach>-->
+<!--                group by hotel_id-->
+<!--                having count(code)  >= #{filterSize}) AND-->
+<!--            </if>-->
+<!--            h.location LIKE CONCAT('%', #{location}, '%')-->
+<!--            AND h.hotel_type LIKE CONCAT('%', #{hotelType}, '%')-->
+<!--            <![CDATA[-->
+<!--            AND r.limit_guest >= #{guest}-->
+<!--            AND r.limit_pet >= #{pet}-->
+<!--            ]]>-->
+<!--            AND d.roomdetail_id NOT IN (-->
+<!--            <![CDATA[-->
+<!--            SELECT v.roomdetail_id-->
+<!--            FROM vw_paid_booking v-->
+<!--            WHERE v.payment_id IS NOT NULL-->
+<!--            AND v.roomdetail_id IS NOT NULL-->
+<!--            AND (v.start_date < #{checkOut} AND v.end_date > #{checkIn})-->
+<!--            )-->
+<!--        GROUP BY h.hotel_id, h.hotel_name, h.hotel_type, h.hotel_info-->
+<!--        HAVING COUNT(d.roomdetail_id) >= #{room}-->
+<!--        LIMIT #{size} OFFSET #{skip}-->
+<!--        ]]>-->
+<!--    </select>-->
 
 
 
