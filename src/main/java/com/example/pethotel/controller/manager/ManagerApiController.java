@@ -387,7 +387,7 @@ public class ManagerApiController {
             resultMap.put("msg", "중복된 일자가 있습니다");
         }else{
             booking = bookingService.updateRoomDetailId(bookingId, roomDetailId);
-            bookingService.updatePaycheck(bookingId, "Complete", booking.getPaymentId());
+            bookingService.updatePaycheck(bookingId, "Completed", booking.getPaymentId());
             resultMap.put("msg", "요청 성공");
 //            Map<String, Object> paymentResult = paymentService.nPayProgress(booking.getPaymentId());
 //            if(paymentResult.get("code").equals("Success")){
