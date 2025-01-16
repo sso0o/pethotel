@@ -33,10 +33,10 @@
   <!-- Custom styles for this page -->
   <link rel="stylesheet" type="text/css" href="/myBooking/myBooking.css">
   <script src="/myBooking/myBooking.js"></script>
-
-
-
   <style>
+      .tm-tabs-links{
+          font-family: 'NanumSquareNeo-Variable-bold', sans-serif;
+      }
   </style>
 </head>
 
@@ -128,7 +128,7 @@
       <!-- 탭 타이틀 종료 -->
 
       <!-- 탭 컨텐트 시작 -->
-      <div class="tab-content clearfix">
+      <div class="tab-content" style="font-family: 'NanumSquareNeo-Variable-normal', sans-serif;">
         <!-- Tab 0 -->
         <div class="tab-pane fade show" id="0a">
           <div class="tm-recommended-place-wrap" id="myBookingContainer-0">
@@ -146,7 +146,7 @@
                 <p> 예약 인원:
                   <i class="fa fa-user" aria-hidden="true"></i> <span th:text="${booking.bookingGuest}"></span> /
                   <i class="fa fa-paw" aria-hidden="true"></i> <span th:text="${booking.bookingPet}"></span> </p>
-                <p> 가격: <span th:text="${booking.totalPrice}"></span> 원</p>
+                <p> 가격: <span th:text="${#numbers.formatInteger(booking.totalPrice, 0, 'COMMA')}"></span>원</p>
               </div>
               <div class="tm-recommended-button-box">
                 <button type="button" class="tm-recommended-button btn tm-btn btn-primary" th:onclick="cancelBooking([[${booking.bookingId}]])" >예약취소</button>
@@ -180,7 +180,7 @@
                 <p> 예약 인원:
                   <i class="fa fa-user" aria-hidden="true"></i> <span th:text="${booking.bookingGuest}"></span> /
                   <i class="fa fa-paw" aria-hidden="true"></i> <span th:text="${booking.bookingPet}"></span> </p>
-                <p> 가격: <span th:text="${booking.totalPrice}"></span> 원</p>
+                <p> 가격: <span th:text="${#numbers.formatInteger(booking.totalPrice, 0, 'COMMA')}"></span>원</p>
               </div>
               <div class="tm-recommended-button-box">
                 <button type="button" class="tm-recommended-button btn tm-btn btn-primary"  th:onclick="cancelBooking([[${booking.bookingId}]])" >예약취소</button>
@@ -211,10 +211,10 @@
               <p> 예약 인원:
                 <i class="fa fa-user" aria-hidden="true"></i> <span th:text="${booking.bookingGuest}"></span> /
                 <i class="fa fa-paw" aria-hidden="true"></i> <span th:text="${booking.bookingPet}"></span> </p>
-              <p> 가격: <span th:text="${booking.totalPrice}"></span> 원</p>
+              <p> 가격: <span th:text="${#numbers.formatInteger(booking.totalPrice, 0, 'COMMA')}"></span> 원</p>
             </div>
             <div class="tm-recommended-button-box">
-              <button type="button" class="tm-recommended-button btn tm-btn btn-primary" id="btnReview">리뷰작성</button>
+              <button type="button" class="tm-recommended-button btn tm-btn btn-primary" id="btnReview">재 예약</button>
             </div>
           </div>
           <div th:if="${completedBookings.isEmpty()}" style="text-align: center;">
@@ -235,14 +235,14 @@
               <div class="tm-recommended-description-box">
                 <h3 class="tm-recommended-title" th:text="${booking.hotelName}">호텔 이름</h3>
                 <p> </p>
-                <p class="tm-text-highlight" th:text="${booking.roomType}">객실 타입</p>
+                <p th:text="${booking.roomType}">객실 타입</p>
                 <p> 예약 일자:
                   <span th:text="${booking.startDate}"></span> ~
                   <span th:text="${booking.endDate}"></span>  총 <span th:text="${booking.totalDate}"></span> 일</p>
                 <p> 예약 인원:
                   <i class="fa fa-user" aria-hidden="true"></i> <span th:text="${booking.bookingGuest}"></span> /
                   <i class="fa fa-paw" aria-hidden="true"></i> <span th:text="${booking.bookingPet}"></span> </p>
-                <p> 가격: <span th:text="${booking.totalPrice}"></span> 원</p>
+                <p> 가격: <span th:text="${#numbers.formatInteger(booking.totalPrice, 0, 'COMMA')}"></span> 원</p>
               </div>
               <div class="tm-recommended-price-box">
                 <p class="tm-recommended-price">$110</p>

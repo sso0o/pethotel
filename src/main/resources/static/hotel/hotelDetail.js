@@ -73,7 +73,7 @@ function imgRender(roomId) {
                 let slickHtml = '<div class="room-images-slick img-div" >';
                 result.roomPhotos.forEach(photo => {
                     slickHtml += `
-                    <div><img src="${photo.rimgUrl}" alt="객실 이미지" class="img-fluid"></div>
+                    <div><img src="${photo.rimgUrl}" alt="객실 이미지" class="img-fluid" style="height: 260px; width: 230px;"></div>
                 `;
                 });
                 slickHtml += '</div>';

@@ -43,6 +43,7 @@
      th:data-room-id="${room.roomId}"
      th:data-room-type="${room.roomType}"
      th:data-room-price="${room.roomPrice}"
+     th:data-room-name="${room.roomName}"
      th:data-room-limit-guest="${room.limitGuest}"
      th:data-room-limit-pet="${room.limitPet}"
      th:data-room-check-in="${room.checkIn}"
@@ -123,18 +124,18 @@
   <div class="tm-page-wrap mx-auto justify-content-center">
     <div class="tm-container-outer">
       <div class="container pt-3 pb-3">
-        <div class="make-booking-container" >
-          <h2>객실 예약</h2>
+        <div class="make-booking-container" style="text-align: center;" id="bookingDetail" >
 
-          <div class="row content-box p-4">
-            <div class=" col-6 content-box-main" id="bookingDetail">
-            </div>
-            <div class=" col-6 content-box-main">
-              <div id="guestDetail"></div>
 
-            </div>
+<!--          <div class="row content-box p-4">-->
+<!--            <div class=" col-6 content-box-main" >-->
+<!--            </div>-->
+<!--            <div class=" col-6 content-box-main">-->
+<!--              <div id="guestDetail"></div>-->
 
-          </div>
+<!--            </div>-->
+
+<!--          </div>-->
         </div>
       </div>  <!-- .container -->
     </div>     <!-- .tm-container-outer -->

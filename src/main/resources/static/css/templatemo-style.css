@@ -9,6 +9,23 @@ Highlight color (pink)		: #c66995
 
 */
 
+/* 나눔스퀘어 폰트 적용 */
+@import url('https://cdn.rawgit.com/moonspam/NanumSquare/master/nanumsquare.css');
+
+/* 나눔스퀘어 네오 */
+@font-face {
+    font-family: 'NanumSquareNeo-Variable-normal';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_11-01@1.0/NanumSquareNeo-Variable.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'NanumSquareNeo-Variable-bold';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_11-01@1.0/NanumSquareNeo-Variable.woff2') format('woff2');
+    font-weight: bold;
+    font-style: normal;
+}
+
 html {
     height: 100%;
 }
@@ -455,7 +472,7 @@ label { font-weight: 700; }
     width: 500px;
 }
 
-.tm-recommended-price-box {    
+.tm-recommended-price-box {
     background-color: #69c6ba;
     background-image: url(../img/button-curve.png);
     background-repeat: no-repeat;

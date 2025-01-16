@@ -33,23 +33,6 @@
   <script src="/hotel/bookingComplete.js"></script>
 
   <style>
-      /* 나눔스퀘어 폰트 적용 */
-      @import url('https://cdn.rawgit.com/moonspam/NanumSquare/master/nanumsquare.css');
-
-      /* 나눔스퀘어 네오 */
-      @font-face {
-          font-family: 'NanumSquareNeo-Variable-normal';
-          src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_11-01@1.0/NanumSquareNeo-Variable.woff2') format('woff2');
-          font-weight: normal;
-          font-style: normal;
-      }
-      @font-face {
-          font-family: 'NanumSquareNeo-Variable-bold';
-          src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_11-01@1.0/NanumSquareNeo-Variable.woff2') format('woff2');
-          font-weight: bold;
-          font-style: normal;
-      }
-
       .pending-box {
           font-family: 'NanumSquareNeo-Variable-normal', sans-serif;
       }
@@ -188,7 +171,6 @@
                 <h4>총 금액</h4>
                 <h5 style="font-family: 'NanumSquareNeo-Variable-bold', sans-serif; color: red">
                   <span th:text="${#numbers.formatInteger(booking.totalPrice, 0, 'COMMA')}"></span>원
-
                 </h5>
                 <hr>
                 <!-- 이미지 클릭 후 결제 페이지로 이동 -->

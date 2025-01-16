@@ -34,9 +34,6 @@
 
 
   <style>
-      .slick-slide{
-          height: 230px;
-      }
   </style>
 </head>
 
@@ -196,22 +193,23 @@
     <div class="tm-container-outer">
       <div class="container pt-3 pb-3">
         <div class="hotel-detail-container" id="hotelContainer">
-          <h2 th:text="${hotel.hotelName}"></h2>
-          <h5 th:text="${hotel.address}"></h5>
           <div class="divImg mb-2" >
             <div class="hotelImg" id="hotelImg" >
               <div class="main-hotel-img main-img-div" >
                 <div th:each="photo : ${hotel.hotelPhotos}">
                   <img th:src="@{/uploads/hotel/{filename}(filename=${photo.himgFile})}" alt="호텔 이미지"
                        class="img-fluid"
-                       style="height: 400px; width: 100%; object-fit: cover;">
+                       style="height: 500px; width: 100%; object-fit: cover;">
                 </div>
               </div>
             </div> <!-- .hotelImg -->
-            <div id="roomImg" >
+            <!--                <div id="roomImg" >-->
 
-            </div>
+            <!--                </div>-->
           </div> <!-- .divImg -->
+          <h2 th:text="${hotel.hotelName}" style="font-family: 'NanumSquareNeo-Variable-bold', sans-serif"></h2>
+          <hr>
+          <h5 th:text="${hotel.address}"></h5>
           <p th:text="${hotel.hotelInfo}"></p>
       </div>   <!-- .container -->
     </div>   <!-- .tm-container-outer -->

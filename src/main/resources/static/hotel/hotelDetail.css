@@ -1,6 +1,7 @@
 .hotel-detail-container{
     max-width: 970px;
     margin: 60px auto;
+    font-family: 'NanumSquareNeo-Variable-normal', sans-serif;
 }
 
 .room-detail-container {
@@ -21,47 +22,56 @@
     font-size: large;
 }
 
-.hotelImg{
-    width: 500px;
-    height: 400px;
-}
-
 .room-images-slick {
     max-height: 260px;
     max-width: 230px;
 }
 
-.img-div{
-    max-width: 260px;
-    max-height: 230px;
-    overflow: hidden;
-    margin: 0 auto;
+.room-images-slick .slick-slide{
+    height: 260px;
+    width: 230px;
 }
 
-.divImg{
-    display: flex;
-    justify-content: space-around;
-}
+/*.hotelImg{*/
+/*    width: 100%;*/
+/*    height: 500px;*/
+/*}*/
 
-.main-img-div{
-    width: 100%;
-    height: 400px;
-    overflow: hidden;
-    margin: 0 auto;
-}
 
-.img-div .img-fluid {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
 
-.main-img-div .img-fluid {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
+/*.img-div{*/
+/*    max-width: 260px;*/
+/*    max-height: 230px;*/
+/*    overflow: hidden;*/
+/*    margin: 0 auto;*/
+/*}*/
 
-.slick-list{
-    height: 400px;
-}
+/*.divImg{*/
+/*    display: flex;*/
+/*    justify-content: space-around;*/
+/*}*/
+
+/*.main-img-div{*/
+/*    width: 100%;*/
+/*    height: 500px;*/
+/*    overflow: hidden;*/
+/*    margin: 0 auto;*/
+/*}*/
+
+/*.img-div .img-fluid {*/
+/*    width: 100%;*/
+/*    height: 100%;*/
+/*    object-fit: cover;*/
+/*}*/
+
+/*.main-img-div .img-fluid {*/
+/*    width: 100%;*/
+/*    height: 500px;*/
+/*    object-fit: cover;*/
+/*}*/
+
+/*.slick-list{*/
+/*    height: 500px;*/
+/*}*/
+
+
