@@ -19,9 +19,7 @@ public class MainViewController {
     @GetMapping("/")
     public String index(Model model) {
         List<CommonCode> REG = commonCodeService.findByCodeHeadAndCodeDetailNotAndCodeUseLike("REG", "", "Y");
-        List<CommonCode> HTP = commonCodeService.findByCodeHeadAndCodeDetailNotAndCodeUseLike("HTP", "", "Y");
         model.addAttribute("REG", REG);
-        model.addAttribute("HTP", HTP);
         return "index";
     }
 

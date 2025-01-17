@@ -31,10 +31,8 @@ public class ManagerViewController {
 
     @GetMapping("/manager/myhotelPage")
     public String hotelPage(Model model) {
-        List<CommonCode> HTP = commonCodeService.findByCodeHeadAndCodeDetailNotAndCodeUseLike("HTP", "", "Y");
         List<CommonCode> REG = commonCodeService.findByCodeHeadAndCodeDetailNotAndCodeUseLike("REG", "", "Y");
         List<CommonCode> HFC = commonCodeService.findByCodeHeadAndCodeDetailNotAndCodeUseLike("HFC", "", "Y");
-        model.addAttribute("HTP", HTP);
         model.addAttribute("REG", REG);
         model.addAttribute("HFC", HFC);
 

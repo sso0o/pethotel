@@ -115,13 +115,6 @@
                   <option th:each="REG : ${REG}" th:value="${REG.codeName}" th:text="${REG.codeName}"></option>
                 </select>
               </div>
-              <!-- selectType  -->
-              <div class="form-group tm-form-group m-1">
-                <label for="selectType">숙소</label>
-                <select class="form-control tm-select" style="min-width: 100px;" name="" id="selectType">
-                  <option th:each="HTP : ${HTP}" th:value="${HTP.codeName}" th:text="${HTP.codeName}"></option>
-                </select>
-              </div>
               <!-- checkIn  -->
               <div class="form-group tm-form-group m-1">
                 <label for="startDate">체크인</label>
@@ -315,7 +308,6 @@
         let selectCity = $('#selectCity');
         let selectType = $('#selectType');
         selectCity.val(searchData.location);
-        selectType.val(searchData.hotelType);
 
 
         $('#searchForm').on('submit', function (e) {
@@ -323,7 +315,6 @@
 
             // 검색 조건을 sessionStorage에 저장
             let location = $('#selectCity').val();
-            let hotelType = $('#selectType').val();
             let checkIn = $('#startDate').val();
             let checkOut = $('#endDate').val();
             let room = $('#inputRoom').val();
@@ -331,7 +322,7 @@
             let pet = $('#pet').val();
 
             // 조건이 모두 채워져 있는지 체크
-            if (!location || !hotelType || !checkIn || !checkOut || !room || !guest || !pet) {
+            if (!location || !checkIn || !checkOut || !room || !guest || !pet) {
                 // 조건이 비어 있는 경우
                 alert('모든 검색 조건을 입력해주세요.');
             } else {
@@ -344,7 +335,6 @@
                         filter: $('#inputFilterChips').val(),
                         filterSize: $('#inputFilterSize').val() ? parseInt($('#inputFilterSize').val()): 0,
                         location: location,
-                        hotelType: hotelType,
                         checkIn: checkIn,
                         checkOut: checkOut,
                         room: room,

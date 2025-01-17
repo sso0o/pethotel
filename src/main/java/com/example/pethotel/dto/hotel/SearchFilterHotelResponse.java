@@ -6,7 +6,6 @@ import lombok.Getter;
 public class SearchFilterHotelResponse {
     private Long hotelId;
     private String hotelName;
-    private String hotelType;
     private String hotelInfo;
     private Integer maxPrice;
     private Integer minPrice;
@@ -14,13 +13,12 @@ public class SearchFilterHotelResponse {
     private String hotelFacilities;
 
     // Constructor
-    public SearchFilterHotelResponse(Long hotelId, String hotelName, String hotelType, String hotelInfo,
+    public SearchFilterHotelResponse(Long hotelId, String hotelName, String hotelInfo,
                                Integer maxPrice, Integer minPrice,
 //                                     Long roomCount,
                                      String hotelFacilities) {
         this.hotelId = hotelId;
         this.hotelName = hotelName;
-        this.hotelType = hotelType;
         this.hotelInfo = hotelInfo;
         this.maxPrice = maxPrice;
         this.minPrice = minPrice;

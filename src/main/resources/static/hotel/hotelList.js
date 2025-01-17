@@ -57,7 +57,6 @@ function loadMoreHotels() {
         filter: $('#inputFilterChips').val(),
         filterSize: $('#inputFilterSize').val() ? parseInt($('#inputFilterSize').val(), 10): 0,
         location: searchData.location,
-        hotelType: searchData.hotelType,
         checkIn: searchData.checkIn,
         checkOut: searchData.checkOut,
         room: searchData.room,

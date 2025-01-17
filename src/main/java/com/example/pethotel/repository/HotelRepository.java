@@ -20,12 +20,11 @@ public interface HotelRepository extends JpaRepository<Hotel, Long> {
 
 
     @Query(value = "SELECT new com.example.pethotel.dto.hotel.SearchHotelResponse(" +
-            "h.hotelId, h.hotelName, h.hotelType, h.hotelInfo, MAX(r.roomPrice), MIN(r.roomPrice), COUNT(d)) " +
+            "h.hotelId, h.hotelName, h.hotelInfo, MAX(r.roomPrice), MIN(r.roomPrice), COUNT(d)) " +
             "FROM Hotel h " +
             "INNER JOIN Room r ON h.hotelId = r.hotel.hotelId " +
             "INNER JOIN RoomDetail d on r.roomId = d.room.roomId " +
             "WHERE h.location like %:location% " +
-            "AND h.hotelType = :hotelType " +
             "AND r.limitGuest >= :guest " +
             "AND r.limitPet >= :pet " +
             "AND d.roomDetailId NOT IN (" +
@@ -33,11 +32,10 @@ public interface HotelRepository extends JpaRepository<Hotel, Long> {
             "   FROM VwPaidBooking v " +
             "   WHERE v.paymentId IS NOT NULL " +
             "   AND (v.startDate < :checkOut AND v.endDate > :checkIn)) " +
-            "GROUP BY h.hotelId, h.hotelName, h.hotelType, h.hotelInfo " +
+            "GROUP BY h.hotelId, h.hotelName, h.hotelInfo " +
             "having COUNT(d) >= :room ")
     Page<SearchHotelResponse> findBySearchOption(Pageable pageable,
                                                  @Param("location") String location,
-                                                 @Param("hotelType") String hotelType,
                                                  @Param("guest") int guest,
                                                  @Param("pet") int pet,
                                                  @Param("checkIn") String checkIn,

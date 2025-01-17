@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
 public class AddHotelRequest {
 
     private String hotelName;
-    private String hotelType;
     private String location;
     private String postcode;
     private String address;
@@ -27,7 +26,6 @@ public class AddHotelRequest {
     public Hotel toEntity() {
         return Hotel.builder()
                 .hotelName(hotelName)
-                .hotelType(hotelType)
                 .location(location)
                 .postcode(postcode)
                 .address(address)

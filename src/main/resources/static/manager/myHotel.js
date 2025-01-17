@@ -24,7 +24,6 @@ function addHotelModal(hotelId) {
             success: function (data) {
                 $('#hotelId').val(data.hotel.hotelId);
                 $('#hotelName').val(data.hotel.hotelName);
-                $('#hotelType').val(data.hotel.hotelType);
                 $('#location').val(data.hotel.location);
                 $('#postcode').val(data.hotel.postcode);
                 $('#address').val(data.hotel.address);
@@ -64,7 +63,6 @@ function saveHotel(type) {
     let userId = $('#userId').val();
     let hotelId = $('#hotelId').val();
     let hotelName = $('#hotelName').val();
-    let hotelType = $('#hotelType').val();
     let location = $('#location').val();
     let postcode = $('#postcode').val();
     let address = $('#address').val();
@@ -88,7 +86,6 @@ function saveHotel(type) {
     data = JSON.stringify({
         userId: userId,
         hotelName: hotelName,
-        hotelType: hotelType,
         location: location,
         postcode: postcode,
         address: address,

@@ -16,7 +16,6 @@ public interface HotelMapper {
             @Param("filter") List<String> filter,
             @Param("filterSize") int filterSize,
             @Param("location") String location,
-            @Param("hotelType") String hotelType,
             @Param("guest") int guest,
             @Param("pet") int pet,
             @Param("checkIn") String checkIn,

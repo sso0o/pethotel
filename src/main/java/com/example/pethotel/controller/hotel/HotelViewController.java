@@ -42,10 +42,8 @@ public class HotelViewController {
             //session.removeAttribute("searchData");
         }
         List<CommonCode> REG = commonCodeService.findByCodeHeadAndCodeDetailNotAndCodeUseLike("REG", "", "Y");
-        List<CommonCode> HTP = commonCodeService.findByCodeHeadAndCodeDetailNotAndCodeUseLike("HTP", "", "Y");
         List<CommonCode> HFC = commonCodeService.findByCodeHeadAndCodeDetailNotAndCodeUseLike("HFC", "", "Y");
         model.addAttribute("REG", REG);
-        model.addAttribute("HTP", HTP);
         model.addAttribute("HFC", HFC);
         return "hotel/hotelList";
     }
@@ -54,11 +52,9 @@ public class HotelViewController {
     public String showHotelDetailPage(@PathVariable Long hotelId, Model model) {
         Hotel hotel = hotelService.findById(hotelId);
         List<CommonCode> REG = commonCodeService.findByCodeHeadAndCodeDetailNotAndCodeUseLike("REG", "", "Y");
-        List<CommonCode> HTP = commonCodeService.findByCodeHeadAndCodeDetailNotAndCodeUseLike("HTP", "", "Y");
         List<CommonCode> HFC = commonCodeService.findByCodeHeadAndCodeDetailNotAndCodeUseLike("HFC", "", "Y");
         model.addAttribute("hotel", hotel);
         model.addAttribute("REG", REG);
-        model.addAttribute("HTP", HTP);
         model.addAttribute("HFC", HFC);
         return "hotel/hotelDetail";
     }

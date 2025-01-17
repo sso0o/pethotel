@@ -198,7 +198,6 @@
                     <thead>
                     <tr>
                       <th>호텔</th>
-                      <th>타입</th>
                       <th>전화번호</th>
                       <th>설명</th>
                       <th>지역</th>
@@ -340,13 +339,6 @@
                      placeholder=" 이름"
                      id="hotelName"
                      name="hotelName" required/>
-            </div>
-            <label class="form-label" for="hotelType"></label>
-            <div class="input-group input-group-merge">
-              <span id="hotelType2" class="input-group-text" style="width: 25%">타입</span>
-              <select class="form-select" id="hotelType" name="hotelType">
-                <option th:each="htp : ${HTP}" th:value="${htp.codeName}" th:text="${htp.codeName}"></option>
-              </select>
             </div>
             <label class="form-label" for="location"></label>
             <div class="input-group input-group-merge">
@@ -541,7 +533,6 @@
             },
             columns: [
                 {data: "hotelName"},
-                {data: "hotelType"},
                 {data: "hotelPhone"},
                 {data: "hotelInfo"},
                 {data: "location"},
@@ -554,11 +545,10 @@
             ],
             columnDefs: [
                 {targets: 0, width: '20%',},
-                {targets: 1, width: '10%',},
-                {targets: 2, width: '15%',},
-                {targets: 3, width: '35%',},
-                {targets: 4, width: '10%',},
-                {targets: 5, width: '10%',}
+                {targets: 1, width: '15%',},
+                {targets: 2, width: '35%',},
+                {targets: 3, width: '10%',},
+                {targets: 4, width: '10%',}
             ]
         })
 

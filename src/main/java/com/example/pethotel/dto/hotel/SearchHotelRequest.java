@@ -15,7 +15,6 @@ public class SearchHotelRequest {
     private String filter;
     private int filterSize;
     private String location;
-    private String hotelType;
     private String checkIn;
     private String checkOut;
     private int room;
@@ -25,12 +24,11 @@ public class SearchHotelRequest {
     private int dateDiff;
 
     // 생성자에서 날짜 차이를 자동으로 계산하도록 처리
-    public SearchHotelRequest(String filter, int filterSize, String location, String hotelType,
+    public SearchHotelRequest(String filter, int filterSize, String location,
                               String checkIn, String checkOut, int room, int guest, int pet) {
         this.filter = filter;
         this.filterSize = filterSize;
         this.location = location;
-        this.hotelType = hotelType;
         this.checkIn = checkIn;
         this.checkOut = checkOut;
         this.room = room;

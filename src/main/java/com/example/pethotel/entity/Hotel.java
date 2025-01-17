@@ -22,9 +22,6 @@ public class Hotel {
     @Column(name = "hotel_name")
     private String hotelName;
 
-    @Column(name = "hotel_type")
-    private String hotelType;
-
     @Column(name = "location")
     private String location;
 
@@ -59,11 +56,10 @@ public class Hotel {
     private List<HotelFacility> hotelFacilities;
 
     @Builder
-    public Hotel(String hotelName, String hotelType, String location,
+    public Hotel(String hotelName, String location,
                  String postcode, String address, String detailAddress, String extraAddress,
                  String hotelPhone, String hotelInfo, Long userId) {
         this.hotelName = hotelName;
-        this.hotelType = hotelType;
         this.location = location;
         this.postcode = postcode;
         this.address = address;
@@ -74,11 +70,10 @@ public class Hotel {
         this.userId = userId;
     }
 
-    public void update(String hotelName, String hotelType, String location,
+    public void update(String hotelName, String location,
                        String postcode, String address, String detailAddress, String extraAddress,
                        String hotelPhone, String hotelInfo) {
         this.hotelName = hotelName;
-        this.hotelType = hotelType;
         this.location = location;
         this.postcode = postcode;
         this.address = address;

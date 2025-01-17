@@ -100,25 +100,17 @@
                 <h1 class="text-uppercase tm-banner-title">Let's begin</h1>
                 <img src="img/dots-3.png" alt="Dots">
                 <p class="tm-banner-subtitle">We assist you to choose the best.</p>
-                <a href="javascript:void(0)" class="tm-down-arrow-link"><i
-                    class="fa fa-2x fa-angle-down tm-down-arrow"></i></a>
               </div>
             </div>  <!-- col-xs-12 -->
           </div> <!-- row -->
-          <div class="row tm-banner-row" id="tm-section-search">
+          <div class="row tm-banner-row" id="tm-section-search" style="padding-top: 200px;">
             <form class="tm-search-form tm-section-pad-2" id="searchForm">
               <div class="form-row tm-search-form-row">
                 <div class="form-group tm-form-group tm-form-group-1">
-                  <div class="form-group tm-form-group tm-form-group-pad tm-form-group-2">
+                  <div class="form-group tm-form-group tm-form-group-pad tm-form-group-1">
                     <label for="selectCity">Destination</label>
                     <select class="form-control tm-select" id="selectCity" name="selectCity">
                       <option th:each="REG : ${REG}" th:value="${REG.codeName}" th:text="${REG.codeName}"></option>
-                    </select>
-                  </div>
-                  <div class="form-group tm-form-group tm-form-group-pad tm-form-group-2">
-                    <label for="selectType">Accommodation Type</label>
-                    <select class="form-control tm-select" id="selectType" name="selectType">
-                      <option th:each="HTP : ${HTP}" th:value="${HTP.codeName}" th:text="${HTP.codeName}"></option>
                     </select>
                   </div>
                 </div>
@@ -609,9 +601,7 @@
         });
 
         let selectCity = $('#selectCity');
-        let selectType = $('#selectType');
         selectCity.val(searchData.location);
-        selectType.val(searchData.hotelType);
 
         // 탭을 클릭했을 때의 동작
         $('.tm-tab-link').on('click', function(e) {
@@ -635,7 +625,6 @@
 
             // 검색 조건을 sessionStorage에 저장
             let location = $('#selectCity').val();
-            let hotelType = $('#selectType').val();
             let checkIn = $('#startDate').val();
             let checkOut = $('#endDate').val();
             let room = $('#inputRoom').val();
@@ -643,7 +632,7 @@
             let pet = $('#pet').val();
 
             // 조건이 모두 채워져 있는지 체크
-            if (!location || !hotelType || !checkIn || !checkOut || !room || !guest || !pet) {
+            if (!location || !checkIn || !checkOut || !room || !guest || !pet) {
                 // 조건이 비어 있는 경우
                 alert('모든 검색 조건을 입력해주세요.');
             } else {
@@ -654,7 +643,6 @@
                     contentType: 'application/json',
                     data: JSON.stringify({
                         location: location,
-                        hotelType: hotelType,
                         checkIn: checkIn,
                         checkOut: checkOut,
                         room: room,

@@ -118,13 +118,6 @@
                   <option th:each="REG : ${REG}" th:value="${REG.codeName}" th:text="${REG.codeName}"></option>
                 </select>
               </div>
-              <!-- selectType  -->
-              <div class="form-group tm-form-group m-1">
-                <label for="selectType">숙소</label>
-                <select class="form-control tm-select" style="min-width: 100px;" name="" id="selectType">
-                  <option th:each="HTP : ${HTP}" th:value="${HTP.codeName}" th:text="${HTP.codeName}"></option>
-                </select>
-              </div>
               <!-- checkIn  -->
               <div class="form-group tm-form-group m-1">
                 <label for="startDate">체크인</label>
@@ -310,9 +303,7 @@
         $('#pet').val(searchData.pet);
 
         let selectCity = $('#selectCity');
-        let selectType = $('#selectType');
         selectCity.val(searchData.location);
-        selectType.val(searchData.hotelType);
 
         $.ajax({
             url: '/main/commoncode/REG',
@@ -341,7 +332,6 @@
 
             // 검색 조건을 sessionStorage에 저장
             let location = $('#selectCity').val();
-            let hotelType = $('#selectType').val();  // 호�� 타입(일반/��별/��별+하이��)
             let checkIn = $('#startDate').val();
             let checkOut = $('#endDate').val();
             let room = $('#inputRoom').val();
@@ -360,7 +350,6 @@
                     contentType: 'application/json',
                     data: JSON.stringify({
                         location: location,
-                        hotelType: hotelType,
                         checkIn: checkIn,
                         checkOut: checkOut,
                         room: room,

@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 @Getter
 public class UpdateHotelRequest {
     private String hotelName;
-    private String hotelType;
     private String location;
     private String postcode;
     private String address;

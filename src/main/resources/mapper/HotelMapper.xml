@@ -7,7 +7,6 @@
         SELECT
             a.hotel_id AS hotelId,
             a.hotel_name AS hotelName,
-            a.hotel_type AS hotelType,
             a.hotel_info AS hotelInfo,
             MAX(b.room_price) AS max_price,
             MIN(b.room_price) AS min_price,
@@ -19,7 +18,6 @@
         LEFT JOIN commoncode c ON f.code = c.code AND c.code_use = 'Y'
         WHERE
         a.location LIKE CONCAT('%', #{location}, '%')
-        AND a.hotel_type LIKE CONCAT('%', #{hotelType}, '%')
         AND EXISTS(
             SELECT 1
             FROM room r
@@ -47,7 +45,7 @@
             HAVING COUNT(f2.code) >= #{filterSize}
             )
         </if>
-        GROUP BY a.hotel_id, a.hotel_name, a.hotel_type, a.hotel_info
+        GROUP BY a.hotel_id, a.hotel_name, a.hotel_info
         LIMIT #{size} OFFSET #{skip}
     </select>
 
