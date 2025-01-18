@@ -1,6 +1,7 @@
 package com.example.pethotel.controller.main;
 
 import com.example.pethotel.entity.CommonCode;
+import com.example.pethotel.service.HotelService;
 import com.example.pethotel.service.admin.CommonCodeService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +16,7 @@ import java.util.List;
 public class MainViewController {
 
     public final CommonCodeService commonCodeService;
+    public final HotelService hotelService;
 
     @GetMapping("/")
     public String index(Model model) {

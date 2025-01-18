@@ -83,5 +83,12 @@ public class Hotel {
         this.hotelInfo = hotelInfo;
     }
 
+    public int getLowestRoomPrice() {
+        return rooms.stream()
+                .mapToInt(Room::getRoomPrice)
+                .min()
+                .orElse(0);
+    }
+
 }
 

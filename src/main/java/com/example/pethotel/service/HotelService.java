@@ -95,4 +95,10 @@ public class HotelService {
     }
 
 
+    // 인덱스 페이지 지역탭에 들어갈 호텔 목록 조회
+    public List<Hotel> findAllByLocation(String location) {
+        return hotelRepository.findAllByLocation(location);
+    }
+
+
 }

@@ -11,7 +11,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -28,6 +32,27 @@ public class HotelApiController {
     //=============================================================================================
     //================================              get               =============================
     //=============================================================================================
+
+    // 메인페이지에 들어갈 호텔 목록
+    @GetMapping("/hotel/main/{location}")
+    public ResponseEntity find(@PathVariable String location) {
+        HashMap<Object, Object> resultMap = new HashMap<>();
+        List<Hotel> hotels = hotelService.findAllByLocation(location);
+
+        // 각 호텔에 대해 최저 가격(minPrice)을 포함한 정보를 생성
+        List<Map<String, Object>> hotelData = hotels.stream().map(hotel -> {
+            Map<String, Object> hotelInfo = new HashMap<>();
+            hotelInfo.put("hotelId", hotel.getHotelId());
+            hotelInfo.put("hotelName", hotel.getHotelName());
+            hotelInfo.put("location", hotel.getLocation());
+            hotelInfo.put("minPrice", hotel.getLowestRoomPrice());  // 최저 가격 추가
+            hotelInfo.put("hotelImg", hotel.getHotelPhotos());  // 호�� 이미지 path 추가")
+            return hotelInfo;
+        }).collect(Collectors.toList());
+
+        resultMap.put("hotels", hotelData);
+        return ResponseEntity.ok().body(resultMap);
+    }
 
     // 검색 조건에 맞줘 호텔 목록 가져오기
 //    @GetMapping("/hotel/search")

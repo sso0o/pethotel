@@ -43,5 +43,5 @@ public interface HotelRepository extends JpaRepository<Hotel, Long> {
                                                  @Param("room") int room);
 
 
-
+    List<Hotel> findAllByLocation(String location);
 }
