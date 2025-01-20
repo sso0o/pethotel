@@ -55,6 +55,9 @@ public class Room {
     @OneToMany(mappedBy = "room", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private List<RoomFeature> roomFeatures;
 
+    @OneToMany(mappedBy = "room", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    private List<RoomFeature> roomDetails;
+
     @Builder
     public Room (Hotel hotel, String roomType, String roomName,
                  int roomPrice, int limitGuest, int limitPet,

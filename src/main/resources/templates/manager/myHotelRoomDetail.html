@@ -343,6 +343,7 @@
                   <div class="mb-3" style="text-align: center;">
                     <button type="button" class="btn btn-primary" th:if="${room == null}" id="btnSubmit"> 등록 </button>
                     <button type="button" class="btn btn-primary" th:if="${room != null}" id="btnModify"> 수정 </button>
+                    <button type="button" class="btn btn-danger" th:if="${room != null}" id="btnDelete"> 삭제 </button>
                     <button type="button" class="btn btn-secondary" th:if="${room != null}" id="btnCancel"> 취소 </button>
 
                   </div>
@@ -501,6 +502,10 @@
             let roomId = $('#room').data('room-id');
             $('#roomId').val(roomId);
             modifyRoom(roomId);
+        })
+        $('#btnDelete').on('click', function() {
+            let roomId = $('#room').data('room-id');
+            deleteRoom(roomId);
         })
         $('#btnCancel').on('click', function() {
             let hotelId = $('#hotel').data('hotel-id');

@@ -295,3 +295,25 @@ function delRoomImgRequest(delImgStr){
         }
     });
 }
+
+
+function deleteRoom(roomId){
+    $.ajax({
+        url:'/manager/myroom/'+roomId,
+        type: 'delete',
+        async: false,
+        contentType: 'application/json',
+        success: function (result){
+            $('#errorDiv').hide();  // 오류 메시지를 표시하는 div를 보이게
+            $('#errorMsg').text('');  // 오류 메시지 텍스트를 p 태그에 삽입
+            alert(result.msg);
+            window.history.back();  // 이전 페이지로 돌아가기
+            // location.href ='/manager/myhotelroom/'+hotelId;
+        },
+        error: function (request, status, error){
+            let result = jQuery.parseJSON(request.responseText)
+            $('#errorDiv').show();  // 오류 메시지를 표시하는 div를 보이게
+            $('#errorMsg').text(result.msg);  // 오류 메시지에 삽입
+        }
+    })
+}

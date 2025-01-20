@@ -29,6 +29,7 @@ public class RoomService {
     private final RoomDetailRepository roomDetailRepository;
     private final RoomAmenityRepository roomAmenityRepository;
     private final HotelRepository hotelRepository;
+    private final RoomFeatureRepository roomFeatureRepository;
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -86,6 +87,7 @@ public class RoomService {
         roomDetailRepository.deleteAllByRoom(room);
         roomImgRepository.deleteAllByRoom(room);
         roomAmenityRepository.deleteAllByRoom(room);
+        roomFeatureRepository.deleteAllByRoom(room);
 
         roomRepository.delete(room);
     }
@@ -94,9 +96,14 @@ public class RoomService {
     public void deleteByHotel(Hotel hotel) {
         List<Room> rooms = roomRepository.findAllByHotel(hotel);
         rooms.forEach(room -> {
-            roomDetailRepository.deleteAllByRoom(room);
-            roomImgRepository.deleteAllByRoom(room);
-            roomRepository.delete(room);
+            // Room을 merge하여 영속성 컨텍스트로 다시 결합
+            Room managedRoom = entityManager.merge(room);
+
+            roomDetailRepository.deleteAllByRoom(managedRoom);
+            roomImgRepository.deleteAllByRoom(managedRoom);
+            roomAmenityRepository.deleteAllByRoom(managedRoom);
+            roomFeatureRepository.deleteAllByRoom(managedRoom);
+            roomRepository.delete(managedRoom);
         });
     }
 

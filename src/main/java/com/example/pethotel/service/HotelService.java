@@ -32,6 +32,7 @@ public class HotelService {
     private final HotelFacilityService hotelFacilityService;
 
     private final HotelMapper hotelMapper;
+    private final HotelImgService hotelImgService;
 
     // 호텔 저장 요청
     public Hotel save(AddHotelRequest req) {
@@ -56,14 +57,22 @@ public class HotelService {
         Hotel hotel = hotelRepository.findById(hotelId)
                 .orElseThrow(() ->  new IllegalArgumentException("not found : "+hotelId));
 
-        // 호텔 시설 삭제
-        hotelFacilityService.deleteByHotel(hotel);
-
-        // 객실관련 삭제
         roomService.deleteByHotel(hotel);
-
-        hotelImgRepository.deleteAllByHotel(hotel);
         hotelRepository.delete(hotel);
+
+//        try{
+//            // 호텔관련 삭제
+//            hotelFacilityService.deleteByHotel(hotel);
+//            hotelImgService.deletByHotel(hotel);
+//            // 객실관련 삭제
+
+//
+//
+//
+//        } catch (Exception e){
+//            // 예외 로그를 남기고 재처리
+//            throw new RuntimeException("Failed to delete hotel and related entities", e);
+//        }
     }
 
 

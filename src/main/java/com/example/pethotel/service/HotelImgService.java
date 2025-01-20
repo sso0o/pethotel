@@ -4,6 +4,7 @@ import com.example.pethotel.dto.manager.AddHotelImgRequest;
 import com.example.pethotel.entity.Hotel;
 import com.example.pethotel.entity.HotelImg;
 import com.example.pethotel.repository.HotelImgRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -40,4 +41,8 @@ public class HotelImgService {
         return hotelImgRepository.findByHotel(hotel);
     }
 
+    @Transactional
+    public void deletByHotel(Hotel hotel) {
+        hotelImgRepository.deleteAllByHotel(hotel);
+    }
 }

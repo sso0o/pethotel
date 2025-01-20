@@ -49,7 +49,6 @@ function loadMoreRooms(hotelId) {
         async: false,
         data: data, // 쿼리 파라미터로 전달
         success: function (result) {
-            console.log(result.rooms);
             if (result.rooms.length > 0) {
                 updateRoomList(result.rooms);
                 currentPage++;
@@ -73,7 +72,7 @@ function imgRender(roomId) {
                 let slickHtml = '<div class="room-images-slick img-div" >';
                 result.roomPhotos.forEach(photo => {
                     slickHtml += `
-                    <div><img src="${photo.rimgUrl}" alt="객실 이미지" class="img-fluid" style="height: 260px; width: 230px;"></div>
+                    <div><img src="${photo.rimgUrl}" alt="객실 이미지" class="img-fluid" style="height: 230px; width: 270px;"></div>
                 `;
                 });
                 slickHtml += '</div>';
