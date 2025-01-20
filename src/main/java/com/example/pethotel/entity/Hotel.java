@@ -84,6 +84,9 @@ public class Hotel {
     }
 
     public int getLowestRoomPrice() {
+        if (rooms == null || rooms.isEmpty()) {
+            return 0; // rooms가 null이거나 비어있을 때 기본값 0 반환
+        }
         return rooms.stream()
                 .mapToInt(Room::getRoomPrice)
                 .min()
