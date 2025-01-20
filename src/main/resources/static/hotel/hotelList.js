@@ -96,7 +96,7 @@ function imgRender(hotelId) {
                 let slickHtml = '<div class="hotel-images-slick img-div" >';
                 result.hotelPhotos.forEach(photo => {
                     slickHtml += `
-                    <div><img src="http://localhost:8081/uploads/hotel/${photo.himgFile}" alt="호텔 이미지" class="img-fluid"></div>
+                    <div><img src="http://localhost:8081/uploads/hotel/${photo.himgFile}" alt="호텔 이미지" class="img-fluid" style="width: 270px; height: 230px;"></div>
                 `;
                 });
                 slickHtml += '</div>';

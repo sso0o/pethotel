@@ -102,19 +102,10 @@
 }
 
 .hotel-images-slick {
-    max-height: 270px;
-    max-width: 260px;
-}
-
-.img-div{
+    max-height: 230px;
     max-width: 270px;
-    max-height: 260px;
-    overflow: hidden;
-    margin: 0 auto;
 }
-
-.img-div .img-fluid {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+.hotel-images-slick .slick-slide{
+    height: 230px;
+    width: 270px;
 }

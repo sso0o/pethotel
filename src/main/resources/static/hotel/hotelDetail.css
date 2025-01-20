@@ -23,55 +23,11 @@
 }
 
 .room-images-slick {
-    max-height: 260px;
-    max-width: 230px;
+    max-height: 230px;
+    max-width: 270px;
 }
 
 .room-images-slick .slick-slide{
-    height: 260px;
-    width: 230px;
+    height: 230px;
+    width: 270px;
 }
-
-/*.hotelImg{*/
-/*    width: 100%;*/
-/*    height: 500px;*/
-/*}*/
-
-
-
-/*.img-div{*/
-/*    max-width: 260px;*/
-/*    max-height: 230px;*/
-/*    overflow: hidden;*/
-/*    margin: 0 auto;*/
-/*}*/
-
-/*.divImg{*/
-/*    display: flex;*/
-/*    justify-content: space-around;*/
-/*}*/
-
-/*.main-img-div{*/
-/*    width: 100%;*/
-/*    height: 500px;*/
-/*    overflow: hidden;*/
-/*    margin: 0 auto;*/
-/*}*/
-
-/*.img-div .img-fluid {*/
-/*    width: 100%;*/
-/*    height: 100%;*/
-/*    object-fit: cover;*/
-/*}*/
-
-/*.main-img-div .img-fluid {*/
-/*    width: 100%;*/
-/*    height: 500px;*/
-/*    object-fit: cover;*/
-/*}*/
-
-/*.slick-list{*/
-/*    height: 500px;*/
-/*}*/
-
-
