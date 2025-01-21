@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.Map;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -21,15 +23,16 @@ public class AddRoomRequest {
     private Long hotelId;
 
     private String roomAmenities;
+    private Map<String, String> features;
 //    private String roomFeatures;
 
-    private String bedType;
-    private String viewType;
-    private String pool;
-    private String roomCount;
-    private String bathCount;
-    private String balcony;
-    private String kitchen;
+//    private String bedType;
+//    private String viewType;
+//    private String pool;
+//    private String roomCount;
+//    private String bathCount;
+//    private String balcony;
+//    private String kitchen;
 
     public Room toEntity(Hotel hotel) {
         return Room.builder()

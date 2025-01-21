@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.Map;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -18,11 +20,13 @@ public class UpdateRoomRequest {
 
     private String roomAmenities;
 
-    private String bedType;
-    private String viewType;
-    private String pool;
-    private String roomCount;
-    private String bathCount;
-    private String balcony;
-    private String kitchen;
+    private Map<String, String> features;
+
+//    private String bedType;
+//    private String viewType;
+//    private String pool;
+//    private String roomCount;
+//    private String bathCount;
+//    private String balcony;
+//    private String kitchen;
 }

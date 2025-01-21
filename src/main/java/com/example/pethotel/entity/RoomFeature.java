@@ -22,50 +22,22 @@ public class RoomFeature {
     @JsonBackReference // 직렬화 제외
     private Room room;
 
-    @Column(name = "bed_type")
-    private String bedType;
+    @Column(name = "feature_type")
+    private String featureType;
 
-    @Column(name = "view_type")
-    private String viewType;
-
-    @Column(name = "pool")
-    private String pool;
-
-    @Column(name = "room_count")
-    private String roomCount;
-
-    @Column(name = "bath_count")
-    private String bathCount;
-
-    @Column(name = "balcony")
-    private String balcony;
-
-    @Column(name = "kitchen")
-    private String kitchen;
-
+    @Column(name = "value")
+    private String value;
 
 
     @Builder
-    public RoomFeature(Room room, String bedType, String viewType, String pool,
-                       String roomCount, String bathCount, String balcony, String kitchen) {
+    public RoomFeature(Room room, String featureType, String value) {
         this.room = room;
-        this.bedType = bedType;
-        this.viewType = viewType;
-        this.pool = pool;
-        this.roomCount = roomCount;
-        this.bathCount = bathCount;
-        this.balcony = balcony;
-        this.kitchen = kitchen;
+        this.featureType = featureType;
+        this.value = value;
     }
 
-    public void update(String bedType, String viewType, String pool,
-                       String roomCount,String bathCount, String balcony, String kitchen) {
-        this.bedType = bedType;
-        this.viewType = viewType;
-        this.pool = pool;
-        this.roomCount = roomCount;
-        this.bathCount = bathCount;
-        this.balcony = balcony;
-        this.kitchen = kitchen;
+    public void update(String featureType, String value) {
+        this.featureType = featureType;
+        this.value = value;
     }
 }

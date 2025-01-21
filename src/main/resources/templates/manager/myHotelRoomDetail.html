@@ -261,20 +261,32 @@
                   <div class="mb-3">
                     <div class="row">
                       <div class="col">
-                        <label for="bedType" class="form-label">침대 타입</label>
-                        <select class="form-select" id="bedType" name="bedType">
-                          <option th:each="RFT01 : ${RFT01}" th:value="${RFT01.code}" th:text="${RFT01.codeName}"></option>
-                        </select>
+                        <div class="row">
+                          <div class="col-3" th:each="bedType : ${RFT01}">
+                            <label th:for="${bedType.code}" class="form-label" th:text="${bedType.codeName}"></label>
+                            <input type="number" class="form-control bedType" min="0" value="0"
+                                   style="margin-bottom: 1rem;"
+                                   th:id="${bedType.code}" th:name="${bedType.code}" >
+                          </div>
+                        </div>
+<!--                        <label for="bedType" class="form-label">침대 타입</label>-->
+<!--                        <select class="form-select" id="bedType" name="bedType">-->
+<!--                          <option th:each="RFT01 : ${RFT01}" th:value="${RFT01.code}" th:text="${RFT01.codeName}"></option>-->
+<!--                        </select>-->
                       </div>
+                    </div>
+                  </div>
+                  <div class="mb-3">
+                    <div class="row">
                       <div class="col">
-                        <label for="viewType" class="form-label">전망 타입</label>
-                        <select class="form-select" id="viewType" name="viewType">
+                        <label for="RFT02" class="form-label">전망 타입</label>
+                        <select class="form-select feature" id="RFT02" name="RFT02">
                           <option th:each="RFT02 : ${RFT02}" th:value="${RFT02.code}" th:text="${RFT02.codeName}"></option>
                         </select>
                       </div>
                       <div class="col">
-                        <label for="pool" class="form-label">전용수영장</label>
-                        <select class="form-select" id="pool" name="pool">
+                        <label for="RFT03" class="form-label">전용수영장</label>
+                        <select class="form-select feature" id="RFT03" name="RFT03">
                           <option th:each="RFT03 : ${RFT03}" th:value="${RFT03.code}" th:text="${RFT03.codeName}"></option>
                         </select>
                       </div>
@@ -283,26 +295,30 @@
                   <div class="mb-3">
                     <div class="row">
                       <div class="col">
-                        <label for="roomCount" class="form-label">룸 개수</label>
-                        <select class="form-select" id="roomCount" name="roomCount">
-                          <option th:each="RFT04 : ${RFT04}" th:value="${RFT04.code}" th:text="${RFT04.codeName}"></option>
-                        </select>
+                        <label for="RFT04" class="form-label">룸 개수</label>
+                        <input type="number" class="form-control feature" min="1" value="1"
+                               id="RFT04" name="RFT04">
+<!--                        <select class="form-select" id="roomCount" name="roomCount">-->
+<!--                          <option th:each="RFT04 : ${RFT04}" th:value="${RFT04.code}" th:text="${RFT04.codeName}"></option>-->
+<!--                        </select>-->
                       </div>
                       <div class="col">
-                        <label for="bathCount" class="form-label">욕실 개수</label>
-                        <select class="form-select" id="bathCount" name="bathCount">
-                          <option th:each="RFT05 : ${RFT05}" th:value="${RFT05.code}" th:text="${RFT05.codeName}"></option>
-                        </select>
+                        <label for="RFT05" class="form-label">욕실 개수</label>
+                        <input type="number" class="form-control feature" min="1" value="1"
+                               id="RFT05" name="RFT05">
+<!--                        <select class="form-select" id="bathCount" name="bathCount">-->
+<!--                          <option th:each="RFT05 : ${RFT05}" th:value="${RFT05.code}" th:text="${RFT05.codeName}"></option>-->
+<!--                        </select>-->
                       </div>
                       <div class="col">
-                        <label for="balcony" class="form-label">발코니</label>
-                        <select class="form-select" id="balcony" name="balcony">
+                        <label for="RFT06" class="form-label">발코니</label>
+                        <select class="form-select feature" id="RFT06" name="RFT06">
                           <option th:each="RFT06 : ${RFT06}" th:value="${RFT06.code}" th:text="${RFT06.codeName}"></option>
                         </select>
                       </div>
                       <div class="col">
-                        <label for="kitchen" class="form-label">주방</label>
-                        <select class="form-select" id="kitchen" name="kitchen">
+                        <label for="RFT07" class="form-label">주방</label>
+                        <select class="form-select feature" id="RFT07" name="RFT07">
                           <option th:each="RFT07 : ${RFT07}" th:value="${RFT07.code}" th:text="${RFT07.codeName}"></option>
                         </select>
                       </div>

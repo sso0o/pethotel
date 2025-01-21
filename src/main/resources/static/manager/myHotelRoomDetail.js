@@ -10,17 +10,25 @@ function addNewRoom(){
     let checkOut = $('#checkOut').val();
     let roomAmenities = $('#selectedRAMs').val();
 
+    let features = {};
 
-    let bedType = $('#bedType').val();
-    let viewType = $('#viewType').val();
-    let pool = $('#pool').val();
-    let roomCount = $('#roomCount').val();
-    let bathCount = $('#bathCount').val();
-    let balcony = $('#balcony').val();
-    let kitchen = $('#kitchen').val();
-    //let roomFeatures = [bedType, viewType, pool, roomCount, bathCount, balcony, kitchen].join(',');
-    let data;
-    data = JSON.stringify({
+    $('.bedType').each(function() {
+        let id = $(this).attr('id');  // input 요소의 id 값
+        let value = $(this).val();    // input 요소의 값
+
+        if (value != "0") {  // 값이 0이 아니면
+            features[id] = value;  // id를 키로 하고 값을 저장
+        }
+    });
+
+    $('.feature').each(function() {
+        let id = $(this).attr('id');  // input 요소의 id 값
+        let value = $(this).val();    // input 요소의 값
+        features[id] = value;  // id를 키로 하고 값을 저장
+    })
+
+
+    let data= JSON.stringify({
         hotelId : hotelId,
         roomType : roomType,
         roomName : roomName,
@@ -30,15 +38,7 @@ function addNewRoom(){
         checkIn : checkIn,
         checkOut : checkOut,
         roomAmenities : roomAmenities,
-        //roomFeatures : roomFeatures//
-        bedType : bedType,
-        viewType : viewType,
-        pool : pool,
-        roomCount : roomCount,
-        bathCount : bathCount,
-        balcony : balcony,
-        kitchen : kitchen
-        // roomFeatures : roomFeatures//
+        features: features
     })
     $.ajax({
         url: '/manager/myroom',
@@ -59,8 +59,14 @@ function addNewRoom(){
             $('#errorMsg').text(result.msg);  // 오류 메시지에 삽입
         }
     })
-
-
+    // let bedType = $('#bedType').val();
+    // let viewType = $('#viewType').val();
+    // let pool = $('#pool').val();
+    // let roomCount = $('#roomCount').val();
+    // let bathCount = $('#bathCount').val();
+    // let balcony = $('#balcony').val();
+    // let kitchen = $('#kitchen').val();
+    // //let roomFeatures = [bedType, viewType, pool, roomCount, bathCount, balcony, kitchen].join(',');
 
 
 }
@@ -123,13 +129,25 @@ function loadRoomDetail(roomId){
                 selectedChipsInput.val(selectedChips.join(','));
             });
 
-            $('#bedType').val(data.roomFeature.bedType);
-            $('#viewType').val(data.roomFeature.viewType);
-            $('#pool').val(data.roomFeature.pool);
-            $('#roomCount').val(data.roomFeature.roomCount);
-            $('#bathCount').val(data.roomFeature.bathCount);
-            $('#balcony').val(data.roomFeature.balcony);
-            $('#kitchen').val(data.roomFeature.kitchen);
+            let roomFeatures = data.room.roomFeatures;
+            // roomFeatures를 순회하면서 id와 value에 맞게 처리
+            roomFeatures.forEach(function(feature) {
+                let id = feature.featureType;  // id는 featureType
+                let value = feature.value;     // value는 해당 feature의 값
+
+                // id가 일치하는 요소를 찾아서 value 업데이트
+                $('input[id="' + id + '"]').val(value);
+                $('select[id="' + id + '"]').val(value);
+
+            });
+
+            // $('#bedType').val(data.roomFeature.bedType);
+            // $('#viewType').val(data.roomFeature.viewType);
+            // $('#pool').val(data.roomFeature.pool);
+            // $('#roomCount').val(data.roomFeature.roomCount);
+            // $('#bathCount').val(data.roomFeature.bathCount);
+            // $('#balcony').val(data.roomFeature.balcony);
+            // $('#kitchen').val(data.roomFeature.kitchen);
 
             imgReLoad(data.room.roomPhotos);
 
@@ -150,16 +168,32 @@ function modifyRoom(roomId){
     let checkOut = $('#checkOut').val();
     let roomAmenities = $('#selectedRAMs').val();
 
-    let bedType = $('#bedType').val();
-    let viewType = $('#viewType').val();
-    let pool = $('#pool').val();
-    let roomCount = $('#roomCount').val();
-    let bathCount = $('#bathCount').val();
-    let balcony = $('#balcony').val();
-    let kitchen = $('#kitchen').val();
+    let features = {};
 
-    let data;
-    data = JSON.stringify({
+    $('.bedType').each(function() {
+        let id = $(this).attr('id');  // input 요소의 id 값
+        let value = $(this).val();    // input 요소의 값
+
+        if (value != "0") {  // 값이 0이 아니면
+            features[id] = value;  // id를 키로 하고 값을 저장
+        }
+    });
+
+    $('.feature').each(function() {
+        let id = $(this).attr('id');  // input 요소의 id 값
+        let value = $(this).val();    // input 요소의 값
+        features[id] = value;  // id를 키로 하고 값을 저장
+    })
+
+    // let bedType = $('#bedType').val();
+    // let viewType = $('#viewType').val();
+    // let pool = $('#pool').val();
+    // let roomCount = $('#roomCount').val();
+    // let bathCount = $('#bathCount').val();
+    // let balcony = $('#balcony').val();
+    // let kitchen = $('#kitchen').val();
+
+    let data = JSON.stringify({
         hotelId : hotelId,
         roomType : roomType,
         roomName : roomName,
@@ -169,14 +203,15 @@ function modifyRoom(roomId){
         checkIn : checkIn,
         checkOut : checkOut,
         roomAmenities : roomAmenities,
+        features: features
         //roomFeatures : roomFeatures//
-        bedType : bedType,
-        viewType : viewType,
-        pool : pool,
-        roomCount : roomCount,
-        bathCount : bathCount,
-        balcony : balcony,
-        kitchen : kitchen
+        // bedType : bedType,
+        // viewType : viewType,
+        // pool : pool,
+        // roomCount : roomCount,
+        // bathCount : bathCount,
+        // balcony : balcony,
+        // kitchen : kitchen
         // roomFeatures : roomFeatures//
     })
 
@@ -224,7 +259,6 @@ function imgReLoad(roomPhotos){
 
     // roomPhotos 배열을 순회하여 사진을 추가
     roomPhotos.forEach(photo => {
-        console.log(photo);
         let photoDiv = `
         <div style="position: relative; display: inline-block; margin-right: 10px;" id="photo-${photo.rimgId}">
             <img src="http://localhost:8081/uploads/room/${photo.rimgFile}" alt="Room Image" 

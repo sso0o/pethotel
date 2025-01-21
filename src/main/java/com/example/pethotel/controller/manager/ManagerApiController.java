@@ -87,10 +87,8 @@ public class ManagerApiController {
     public ResponseEntity getMyRoom(@PathVariable Long roomId) {
         HashMap<Object, Object> resultMap = new HashMap<>();
         Room room = roomService.findById(roomId);
-        RoomFeature roomFeature = roomFeatureService.findByRoom(room);
 
         resultMap.put("room", room);
-        resultMap.put("roomFeature", roomFeature);
         return ResponseEntity.ok().body(resultMap);
     }
 
@@ -217,9 +215,19 @@ public class ManagerApiController {
             RoomAmenity roomAmenity = roomAmenityService.save(saveRoom, amenity);
         }
 
-        AddRoomFeatureRequest addRequest = new AddRoomFeatureRequest(saveRoom, request.getBedType(), request.getViewType(),
-                request.getPool(), request.getRoomCount(), request.getBathCount(), request.getBalcony(), request.getKitchen());
-        roomFeatureService.save(addRequest);
+        Map<String, String> features = request.getFeatures();  // features를 받아옴
+        if (features != null && !features.isEmpty()) {
+            for (Map.Entry<String, String> entry : features.entrySet()) {
+                String featureType = entry.getKey();
+                String value = entry.getValue();
+
+                roomFeatureService.save(saveRoom, featureType, value);  // RoomFeature 저장
+            }
+        }
+
+//        AddRoomFeatureRequest addRequest = new AddRoomFeatureRequest(saveRoom, request.getF(), request.getViewType(),
+//                request.getPool(), request.getRoomCount(), request.getBathCount(), request.getBalcony(), request.getKitchen());
+//        roomFeatureService.save(addRequest);
 
         resultMap.put("room", saveRoom);
         resultMap.put("msg", "요청 성공");
@@ -349,14 +357,24 @@ public class ManagerApiController {
         }
 
         roomFeatureService.deleteByRoom(updateRoom);
-        AddRoomFeatureRequest addRequest = new AddRoomFeatureRequest(updateRoom, request.getBedType(), request.getViewType(),
-                request.getPool(), request.getRoomCount(), request.getBathCount(), request.getBalcony(), request.getKitchen());
-        RoomFeature roomFeature = roomFeatureService.save(addRequest);
+        Map<String, String> features = request.getFeatures();  // features를 받아옴
+        if (features != null && !features.isEmpty()) {
+            for (Map.Entry<String, String> entry : features.entrySet()) {
+                String featureType = entry.getKey();
+                String value = entry.getValue();
+
+                roomFeatureService.save(updateRoom, featureType, value);  // RoomFeature 저장
+            }
+        }
+
+//        AddRoomFeatureRequest addRequest = new AddRoomFeatureRequest(updateRoom, request.getBedType(), request.getViewType(),
+//                request.getPool(), request.getRoomCount(), request.getBathCount(), request.getBalcony(), request.getKitchen());
+//        RoomFeature roomFeature = roomFeatureService.save(addRequest);
 
 
         resultMap.put("msg", "요청 성공");
         resultMap.put("room", updateRoom);
-        resultMap.put("roomFeature", roomFeature);
+//        resultMap.put("roomFeature", roomFeature);
         return ResponseEntity.ok().body(resultMap);
     }
 
