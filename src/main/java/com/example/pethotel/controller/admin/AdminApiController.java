@@ -3,11 +3,12 @@ package com.example.pethotel.controller.admin;
 import com.example.pethotel.entity.Room;
 import com.example.pethotel.entity.User;
 import com.example.pethotel.service.*;
-import com.example.pethotel.service.admin.CommonCodeService;
 import com.example.pethotel.service.admin.ManagerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
 import java.util.List;
@@ -28,12 +29,22 @@ public class AdminApiController {
     private final FileService fileService;
 
     // 매니저 목록 조회
-    @GetMapping("/admin/manager")
-    public ResponseEntity managerList(){
+    @GetMapping("/admin/manager/{userStatus}")
+    public ResponseEntity managerList(@PathVariable String userStatus){
         HashMap<Object, Object> resultMap = new HashMap<>();
 
-        List<User> managers = managerService.findByUserroleAndUserstatus("MANAGER", "Y");
+        List<User> managers = managerService.findByUserroleAndUserstatus("MANAGER", userStatus);
         resultMap.put("managers", managers);
+        return ResponseEntity.ok().body(resultMap);
+    }
+
+    // 유저 목록 조회
+    @GetMapping("/admin/user/{userStatus}")
+    public ResponseEntity userList(@PathVariable String userStatus){
+        HashMap<Object, Object> resultMap = new HashMap<>();
+
+        List<User> users = managerService.findByUserroleAndUserstatus("USER", userStatus);
+        resultMap.put("users", users);
         return ResponseEntity.ok().body(resultMap);
     }
 

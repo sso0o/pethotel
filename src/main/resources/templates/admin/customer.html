@@ -33,8 +33,6 @@
   <link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.css" />
   <link rel="stylesheet" href="https://cdn.datatables.net/select/2.1.0/css/select.dataTables.css" />
 
-  <script src="/admin/commoncode.js"></script>
-
 </head>
 
 <body id="page-top">
@@ -165,46 +163,28 @@
       <div class="container-fluid">
         <!-- DataTales Example -->
         <div class="row">
-          <div class="col-5">
+          <div class="col">
             <div class="card shadow mb-4">
               <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">공통코드 헤더</h6>
+                <h6 class="m-0 font-weight-bold text-primary">유저 관리</h6>
               </div>
               <div class="card-body">
-                <button type="button" class="btn btn-primary" onclick="addHeadModal('add')">add</button>
+                <div class="form-check form-switch" style="padding-left: 2rem;">
+                  <input class="form-check-input" type="checkbox" role="switch" id="userStatus" style="width: 4rem; height: 2rem" checked>
+                  <label class="form-check-label" for="userStatus" id="userStatusLabel" style="margin-left: 2rem; font-size: 1.2rem" > 정상 </label>
+                </div>
                 <div class="table-responsive">
-                  <table class="table table-bordered table-hover" id="tabHead" width="100%" cellspacing="0">
+                  <table class="table table-bordered table-hover" id="tabUser" width="100%" cellspacing="0">
                     <thead>
                     <tr>
-                      <th>코드 헤더</th>
-                      <th>설명</th>
+                      <th>아이디</th>
+                      <th>이름</th>
+                      <th>닉네임</th>
+                      <th>전화번호</th>
                     </tr>
                     </thead>
                     <tfoot>
                     </tfoot>
-                    <tbody>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-7">
-            <div class="card shadow mb-4">
-              <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">공통코드 디테일</h6>
-              </div>
-              <div class="card-body">
-                <button type="button" class="btn btn-primary" onclick="addDetailModal('add')">add</button>
-                <div class="table-responsive">
-                  <table class="table table-bordered table-hover" id="tabDetail" width="100%" cellspacing="0">
-                    <thead>
-                    <tr>
-                      <th>코드 디테일</th>
-                      <th>코드 이름</th>
-                      <th>전체코드</th>
-                    </tr>
-                    </thead>
                     <tbody>
                     </tbody>
                   </table>
@@ -288,6 +268,54 @@
 
 <script>
   $(function(){
+
+      let status = 'Y';
+      $('#userStatus').on('change', function() {
+          let label = $('#userStatusLabel');
+
+          if ($(this).prop('checked')) {
+              // 스위치가 활성화되면 라벨에 '정상' 표시
+              label.text('정상');
+              status = 'Y';
+          } else {
+              // 스위치가 비활성화되면 라벨에 '탈퇴' 표시
+              label.text('탈퇴');
+              status = 'N';
+          }
+
+          $.ajax({
+              url: '/admin/user/'+status,
+              type: 'GET',
+              success: function(response) {
+                  tabUser.clear();
+                  // 상태 변경 후 테이블을 새로 고침
+                  tabUser.rows.add(response.users).draw();
+              }
+          })
+
+
+      });
+
+
+      let tabUser = $('#tabUser').DataTable({
+          lengthMenu: [10,20,30],
+          paging: false,
+          scrollCollapse: false,
+          select: {
+              style : 'single'
+          },
+          ajax:{
+              url: '/admin/user/' + status,
+              type:'get',
+              dataSrc: 'users'
+          },
+          columns: [
+              {data: "userid"},
+              {data: "usern"},
+              {data: "nickname"},
+              {data: "userphone"}
+          ]
+      })
 
 
   });
