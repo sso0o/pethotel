@@ -46,6 +46,7 @@
             )
         </if>
         GROUP BY a.hotel_id, a.hotel_name, a.hotel_info
+        order by a.hotel_name
         LIMIT #{size} OFFSET #{skip}
     </select>
 

@@ -1,7 +1,11 @@
 package com.example.pethotel.controller.hotel;
 
 import com.example.pethotel.entity.Booking;
+import com.example.pethotel.entity.Hotel;
+import com.example.pethotel.entity.Room;
 import com.example.pethotel.service.BookingService;
+import com.example.pethotel.service.HotelService;
+import com.example.pethotel.service.RoomService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +21,8 @@ import java.util.UUID;
 public class MyBookingApiController {
 
     private final BookingService bookingService;
+    private final HotelService hotelService;
+    private final RoomService roomService;
 
 //    @GetMapping("/mybooking/{userid}")
 //    public ResponseEntity<?> getMyBooking(@PathVariable Long userid) {
@@ -38,7 +44,11 @@ public class MyBookingApiController {
         HashMap<Object, Object> resultMap = new HashMap<>();
 //        Booking booking = bookingService.findById(UUID.fromString(bookingId));
         Booking booking = bookingService.findById(bookingId);
+        Hotel hotel = hotelService.findById(booking.getHotelId());
+        Room room = roomService.findById(booking.getRoomId());
         resultMap.put("booking", booking);
+        resultMap.put("hotel", hotel);
+        resultMap.put("room", room);
         return ResponseEntity.ok().body(resultMap);
     }
 

@@ -32,10 +32,10 @@ function paymentBooking(bookingId) {
             oPay.open({
                 "merchantPayKey": "20241207WWKEnn",
                 // "productName": hotelDetail.data('hotel-name')+" - "+roomDetail.data('room-type'),
-                "productName": "test",
+                "productName": data.hotel.hotelName + " - "+data.room.roomName,
                 "productCount": "1",
-                "totalPayAmount": "1000",
-                "taxScopeAmount": "1000",
+                "totalPayAmount": data.booking.totalPrice,
+                "taxScopeAmount": data.booking.totalPrice,
                 "taxExScopeAmount": "0",
                 "returnUrl": "http://localhost:8081/booking/complete?bookingId="+bookingId.toString(),
             });
