@@ -1,6 +1,5 @@
 package com.example.pethotel.repository;
 
-import com.example.pethotel.dto.hotel.MyBookingResponse;
 import com.example.pethotel.dto.manager.HotelBookingResponse;
 import com.example.pethotel.dto.manager.HotelRequestResponse;
 import com.example.pethotel.entity.Booking;
@@ -14,11 +13,17 @@ import java.util.UUID;
 public interface BookingRepository extends JpaRepository<Booking, UUID> {
 
     @Query(value = "SELECT new com.example.pethotel.dto.manager.HotelBookingResponse( " +
-            "b.roomDetailId, b.hotelId, b.startDate, b.endDate, b.bookingGuest, b.bookingPet, b.totalPrice, b.totalDate, b.paymentId, h.hotelName, r.roomType ) " +
+            "b.roomDetailId, b.hotelId,  b.roomId, " +
+            "b.startDate, b.endDate, " +
+            "b.bookingGuest, b.bookingPet, " +
+            "b.totalPrice, b.totalDate, " +
+            "b.paymentId, b.payChk, " +
+            "h.hotelName, r.roomType, r.roomName ) " +
             "FROM Booking b " +
-            "left join Room r on b.roomDetailId = r.roomId " +
+            "left join Room r on b.roomId = r.roomId " +
             "left join Hotel h on b.hotelId = h.hotelId " +
-            "WHERE b.hotelId = :hotelId")
+            "WHERE b.hotelId = :hotelId " +
+            "AND b.payChk in ('Booking', 'Paid', 'Completed') ")
     List<HotelBookingResponse> findBookingResponseByHotelId(Long hotelId);
 
     @Query(value = "SELECT new com.example.pethotel.dto.manager.HotelRequestResponse( " +

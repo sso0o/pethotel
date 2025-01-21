@@ -280,19 +280,28 @@
                 center: 'title',
                 right: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth'
             },
-            initalView: 'dayGreidMonth',
             events: function (info, successCallback, failureCallback){
                 $.ajax({
                     url: '/manager/mybooking/'+hotelId,
                     type: 'GET',
                     success: function(data){
+                        console.log(data);
                         let events = [];
                         if(data.bookings.length > 0){
                             data.bookings.forEach(function(item){
+                                let color;
+                                if (item.payChk == "Completed"){
+                                    color = "gray";
+                                } else if (item.payChk == "Booking"){
+                                    color = "orange";
+                                } else if (item.payChk == "Paid"){
+                                    color = "green";
+                                }
                                 events.push({
-                                    title: item.roomType,
+                                    title: item.roomType + " " + item.roomName,
                                     start: item.startDate,
-                                    end: item.endDate
+                                    end: item.endDate,
+                                    color: color
                                 });
                             });
                         }
