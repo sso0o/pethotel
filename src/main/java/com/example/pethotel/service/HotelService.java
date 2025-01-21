@@ -58,21 +58,12 @@ public class HotelService {
                 .orElseThrow(() ->  new IllegalArgumentException("not found : "+hotelId));
 
         roomService.deleteByHotel(hotel);
+
+        // 호텔관련 삭제
+        hotelFacilityService.deleteByHotel(hotel);
+        hotelImgService.deletByHotel(hotel);
         hotelRepository.delete(hotel);
 
-//        try{
-//            // 호텔관련 삭제
-//            hotelFacilityService.deleteByHotel(hotel);
-//            hotelImgService.deletByHotel(hotel);
-//            // 객실관련 삭제
-
-//
-//
-//
-//        } catch (Exception e){
-//            // 예외 로그를 남기고 재처리
-//            throw new RuntimeException("Failed to delete hotel and related entities", e);
-//        }
     }
 
 

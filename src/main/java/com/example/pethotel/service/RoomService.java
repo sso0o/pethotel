@@ -95,14 +95,20 @@ public class RoomService {
     @Transactional
     public void deleteByHotel(Hotel hotel) {
         List<Room> rooms = roomRepository.findAllByHotel(hotel);
-        rooms.forEach(room -> {
-
-            roomDetailRepository.deleteAllByRoom(room);
-            roomImgRepository.deleteAllByRoom(room);
-            roomAmenityRepository.deleteAllByRoom(room);
-            roomFeatureRepository.deleteAllByRoom(room);
+        for (Room room : rooms) {
             roomRepository.delete(room);
-        });
+        }
+//        rooms.forEach(room -> {
+//
+//            roomDetailRepository.deleteAllByRoom(room);
+//            roomImgRepository.deleteAllByRoom(room);
+//            roomAmenityRepository.deleteAllByRoom(room);
+//            roomFeatureRepository.deleteAllByRoom(room);
+//
+//            // Room 객체를 병합
+//            Room managedRoom = entityManager.merge(room);
+//            roomRepository.delete(managedRoom);
+//        });
     }
 
     // 매니저가 예약관리 페이지때 씀
